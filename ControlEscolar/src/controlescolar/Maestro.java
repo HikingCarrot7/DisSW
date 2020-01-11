@@ -1,6 +1,7 @@
 package controlescolar;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  *
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 public class Maestro extends Persona
 {
 
-    private int clave;
+    private int claveMaestro;
     private ArrayList<Asignatura> asignaturas;
 
     public Maestro(int clave, String nombre, String apellido)
@@ -18,20 +19,19 @@ public class Maestro extends Persona
         super(nombre, apellido);
 
         asignaturas = new ArrayList<>();
-        this.clave = clave;
+        this.claveMaestro = clave;
 
     }
 
     public boolean anadirAsignatura(Asignatura asignatura)
     {
 
-        if (asignaturas.contains(asignatura))
-        {
-            System.out.println("Está asignatura ya está añadida.");
-            return false;
-
-        } else
-            asignaturas.add(asignatura);
+        for (Asignatura asig : asignaturas)
+            if (asig.equals(asignatura))
+            {
+                System.out.println("Está asignatura ya está añadida.");
+                return false;
+            }
 
         return true;
 
@@ -42,14 +42,14 @@ public class Maestro extends Persona
         asignaturas.remove(asignatura);
     }
 
-    public int getClave()
+    public int getClaveMaestro()
     {
-        return clave;
+        return claveMaestro;
     }
 
     public void setClave(int clave)
     {
-        this.clave = clave;
+        this.claveMaestro = clave;
     }
 
     public ArrayList<Asignatura> getAsignaturas()
@@ -58,9 +58,38 @@ public class Maestro extends Persona
     }
 
     @Override
+    public int hashCode()
+    {
+        int hash = 7;
+        hash = 23 * hash + this.claveMaestro;
+        hash = 23 * hash + Objects.hashCode(this.asignaturas);
+        return hash;
+
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+
+        if (this == obj)
+            return true;
+
+        if (obj == null)
+            return false;
+
+        if (getClass() != obj.getClass())
+            return false;
+
+        final Maestro other = (Maestro) obj;
+
+        return this.claveMaestro == other.claveMaestro;
+
+    }
+
+    @Override
     public String toString()
     {
-        return clave + "," + nombre + "," + apellido;
+        return getClaveMaestro() + "," + getNombre() + "," + getApellido();
     }
 
 }

@@ -1,6 +1,7 @@
 package controlescolar;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  *
@@ -19,18 +20,18 @@ public class Asignatura
         this.claveAsignatura = clave;
         this.nombreAsignatura = nombreAsignatura;
         this.licenciatura = licenciatura;
+
     }
 
     public boolean matricularAlumno(Alumno alumno)
     {
 
-        if (alumnos.contains(alumno))
-        {
-            System.out.println("Este alumno ya está matriculado a esta asignatura");
-            return false;
-
-        } else
-            alumnos.add(alumno);
+        for (Alumno alum : alumnos)
+            if (alum.equals(alumno))
+            {
+                System.out.println("Este alumno ya está matriculado a esta asignatura");
+                return false;
+            }
 
         return true;
 
@@ -77,9 +78,37 @@ public class Asignatura
     }
 
     @Override
+    public int hashCode()
+    {
+        int hash = 5;
+        hash = 67 * hash + this.claveAsignatura;
+        hash = 67 * hash + Objects.hashCode(this.alumnos);
+        hash = 67 * hash + Objects.hashCode(this.nombreAsignatura);
+        hash = 67 * hash + Objects.hashCode(this.licenciatura);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+            return true;
+
+        if (obj == null)
+            return false;
+
+        if (getClass() != obj.getClass())
+            return false;
+
+        final Asignatura other = (Asignatura) obj;
+
+        return this.claveAsignatura == other.claveAsignatura;
+    }
+
+    @Override
     public String toString()
     {
-        return claveAsignatura + "," + nombreAsignatura + "," + licenciatura;
+        return getClaveAsignatura() + "," + getNombreAsignatura() + "," + getLicenciatura();
 
     }
 

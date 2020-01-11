@@ -130,18 +130,47 @@ public class DAO
 
     }
 
-    public void guadarRelacion(String registro)
+    public void guadarRelacion(Relacion relacion)
     {
 
         try (Formatter out = new Formatter(new FileWriter(file, true)))
         {
 
-            out.format("%s", registro + System.getProperty("line.separator"));
+            out.format("%s", relacion + System.getProperty("line.separator"));
 
         } catch (IOException ex)
         {
             System.out.println(ex.getMessage());
         }
+
+    }
+
+    public ArrayList<Relacion> obtenerRelaciones()
+    {
+
+        ArrayList<Relacion> relaciones = new ArrayList<>();
+
+        try (Scanner in = new Scanner(new FileReader(file)))
+        {
+
+            while (in.hasNext())
+            {
+
+                String[] relacion = in.nextLine().split(",");
+
+                int claveMaestro = Integer.parseInt(relacion[0]);
+                int claveAsignatura = Integer.parseInt(relacion[1]);
+
+                relaciones.add(new Relacion(claveMaestro, claveAsignatura));
+
+            }
+
+        } catch (FileNotFoundException ex)
+        {
+            System.out.println(ex.getMessage());
+        }
+
+        return relaciones;
 
     }
 
