@@ -33,6 +33,7 @@ public class Maestro extends Persona
                 return false;
             }
 
+        asignaturas.add(asignatura);
         return true;
 
     }

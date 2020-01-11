@@ -20,6 +20,7 @@ public class DAO
     public static final String RUTA_ALUMNOS = "datos/Alumnos.csv";
     public static final String RUTA_ASIGNATURAS = "datos/Asignaturas.csv";
     public static final String RUTA_RELACIONES = "datos/Relaciones.csv";
+    public static final String RUTA_REGISTROS = "datos/Registros.csv";
 
     private File file;
 
@@ -53,11 +54,11 @@ public class DAO
 
                 String[] datos = in.nextLine().split(",");
 
-                int clave = Integer.parseInt(datos[0]);
+                int claveMaestro = Integer.parseInt(datos[0]);
                 String nombre = datos[1];
                 String apellido = datos[2];
 
-                maestros.add(new Maestro(clave, nombre, apellido));
+                maestros.add(new Maestro(claveMaestro, nombre, apellido));
 
             }
 
@@ -171,6 +172,43 @@ public class DAO
         }
 
         return relaciones;
+
+    }
+
+    public void guardarRegistros()
+    {
+
+    }
+
+    public ArrayList<Registro> obtenerRegistros()
+    {
+
+        ArrayList<Registro> registros = new ArrayList<>();
+
+        try (Scanner in = new Scanner(new FileReader(file)))
+        {
+
+            in.nextLine();
+
+            while (in.hasNext())
+            {
+
+                String[] registro = in.nextLine().split(",");
+
+                int claveMaestro = Integer.parseInt(registro[0]);
+                int claveAsignatura = Integer.parseInt(registro[1]);
+                int maticula = Integer.parseInt(registro[2]);
+
+                registros.add(new Registro(claveMaestro, claveAsignatura, maticula));
+
+            }
+
+        } catch (FileNotFoundException ex)
+        {
+            System.out.println(ex.getMessage());
+        }
+
+        return registros;
 
     }
 

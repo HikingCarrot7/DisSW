@@ -20,20 +20,41 @@ public class ControlEscolar
         asignaturas = new DAO(DAO.RUTA_ASIGNATURAS).obtenerAsignaturas();
         alumnos = new DAO(DAO.RUTA_ALUMNOS).obtenerAlumnos();
 
-        cargarAsiganturas();
-        matricularAlumnos();
+        cargarDatos();
 
     }
 
-    private void cargarAsiganturas()
+    /**
+     * Hay problemas de punteros xzdd
+     */
+    private void cargarDatos()
     {
 
         ArrayList<Relacion> relaciones = new DAO(DAO.RUTA_RELACIONES).obtenerRelaciones();
+        ArrayList<Registro> registros = new DAO(DAO.RUTA_REGISTROS).obtenerRegistros();
 
-    }
+        for (Relacion relacion : relaciones)
+        {
 
-    private void matricularAlumnos()
-    {
+            Maestro maestro = obtenerMaestro(relacion.getClaveMaestro());
+            int indiceMaestro = maestros.indexOf(maestro);
+            Asignatura asignatura = obtenerAsignatura(relacion.getClaveAsignatura());
+
+            maestros.get(indiceMaestro).anadirAsignatura(asignatura);
+
+        }
+
+        for (Registro registro : registros)
+        {
+
+            Maestro maestro = obtenerMaestro(registro.getClaveMaestro());
+            Asignatura asignatura = obtenerAsignatura(registro.getClaveAsignatura());
+            int indiceAsignatura = asignaturas.indexOf(asignatura); // Reparar xd
+            Alumno alumno = obtenerAlumno(registro.getMatricula());
+
+            maestro.getAsignaturas().get(indiceAsignatura).matricularAlumno(alumno);
+
+        }
 
     }
 
@@ -42,8 +63,34 @@ public class ControlEscolar
 
         System.out.println("MAESTROS:\n");
 
+        System.out.printf("%-15s%s\n", "Clave", "Nombre");
+
         for (Maestro maestro : maestros)
-            System.out.println(maestro.getNombreCompleto().toUpperCase());
+            System.out.printf("%-15s%S\n", maestro.getClaveMaestro(), maestro.getNombreCompleto());
+
+    }
+
+    public void mostrarAsignaturas()
+    {
+
+        System.out.println("ASIGNATURAS:\n");
+
+        System.out.printf("%-15s%-40s%s\n", "Clave", "Nombre", "Licenciatura");
+
+        for (Asignatura asignatura : asignaturas)
+            System.out.printf("%-15s%-40S%S\n", asignatura.getClaveAsignatura(), asignatura.getNombreAsignatura(), asignatura.getLicenciatura());
+
+    }
+
+    public void mostrarAlumnos()
+    {
+
+        System.out.println("ALUMNOS:\n");
+
+        System.out.printf("%-15s%s\n", "Matrícula", "Nombre");
+
+        for (Alumno alumno : alumnos)
+            System.out.printf("%-15s%S\n", alumno.getMatricula(), alumno.getNombreCompleto());
 
     }
 
@@ -53,10 +100,32 @@ public class ControlEscolar
         for (Maestro maestro : maestros)
         {
 
-            System.out.println(maestro.getNombreCompleto() + ":");
+            System.out.println("\n" + maestro.getNombreCompleto().toUpperCase() + ":");
 
             for (Asignatura asignatura : maestro.getAsignaturas())
-                System.out.printf("%-30s%-20s%s\n", " ", asignatura.getNombreAsignatura(), asignatura.getClaveAsignatura());
+                System.out.printf("%-30s%S\n", " ", asignatura.getNombreAsignatura());
+
+        }
+
+    }
+
+    public void mostrarTodosDatos()
+    {
+
+        for (Maestro maestro : maestros)
+        {
+
+            System.out.println("\n" + maestro.getNombreCompleto().toUpperCase() + ":");
+
+            for (Asignatura asignatura : maestro.getAsignaturas())
+            {
+
+                System.out.printf("%-30s%S:\n\n", " ", asignatura.getNombreAsignatura());
+
+                for (Alumno alumno : asignatura.getAlumnos())
+                    System.out.printf("%-70s%S\n", " ", alumno.getNombreCompleto());
+
+            }
 
         }
 
@@ -79,7 +148,8 @@ public class ControlEscolar
             else
                 System.out.println("El maestro ya está relacionado con la asignatura.");
 
-        }
+        } else
+            System.out.println("Alguno de los datos es incorrecto.");
 
     }
 
@@ -192,6 +262,21 @@ public class ControlEscolar
     private void generarRelacion(int claveMaestro, int claveAsignatura)
     {
         new DAO(DAO.RUTA_RELACIONES).guadarRelacion(new Relacion(claveMaestro, claveAsignatura));
+    }
+
+    public ArrayList<Maestro> getMaestros()
+    {
+        return maestros;
+    }
+
+    public ArrayList<Asignatura> getAsignaturas()
+    {
+        return asignaturas;
+    }
+
+    public ArrayList<Alumno> getAlumnos()
+    {
+        return alumnos;
     }
 
 }

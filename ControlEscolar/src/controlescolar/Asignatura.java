@@ -21,6 +21,8 @@ public class Asignatura
         this.nombreAsignatura = nombreAsignatura;
         this.licenciatura = licenciatura;
 
+        alumnos = new ArrayList<>();
+
     }
 
     public boolean matricularAlumno(Alumno alumno)
@@ -33,6 +35,7 @@ public class Asignatura
                 return false;
             }
 
+        alumnos.add(alumno);
         return true;
 
     }
@@ -75,6 +78,11 @@ public class Asignatura
     public ArrayList<Alumno> getAlumnos()
     {
         return alumnos;
+    }
+
+    public String getDescripcion()
+    {
+        return getNombreAsignatura() + " - " + getLicenciatura();
     }
 
     @Override

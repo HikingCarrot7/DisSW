@@ -7,8 +7,16 @@ package controlescolar;
 public class Menu
 {
 
-    private void mostrarMenu()
+    private ControlEscolar controlEscolar;
+
+    public Menu()
     {
+        controlEscolar = new ControlEscolar();
+    }
+
+    public void mostrarMenu()
+    {
+        controlEscolar.mostrarTodosDatos();
     }
 
 }

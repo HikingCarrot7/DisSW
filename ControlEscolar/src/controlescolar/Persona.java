@@ -38,7 +38,7 @@ public class Persona
 
     public String getNombreCompleto()
     {
-        return getNombre() + " " + getApellido() + ".";
+        return getNombre() + " " + getApellido();
     }
 
 }
