@@ -33,7 +33,11 @@ public class Maestro extends Persona
                 return false;
             }
 
-        asignaturas.add(asignatura);
+        asignaturas.add(new Asignatura(
+                asignatura.getClaveAsignatura(),
+                asignatura.getNombreAsignatura(),
+                asignatura.getLicenciatura()));
+
         return true;
 
     }
@@ -56,6 +60,17 @@ public class Maestro extends Persona
     public ArrayList<Asignatura> getAsignaturas()
     {
         return asignaturas;
+    }
+
+    public Asignatura obtenerAsignatura(int claveAsignatura)
+    {
+
+        for (Asignatura asignatura : asignaturas)
+            if (asignatura.getClaveAsignatura() == claveAsignatura)
+                return asignatura;
+
+        return null;
+
     }
 
     @Override

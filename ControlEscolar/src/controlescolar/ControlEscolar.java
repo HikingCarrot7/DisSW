@@ -24,9 +24,6 @@ public class ControlEscolar
 
     }
 
-    /**
-     * Hay problemas de punteros xzdd
-     */
     private void cargarDatos()
     {
 
@@ -37,8 +34,8 @@ public class ControlEscolar
         {
 
             Maestro maestro = obtenerMaestro(relacion.getClaveMaestro());
-            int indiceMaestro = maestros.indexOf(maestro);
             Asignatura asignatura = obtenerAsignatura(relacion.getClaveAsignatura());
+            int indiceMaestro = maestros.indexOf(maestro);
 
             maestros.get(indiceMaestro).anadirAsignatura(asignatura);
 
@@ -48,9 +45,9 @@ public class ControlEscolar
         {
 
             Maestro maestro = obtenerMaestro(registro.getClaveMaestro());
-            Asignatura asignatura = obtenerAsignatura(registro.getClaveAsignatura());
-            int indiceAsignatura = asignaturas.indexOf(asignatura); // Reparar xd
+            Asignatura asignatura = maestro.obtenerAsignatura(registro.getClaveAsignatura());
             Alumno alumno = obtenerAlumno(registro.getMatricula());
+            int indiceAsignatura = maestro.getAsignaturas().indexOf(asignatura);
 
             maestro.getAsignaturas().get(indiceAsignatura).matricularAlumno(alumno);
 
