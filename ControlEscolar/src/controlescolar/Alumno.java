@@ -9,7 +9,7 @@ public class Alumno extends Persona
 
     private int matricula;
 
-    public Alumno(String nombre, String apellido, int matricula)
+    public Alumno(int matricula, String nombre, String apellido)
     {
         super(nombre, apellido);
 

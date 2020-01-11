@@ -1,10 +1,148 @@
 package controlescolar;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Formatter;
+import java.util.Scanner;
+
 /**
  *
  * @author HikingCarrot7
  */
 public class DAO
 {
+
+    public static final String RUTA_MAESTROS = "datos/Maestros.csv";
+    public static final String RUTA_ALUMNOS = "datos/Alumnos.csv";
+    public static final String RUTA_ASIGNATURAS = "datos/Asignaturas.csv";
+    public static final String RUTA_RELACIONES = "datos/Relaciones.csv";
+
+    private File file;
+
+    public DAO(String ruta)
+    {
+
+        file = new File(ruta);
+
+        if (!file.exists())
+            try
+            {
+                file.createNewFile();
+
+            } catch (IOException ex)
+            {
+                System.out.println(ex.getMessage());
+            }
+
+    }
+
+    public ArrayList<Maestro> obtenerMaestros()
+    {
+
+        ArrayList<Maestro> maestros = new ArrayList<>();
+
+        try (Scanner in = new Scanner(new FileReader(file)))
+        {
+
+            while (in.hasNext())
+            {
+
+                String[] datos = in.nextLine().split(",");
+
+                int clave = Integer.parseInt(datos[0]);
+                String nombre = datos[1];
+                String apellido = datos[2];
+
+                maestros.add(new Maestro(clave, nombre, apellido));
+
+            }
+
+        } catch (FileNotFoundException ex)
+        {
+            System.out.println(ex.getMessage());
+        }
+
+        return maestros;
+
+    }
+
+    public ArrayList<Alumno> obtenerAlumnos()
+    {
+
+        ArrayList<Alumno> alumnos = new ArrayList<>();
+
+        try (Scanner in = new Scanner(new FileReader(file)))
+        {
+
+            while (in.hasNext())
+            {
+
+                String[] datos = in.nextLine().split(",");
+
+                int matricula = Integer.parseInt(datos[0]);
+                String nombre = datos[1];
+                String apellido = datos[2];
+
+                alumnos.add(new Alumno(matricula, nombre, apellido));
+
+            }
+
+        } catch (FileNotFoundException ex)
+        {
+            System.out.println(ex.getMessage());
+        }
+
+        return alumnos;
+
+    }
+
+    public ArrayList<Asignatura> obtenerAsignaturas()
+    {
+
+        ArrayList<Asignatura> asignaturas = new ArrayList<>();
+
+        try (Scanner in = new Scanner(new FileReader(file)))
+        {
+
+            while (in.hasNext())
+            {
+
+                String[] datos = in.nextLine().split(",");
+
+                int clave = Integer.parseInt(datos[0]);
+                String nombreAsignatura = datos[1];
+                String licenciatura = datos[2];
+
+                asignaturas.add(new Asignatura(clave, nombreAsignatura, licenciatura));
+
+            }
+
+        } catch (FileNotFoundException ex)
+        {
+            System.out.println(ex.getMessage());
+        }
+
+        return asignaturas;
+
+    }
+
+    public void guadarRelacion(String registro)
+    {
+
+        try (Formatter out = new Formatter(new FileWriter(file, true)))
+        {
+
+            out.format("%s", registro + System.getProperty("line.separator"));
+
+        } catch (IOException ex)
+        {
+            System.out.println(ex.getMessage());
+        }
+
+    }
 
 }

@@ -1,5 +1,7 @@
 package controlescolar;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author HikingCarrot7
@@ -7,35 +9,56 @@ package controlescolar;
 public class Asignatura
 {
 
-    private int clave;
-    private String nombreAsinatura;
+    private int claveAsignatura;
+    private ArrayList<Alumno> alumnos;
+    private String nombreAsignatura;
     private String licenciatura;
 
-    public Asignatura(int clave, String nombreAsinatura, String licenciatura)
+    public Asignatura(int clave, String nombreAsignatura, String licenciatura)
     {
-        this.clave = clave;
-        this.nombreAsinatura = nombreAsinatura;
+        this.claveAsignatura = clave;
+        this.nombreAsignatura = nombreAsignatura;
         this.licenciatura = licenciatura;
     }
 
-    public int getClave()
+    public boolean matricularAlumno(Alumno alumno)
     {
-        return clave;
+
+        if (alumnos.contains(alumno))
+        {
+            System.out.println("Este alumno ya está matriculado a esta asignatura");
+            return false;
+
+        } else
+            alumnos.add(alumno);
+
+        return true;
+
     }
 
-    public void setClave(int clave)
+    public void darBajaAlumno(Alumno alumno)
     {
-        this.clave = clave;
+        alumnos.remove(alumno);
     }
 
-    public String getNombreAsinatura()
+    public int getClaveAsignatura()
     {
-        return nombreAsinatura;
+        return claveAsignatura;
     }
 
-    public void setNombreAsinatura(String nombreAsinatura)
+    public void setClaveAsignatura(int claveAsignatura)
     {
-        this.nombreAsinatura = nombreAsinatura;
+        this.claveAsignatura = claveAsignatura;
+    }
+
+    public String getNombreAsignatura()
+    {
+        return nombreAsignatura;
+    }
+
+    public void setNombreAsignatura(String nombreAsinatura)
+    {
+        this.nombreAsignatura = nombreAsinatura;
     }
 
     public String getLicenciatura()
@@ -46,6 +69,18 @@ public class Asignatura
     public void setLicenciatura(String licenciatura)
     {
         this.licenciatura = licenciatura;
+    }
+
+    public ArrayList<Alumno> getAlumnos()
+    {
+        return alumnos;
+    }
+
+    @Override
+    public String toString()
+    {
+        return claveAsignatura + "," + nombreAsignatura + "," + licenciatura;
+
     }
 
 }
