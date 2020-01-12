@@ -96,7 +96,7 @@ public class ControlEscolar
             System.out.println("\n" + maestro.getNombreCompleto().toUpperCase() + ":");
 
             for (Asignatura asignatura : maestro.getAsignaturas())
-                System.out.printf("%-30s%S\n", " ", asignatura.getNombreAsignatura());
+                System.out.printf("%-30s%S(%s)\n", " ", asignatura.getNombreAsignatura(), asignatura.getLicenciatura());
 
         }
 
