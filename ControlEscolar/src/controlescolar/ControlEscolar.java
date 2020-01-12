@@ -91,7 +91,7 @@ public class ControlEscolar
 
     }
 
-    public void mostrarRelaciones()
+    public void mostrarRelacionesAsignaturas()
     {
 
         for (Maestro maestro : maestros)
@@ -106,7 +106,7 @@ public class ControlEscolar
 
     }
 
-    public void mostrarTodosDatos()
+    public void mostrarTodasRelaciones()
     {
 
         for (Maestro maestro : maestros)
@@ -125,28 +125,6 @@ public class ControlEscolar
             }
 
         }
-
-    }
-
-    public void relacionar(int claveMaestro, int claveAsignatura)
-    {
-
-        if (existeMaestro(claveMaestro) && existeAsignatura(claveAsignatura))
-        {
-
-            Asignatura asignatura = obtenerAsignatura(claveAsignatura);
-            Maestro maestro = obtenerMaestro(claveMaestro);
-
-            boolean relacionSatisfactoria = maestro.anadirAsignatura(asignatura);
-
-            if (relacionSatisfactoria)
-                generarRelacion(claveMaestro, claveAsignatura);
-
-            else
-                System.out.println("El maestro ya está relacionado con la asignatura.");
-
-        } else
-            System.out.println("Alguno de los datos es incorrecto.");
 
     }
 
@@ -174,15 +152,110 @@ public class ControlEscolar
 
     }
 
-    public void anadirAlumno(int claveMaestro, int claveAsignatura, int matricula)
+    public void anadirAlumno(int matricula, String nombre, String apellido)
+    {
+        if (!existeAlumno(matricula))
+            alumnos.add(new Alumno(matricula, nombre, apellido));
+
+        else
+            System.out.println("Ya existe un alumno con esa clave.");
+
+    }
+
+    public void eliminarAlumno(int matricula)
+    {
+
+        for (Alumno alumno : alumnos)
+            if (alumno.getMatricula() == matricula)
+            {
+                alumnos.remove(alumno);
+                return;
+            }
+
+        System.out.println("La clave del alumno no existe.");
+
+    }
+
+    public void anadirAsignatura(int claveAsignatura, String nombreAsignatura, String licenciatura)
+    {
+
+        if (!existeAsignatura(claveAsignatura))
+            asignaturas.add(new Asignatura(claveAsignatura, nombreAsignatura, licenciatura));
+
+        else
+            System.out.println("Ya existe una asignatura con esa clave.");
+
+    }
+
+    public void eliminarAsignatura(int claveAsignatura)
+    {
+
+        for (Asignatura asignatura : asignaturas)
+            if (asignatura.getClaveAsignatura() == claveAsignatura)
+            {
+                asignaturas.remove(asignatura);
+                return;
+            }
+
+        System.out.println("La clave de la asignatura no existe.");
+
+    }
+
+    public void relacionarAsignatura(int claveMaestro, int claveAsignatura)
+    {
+
+        if (existeMaestro(claveMaestro) && existeAsignatura(claveAsignatura))
+        {
+
+            Maestro maestro = obtenerMaestro(claveMaestro);
+
+            if (maestro.doyAsignatura(claveAsignatura))
+            {
+                System.out.println("El maestro ya está relacionado con esta asignatura.");
+                return;
+            }
+
+            Asignatura asignatura = obtenerAsignatura(claveAsignatura);
+
+            boolean relacionSatisfactoria = maestro.anadirAsignatura(asignatura);
+
+            if (relacionSatisfactoria)
+            {
+                generarRelacion(claveMaestro, claveAsignatura);
+                System.out.println("El maestro " + maestro.getNombreCompleto()
+                        + " ahora imparte la asignatura " + asignatura.getDescripcion());
+
+            } else
+                System.out.println("El maestro ya está relacionado con la asignatura.");
+
+        } else
+            System.out.println("Alguno de los datos es incorrecto.");
+
+    }
+
+    public void quitarRelacionAsignatura(int claveAsignatura, int claveMaestro)
+    {
+
+        if (existeAsignatura(claveAsignatura) && existeMaestro(claveMaestro))
+        {
+            Maestro maestro = obtenerMaestro(claveMaestro);
+            maestro.quitarAsignatura(claveAsignatura);
+
+        } else
+            System.out.println("Alguno de los datos es incorrecto.");
+
+    }
+
+    public void relacionarAlumno(int claveMaestro, int claveAsignatura, int matricula)
     {
 
         if (existeMaestro(claveMaestro) && existeAsignatura(claveAsignatura) && existeAlumno(matricula))
         {
 
             Maestro maestro = obtenerMaestro(claveMaestro);
-            int indiceAsignatura = asignaturas.indexOf(obtenerAsignatura(claveAsignatura));
+            Asignatura asignatura = obtenerAsignatura(claveAsignatura);
             Alumno alumno = obtenerAlumno(matricula);
+            int indiceAsignatura = maestro.getAsignaturas().indexOf(asignatura);
 
             maestro.getAsignaturas().get(indiceAsignatura).matricularAlumno(alumno);
 
@@ -191,15 +264,16 @@ public class ControlEscolar
 
     }
 
-    public void darBajaAlumno(int claveMaestro, int claveAsignatura, int matricula)
+    public void darBajaAlumnoDeAsignatura(int claveMaestro, int claveAsignatura, int matricula)
     {
 
         if (existeMaestro(claveMaestro) && existeAsignatura(claveAsignatura) && existeAlumno(matricula))
         {
 
             Maestro maestro = obtenerMaestro(claveMaestro);
-            int indiceAsignatura = asignaturas.indexOf(obtenerAsignatura(claveAsignatura));
+            Asignatura asignatura = obtenerAsignatura(claveAsignatura);
             Alumno alumno = obtenerAlumno(matricula);
+            int indiceAsignatura = maestro.getAsignaturas().indexOf(asignatura);
 
             maestro.getAsignaturas().get(indiceAsignatura).darBajaAlumno(alumno);
 

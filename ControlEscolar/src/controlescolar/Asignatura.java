@@ -28,16 +28,20 @@ public class Asignatura
     public boolean matricularAlumno(Alumno alumno)
     {
 
-        for (Alumno alum : alumnos)
-            if (alum.equals(alumno))
-            {
-                System.out.println("Este alumno ya está matriculado a esta asignatura");
-                return false;
-            }
+        if (existeAlumnoMatriculado(claveAsignatura))
+        {
+            System.out.println("Este alumno ya está matriculado a esta asignatura");
+            return false;
+        }
 
         alumnos.add(alumno);
         return true;
 
+    }
+
+    public boolean existeAlumnoMatriculado(int matricula)
+    {
+        return alumnos.stream().anyMatch((alumno) -> (alumno.getMatricula() == matricula));
     }
 
     public void darBajaAlumno(Alumno alumno)

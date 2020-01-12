@@ -42,6 +42,26 @@ public class Maestro extends Persona
 
     }
 
+    public boolean quitarAsignatura(int claveAsignatura)
+    {
+
+        for (Asignatura asignatura : asignaturas)
+            if (asignatura.getClaveAsignatura() == claveAsignatura)
+            {
+                asignaturas.remove(asignatura);
+                return true;
+            }
+
+        System.out.println("Este maestro no imparte esta asignatura.");
+        return false;
+
+    }
+
+    public boolean doyAsignatura(int claveAsignatura)
+    {
+        return asignaturas.stream().anyMatch((asignatura) -> asignatura.getClaveAsignatura() == claveAsignatura);
+    }
+
     public void eliminarAsignatura(Asignatura asignatura)
     {
         asignaturas.remove(asignatura);
