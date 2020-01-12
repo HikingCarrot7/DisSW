@@ -57,6 +57,17 @@ public class Maestro extends Persona
 
     }
 
+    public Asignatura obtenerAsignatura(int claveAsignatura)
+    {
+
+        for (Asignatura asignatura : asignaturas)
+            if (asignatura.getClaveAsignatura() == claveAsignatura)
+                return asignatura;
+
+        return null;
+
+    }
+
     public boolean doyAsignatura(int claveAsignatura)
     {
         return asignaturas.stream().anyMatch((asignatura) -> asignatura.getClaveAsignatura() == claveAsignatura);
@@ -80,17 +91,6 @@ public class Maestro extends Persona
     public ArrayList<Asignatura> getAsignaturas()
     {
         return asignaturas;
-    }
-
-    public Asignatura obtenerAsignatura(int claveAsignatura)
-    {
-
-        for (Asignatura asignatura : asignaturas)
-            if (asignatura.getClaveAsignatura() == claveAsignatura)
-                return asignatura;
-
-        return null;
-
     }
 
     @Override

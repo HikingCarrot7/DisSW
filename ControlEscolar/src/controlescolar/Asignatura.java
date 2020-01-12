@@ -39,14 +39,19 @@ public class Asignatura
 
     }
 
-    public boolean existeAlumnoMatriculado(int matricula)
-    {
-        return alumnos.stream().anyMatch((alumno) -> (alumno.getMatricula() == matricula));
-    }
-
     public void darBajaAlumno(Alumno alumno)
     {
-        alumnos.remove(alumno);
+
+        if (!existeAlumnoMatriculado(alumno.getMatricula()))
+            System.out.println("El alumno no está matriculado con esta asignatura.");
+        else
+            alumnos.remove(alumno);
+
+    }
+
+    public boolean existeAlumnoMatriculado(int matricula)
+    {
+        return alumnos.stream().anyMatch((alumno) -> alumno.getMatricula() == matricula);
     }
 
     public int getClaveAsignatura()

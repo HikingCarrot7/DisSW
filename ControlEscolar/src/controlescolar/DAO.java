@@ -146,6 +146,11 @@ public class DAO
 
     }
 
+    public void guardarRelaciones(ControlEscolar controlEscolar)
+    {
+
+    }
+
     public ArrayList<Relacion> obtenerRelaciones()
     {
 
@@ -175,7 +180,7 @@ public class DAO
 
     }
 
-    public void guardarRegistros()
+    public void guardarRegistros(ControlEscolar controlEscolar)
     {
 
     }

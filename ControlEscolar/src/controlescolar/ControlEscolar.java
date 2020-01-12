@@ -240,6 +240,7 @@ public class ControlEscolar
         {
             Maestro maestro = obtenerMaestro(claveMaestro);
             maestro.quitarAsignatura(claveAsignatura);
+            new DAO(DAO.RUTA_RELACIONES).guardarRelaciones(this);
 
         } else
             System.out.println("Alguno de los datos es incorrecto.");
@@ -258,6 +259,7 @@ public class ControlEscolar
             int indiceAsignatura = maestro.getAsignaturas().indexOf(asignatura);
 
             maestro.getAsignaturas().get(indiceAsignatura).matricularAlumno(alumno);
+            new DAO(DAO.RUTA_REGISTROS).guardarRegistros(this);
 
         } else
             System.out.println("Alguno de los datos es incorrecto.");
@@ -276,6 +278,7 @@ public class ControlEscolar
             int indiceAsignatura = maestro.getAsignaturas().indexOf(asignatura);
 
             maestro.getAsignaturas().get(indiceAsignatura).darBajaAlumno(alumno);
+            new DAO(DAO.RUTA_REGISTROS).guardarRegistros(this);
 
         } else
             System.out.println("Alguno de los datos es incorrecto.");

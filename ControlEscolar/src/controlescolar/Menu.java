@@ -65,81 +65,84 @@ public class Menu
 
         String opcion = in.nextLine();
 
-        switch (Integer.parseInt(opcion))
-        {
-            case 1:
-                controlEscolar.mostrarMaestros();
-                break;
-            case 2:
-                controlEscolar.mostrarAsignaturas();
-                break;
-            case 3:
-                controlEscolar.mostrarAlumnos();
-                break;
-            case 4:
-                controlEscolar.mostrarRelacionesAsignaturas();
-                break;
-            case 5:
-                controlEscolar.mostrarTodasRelaciones();
-                break;
-            case 6:
-                claveMaestro = getDatoEntero("Inserte la clave del maestro: ");
-                String nombreMaestro = getDatoString("Inserte el nombre del maestro: ");
-                String apellidoMaestro = getDatoString("Inserte el apellido del maestro: ");
+        if (opcion.matches("^[0-9]*$"))
+            switch (Integer.parseInt(opcion))
+            {
+                case 1:
+                    controlEscolar.mostrarMaestros();
+                    break;
+                case 2:
+                    controlEscolar.mostrarAsignaturas();
+                    break;
+                case 3:
+                    controlEscolar.mostrarAlumnos();
+                    break;
+                case 4:
+                    controlEscolar.mostrarRelacionesAsignaturas();
+                    break;
+                case 5:
+                    controlEscolar.mostrarTodasRelaciones();
+                    break;
+                case 6:
+                    claveMaestro = getDatoEntero("Inserte la clave del maestro: ");
+                    String nombreMaestro = getDatoString("Inserte el nombre del maestro: ");
+                    String apellidoMaestro = getDatoString("Inserte el apellido del maestro: ");
 
-                controlEscolar.anadirMaestro(claveMaestro, nombreMaestro, apellidoMaestro);
-                break;
-            case 7:
-                matricula = getDatoEntero("Inserte la matrícula del alumno: ");
-                nombreAlumno = getDatoString("Inserte el nombre del alumno: ");
-                apellidoAlumno = getDatoString("Inserte el apellido del alumno: ");
+                    controlEscolar.anadirMaestro(claveMaestro, nombreMaestro, apellidoMaestro);
+                    break;
+                case 7:
+                    matricula = getDatoEntero("Inserte la matrícula del alumno: ");
+                    nombreAlumno = getDatoString("Inserte el nombre del alumno: ");
+                    apellidoAlumno = getDatoString("Inserte el apellido del alumno: ");
 
-                controlEscolar.anadirAlumno(matricula, nombreAlumno, apellidoAlumno);
-                break;
-            case 8:
-                claveAsignatura = getDatoEntero("Inserte la clave de la asignatura: ");
-                nombreAsignatura = getDatoString("Inserte el nombre de la asignatura: ");
-                licenciatura = getDatoString("Inserte la licenciatura: ");
+                    controlEscolar.anadirAlumno(matricula, nombreAlumno, apellidoAlumno);
+                    break;
+                case 8:
+                    claveAsignatura = getDatoEntero("Inserte la clave de la asignatura: ");
+                    nombreAsignatura = getDatoString("Inserte el nombre de la asignatura: ");
+                    licenciatura = getDatoString("Inserte la licenciatura: ");
 
-                controlEscolar.anadirMaestro(claveAsignatura, nombreAsignatura, licenciatura);
-                break;
-            case 9:
-                claveMaestro = getDatoEntero("Inserte la clave del maestro: ");
-                claveAsignatura = getDatoEntero("Inserte la asignatura: ");
+                    controlEscolar.anadirMaestro(claveAsignatura, nombreAsignatura, licenciatura);
+                    break;
+                case 9:
+                    claveMaestro = getDatoEntero("Inserte la clave del maestro: ");
+                    claveAsignatura = getDatoEntero("Inserte la asignatura: ");
 
-                controlEscolar.relacionarAsignatura(claveMaestro, claveAsignatura);
-                break;
-            case 10:
-                claveMaestro = getDatoEntero("Inserte la clave del maestro: ");
-                claveAsignatura = getDatoEntero("Inserte la asignatura: ");
+                    controlEscolar.relacionarAsignatura(claveMaestro, claveAsignatura);
+                    break;
+                case 10:
+                    claveMaestro = getDatoEntero("Inserte la clave del maestro: ");
+                    claveAsignatura = getDatoEntero("Inserte la asignatura: ");
 
-                controlEscolar.relacionarAsignatura(claveMaestro, claveAsignatura);
-                break;
-            case 11:
-                claveMaestro = getDatoEntero("Inserte la clave del maestro: ");
-                controlEscolar.eliminarMaestro(claveMaestro);
-                break;
-            case 12:
-                claveMaestro = getDatoEntero("Inserte la clave del maestro: ");
-                claveAsignatura = getDatoEntero("Inserte la clave de la asignatura: ");
-                matricula = getDatoEntero("Inserte la matrícula del alumno: ");
+                    controlEscolar.relacionarAsignatura(claveMaestro, claveAsignatura);
+                    break;
+                case 11:
+                    claveMaestro = getDatoEntero("Inserte la clave del maestro: ");
+                    controlEscolar.eliminarMaestro(claveMaestro);
+                    break;
+                case 12:
+                    claveMaestro = getDatoEntero("Inserte la clave del maestro: ");
+                    claveAsignatura = getDatoEntero("Inserte la clave de la asignatura: ");
+                    matricula = getDatoEntero("Inserte la matrícula del alumno: ");
 
-                controlEscolar.darBajaAlumnoDeAsignatura(claveMaestro, claveAsignatura, matricula);
-                break;
-            case 13:
-                matricula = getDatoEntero("Inserte la matrícula del alumno: ");
+                    controlEscolar.darBajaAlumnoDeAsignatura(claveMaestro, claveAsignatura, matricula);
+                    break;
+                case 13:
+                    matricula = getDatoEntero("Inserte la matrícula del alumno: ");
 
-                controlEscolar.eliminarAlumno(matricula);
-                break;
-            case 14:
-                claveAsignatura = getDatoEntero("Inserte la clave de la asignatura: ");
+                    controlEscolar.eliminarAlumno(matricula);
+                    break;
+                case 14:
+                    claveAsignatura = getDatoEntero("Inserte la clave de la asignatura: ");
 
-                controlEscolar.eliminarAsignatura(claveAsignatura);
-                break;
-            default:
-                System.out.println("La opción no es correcta.");
+                    controlEscolar.eliminarAsignatura(claveAsignatura);
+                    break;
+                default:
+                    System.out.println("La opción no es correcta.");
 
-        }
+            }
+
+        in.nextLine();
 
     }
 
