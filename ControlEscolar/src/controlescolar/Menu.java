@@ -66,7 +66,7 @@ public class Menu
 
         String opcion = in.nextLine();
 
-        if (opcion.matches("^[0-9]*$"))
+        if (opcion.matches("^[0-9]+$"))
             switch (Integer.parseInt(opcion))
             {
                 case 1:

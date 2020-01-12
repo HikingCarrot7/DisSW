@@ -53,74 +53,52 @@ public class ControlEscolar
 
     public void mostrarMaestros()
     {
-
-        System.out.println("MAESTROS:\n");
-
-        System.out.printf("%-15s%s\n", "Clave", "Nombre");
-
-        for (Maestro maestro : maestros)
-            System.out.printf("%-15s%S\n", maestro.getClaveMaestro(), maestro.getNombreCompleto());
-
+        System.out.printf("MAESTROS:\n%-15s%s\n", "Clave", "Nombre");
+        maestros.forEach(maestro -> System.out.printf("%-15s%S\n", maestro.getClaveMaestro(), maestro.getNombreCompleto()));
     }
 
     public void mostrarAsignaturas()
     {
 
-        System.out.println("ASIGNATURAS:\n");
+        System.out.printf("ASIGNATURAS:\n%-15s%-40s%s\n", "Clave", "Nombre", "Licenciatura");
 
-        System.out.printf("%-15s%-40s%s\n", "Clave", "Nombre", "Licenciatura");
-
-        for (Asignatura asignatura : asignaturas)
-            System.out.printf("%-15s%-40S%S\n", asignatura.getClaveAsignatura(), asignatura.getNombreAsignatura(), asignatura.getLicenciatura());
+        asignaturas.forEach(asignatura -> System.out.printf("%-15s%-40S%S\n",
+                asignatura.getClaveAsignatura(),
+                asignatura.getNombreAsignatura(),
+                asignatura.getLicenciatura()));
 
     }
 
     public void mostrarAlumnos()
     {
-
-        System.out.println("ALUMNOS:\n");
-
-        System.out.printf("%-15s%s\n", "Matrícula", "Nombre");
-
-        for (Alumno alumno : alumnos)
-            System.out.printf("%-15s%S\n", alumno.getMatricula(), alumno.getNombreCompleto());
+        System.out.printf("ALUMNOS:\n%-15s%s\n", "Matrícula", "Nombre");
+        alumnos.forEach(alumno -> System.out.printf("%-15s%S\n", alumno.getMatricula(), alumno.getNombreCompleto()));
 
     }
 
     public void mostrarRelacionesDeMaestrosConAsignaturas()
     {
 
-        for (Maestro maestro : maestros)
+        maestros.forEach(maestro ->
         {
-
             System.out.println("\n" + maestro.getNombreCompleto().toUpperCase() + ":");
-
-            for (Asignatura asignatura : maestro.getAsignaturas())
-                System.out.printf("%-30s%S(%s)\n", " ", asignatura.getNombreAsignatura(), asignatura.getLicenciatura());
-
-        }
+            maestro.getAsignaturas().forEach(asignatura -> System.out.printf("%-30s%S(%s)\n", " ", asignatura.getNombreAsignatura(), asignatura.getLicenciatura()));
+        });
 
     }
 
     public void mostrarTodasLasRelaciones()
     {
 
-        for (Maestro maestro : maestros)
+        maestros.forEach(maestro ->
         {
-
             System.out.println("\n" + maestro.getNombreCompleto().toUpperCase() + ":");
-
-            for (Asignatura asignatura : maestro.getAsignaturas())
+            maestro.getAsignaturas().forEach(asignatura ->
             {
-
                 System.out.printf("%-30s%S(%s):\n\n", " ", asignatura.getNombreAsignatura(), asignatura.getLicenciatura());
-
-                for (Alumno alumno : asignatura.getAlumnos())
-                    System.out.printf("%-70s%S\n", " ", alumno.getNombreCompleto());
-
-            }
-
-        }
+                asignatura.getAlumnos().forEach(alumno -> System.out.printf("%-70s%S\n", " ", alumno.getNombreCompleto()));
+            });
+        });
 
     }
 
