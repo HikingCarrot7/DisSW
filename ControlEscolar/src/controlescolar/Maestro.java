@@ -125,7 +125,7 @@ public class Maestro extends Persona
     @Override
     public String toString()
     {
-        return getClaveMaestro() + "," + getNombre() + "," + getApellido();
+        return String.format("%s,%s,%s", getClaveMaestro(), getNombre(), getApellido());
     }
 
 }

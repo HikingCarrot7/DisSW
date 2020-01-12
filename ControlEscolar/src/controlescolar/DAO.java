@@ -7,6 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Formatter;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /**
@@ -71,6 +72,26 @@ public class DAO
 
     }
 
+    public void guardarMaestros(ArrayList<Maestro> maestros)
+    {
+
+        String datosMaestros = "";
+
+        datosMaestros = maestros.stream().map((maestro)
+                -> maestro + System.getProperty("line.separator")).reduce(datosMaestros, String::concat);
+
+        try (Formatter out = new Formatter(new FileWriter(file)))
+        {
+
+            out.format("%s", datosMaestros);
+
+        } catch (IOException ex)
+        {
+            System.out.println(ex.getMessage());
+        }
+
+    }
+
     public ArrayList<Alumno> obtenerAlumnos()
     {
 
@@ -98,6 +119,26 @@ public class DAO
         }
 
         return alumnos;
+
+    }
+
+    public void guardarAlumnos(ArrayList<Alumno> alumnos)
+    {
+
+        String datosAlumno = "";
+
+        datosAlumno = alumnos.stream().map((alumno)
+                -> alumno + System.getProperty("line.separator")).reduce(datosAlumno, String::concat);
+
+        try (Formatter out = new Formatter(new FileWriter(file)))
+        {
+
+            out.format("%s", datosAlumno);
+
+        } catch (IOException ex)
+        {
+            System.out.println(ex.getMessage());
+        }
 
     }
 
@@ -131,7 +172,27 @@ public class DAO
 
     }
 
-    public void guadarRelacion(Relacion relacion)
+    public void guardarAsignaturas(ArrayList<Asignatura> asignaturas)
+    {
+
+        String datosAsignaturas = "";
+
+        datosAsignaturas = asignaturas.stream().map((asignatura)
+                -> asignatura + System.getProperty("line.separator")).reduce(datosAsignaturas, String::concat);
+
+        try (Formatter out = new Formatter(new FileWriter(file)))
+        {
+
+            out.format("%s", datosAsignaturas);
+
+        } catch (IOException ex)
+        {
+            System.out.println(ex.getMessage());
+        }
+
+    }
+
+    public void guadarRelacionDeMaestroConAsignatura(Relacion relacion)
     {
 
         try (Formatter out = new Formatter(new FileWriter(file, true)))
@@ -146,15 +207,33 @@ public class DAO
 
     }
 
-    public void guardarRelaciones(ControlEscolar controlEscolar)
+    public void guardarRelacionesDeMaestrosConAsignaturas(ControlEscolar controlEscolar)
     {
+
+        String relacionesDeMaestrosConAsignaturas = "";
+
+        for (Maestro maestro : controlEscolar.getMaestros())
+            relacionesDeMaestrosConAsignaturas = maestro.getAsignaturas().stream().map((asignatura)
+                    -> maestro.getClaveMaestro() + ","
+                    + asignatura.getClaveAsignatura()
+                    + System.getProperty("line.separator")).reduce(relacionesDeMaestrosConAsignaturas, String::concat);
+
+        try (Formatter out = new Formatter(new FileWriter(file)))
+        {
+
+            out.format("%s", relacionesDeMaestrosConAsignaturas);
+
+        } catch (IOException ex)
+        {
+            System.out.println(ex.getMessage());
+        }
 
     }
 
-    public ArrayList<Relacion> obtenerRelaciones()
+    public ArrayList<Relacion> obtenerRelacionesDeMaestrosConAsignaturas()
     {
 
-        ArrayList<Relacion> relaciones = new ArrayList<>();
+        ArrayList<Relacion> relacionesDeMaestrosConAsignaturas = new ArrayList<>();
 
         try (Scanner in = new Scanner(new FileReader(file)))
         {
@@ -167,7 +246,7 @@ public class DAO
                 int claveMaestro = Integer.parseInt(relacion[0]);
                 int claveAsignatura = Integer.parseInt(relacion[1]);
 
-                relaciones.add(new Relacion(claveMaestro, claveAsignatura));
+                relacionesDeMaestrosConAsignaturas.add(new Relacion(claveMaestro, claveAsignatura));
 
             }
 
@@ -176,12 +255,32 @@ public class DAO
             System.out.println(ex.getMessage());
         }
 
-        return relaciones;
+        return relacionesDeMaestrosConAsignaturas;
 
     }
 
     public void guardarRegistros(ControlEscolar controlEscolar)
     {
+
+        String registros = "";
+
+        for (Maestro maestro : controlEscolar.getMaestros())
+            for (Asignatura asignatura : maestro.getAsignaturas())
+                registros = asignatura.getAlumnos().stream().map((alumno)
+                        -> maestro.getClaveMaestro() + ","
+                        + asignatura.getClaveAsignatura() + ","
+                        + alumno.getMatricula()
+                        + System.getProperty("line.separator")).reduce(registros, String::concat);
+
+        try (Formatter out = new Formatter(new FileWriter(file)))
+        {
+
+            out.format("%s", registros);
+
+        } catch (IOException ex)
+        {
+            System.out.println(ex.getMessage());
+        }
 
     }
 
@@ -192,8 +291,6 @@ public class DAO
 
         try (Scanner in = new Scanner(new FileReader(file)))
         {
-
-            in.nextLine();
 
             while (in.hasNext())
             {
@@ -208,9 +305,9 @@ public class DAO
 
             }
 
-        } catch (FileNotFoundException ex)
+        } catch (FileNotFoundException | NoSuchElementException ex)
         {
-            System.out.println(ex.getMessage());
+
         }
 
         return registros;

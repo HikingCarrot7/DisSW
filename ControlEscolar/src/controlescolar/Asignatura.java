@@ -125,8 +125,7 @@ public class Asignatura
     @Override
     public String toString()
     {
-        return getClaveAsignatura() + "," + getNombreAsignatura() + "," + getLicenciatura();
-
+        return String.format("%s,%s,%s", getClaveAsignatura(), getNombreAsignatura(), getLicenciatura());
     }
 
 }

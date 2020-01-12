@@ -52,4 +52,10 @@ public class Alumno extends Persona
         return this.matricula == other.matricula;
     }
 
+    @Override
+    public String toString()
+    {
+        return String.format("%s,%s,%s", getMatricula(), getNombre(), getApellido());
+    }
+
 }

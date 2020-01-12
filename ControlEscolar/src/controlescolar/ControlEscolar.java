@@ -27,31 +27,27 @@ public class ControlEscolar
     private void cargarDatos()
     {
 
-        ArrayList<Relacion> relaciones = new DAO(DAO.RUTA_RELACIONES).obtenerRelaciones();
+        ArrayList<Relacion> relacionesDeMaestrosConAsignaturas = new DAO(DAO.RUTA_RELACIONES).obtenerRelacionesDeMaestrosConAsignaturas();
         ArrayList<Registro> registros = new DAO(DAO.RUTA_REGISTROS).obtenerRegistros();
 
-        for (Relacion relacion : relaciones)
+        relacionesDeMaestrosConAsignaturas.forEach((relacion) ->
         {
-
             Maestro maestro = obtenerMaestro(relacion.getClaveMaestro());
             Asignatura asignatura = obtenerAsignatura(relacion.getClaveAsignatura());
             int indiceMaestro = maestros.indexOf(maestro);
 
             maestros.get(indiceMaestro).anadirAsignatura(asignatura);
+        });
 
-        }
-
-        for (Registro registro : registros)
+        registros.forEach((registro) ->
         {
-
             Maestro maestro = obtenerMaestro(registro.getClaveMaestro());
             Asignatura asignatura = maestro.obtenerAsignatura(registro.getClaveAsignatura());
             Alumno alumno = obtenerAlumno(registro.getMatricula());
             int indiceAsignatura = maestro.getAsignaturas().indexOf(asignatura);
 
             maestro.getAsignaturas().get(indiceAsignatura).matricularAlumno(alumno);
-
-        }
+        });
 
     }
 
@@ -91,7 +87,7 @@ public class ControlEscolar
 
     }
 
-    public void mostrarRelacionesAsignaturas()
+    public void mostrarRelacionesDeMaestrosConAsignaturas()
     {
 
         for (Maestro maestro : maestros)
@@ -106,7 +102,7 @@ public class ControlEscolar
 
     }
 
-    public void mostrarTodasRelaciones()
+    public void mostrarTodasLasRelaciones()
     {
 
         for (Maestro maestro : maestros)
@@ -117,7 +113,7 @@ public class ControlEscolar
             for (Asignatura asignatura : maestro.getAsignaturas())
             {
 
-                System.out.printf("%-30s%S:\n\n", " ", asignatura.getNombreAsignatura());
+                System.out.printf("%-30s%S(%s):\n\n", " ", asignatura.getNombreAsignatura(), asignatura.getLicenciatura());
 
                 for (Alumno alumno : asignatura.getAlumnos())
                     System.out.printf("%-70s%S\n", " ", alumno.getNombreCompleto());
@@ -132,8 +128,11 @@ public class ControlEscolar
     {
 
         if (!existeMaestro(claveMaestro))
+        {
             maestros.add(new Maestro(claveMaestro, nombre, apellido));
-        else
+            new DAO(DAO.RUTA_MAESTROS).guardarMaestros(getMaestros());
+
+        } else
             System.out.println("La clave ya existe, no se puede añadir al nuevo maestro.");
 
     }
@@ -145,6 +144,7 @@ public class ControlEscolar
             if (maestro.getClaveMaestro() == claveMaestro)
             {
                 maestros.remove(maestro);
+                new DAO(DAO.RUTA_MAESTROS).guardarMaestros(getMaestros());
                 return;
             }
 
@@ -154,10 +154,13 @@ public class ControlEscolar
 
     public void anadirAlumno(int matricula, String nombre, String apellido)
     {
-        if (!existeAlumno(matricula))
-            alumnos.add(new Alumno(matricula, nombre, apellido));
 
-        else
+        if (!existeAlumno(matricula))
+        {
+            alumnos.add(new Alumno(matricula, nombre, apellido));
+            new DAO(DAO.RUTA_ALUMNOS).guardarAlumnos(getAlumnos());
+
+        } else
             System.out.println("Ya existe un alumno con esa clave.");
 
     }
@@ -169,6 +172,7 @@ public class ControlEscolar
             if (alumno.getMatricula() == matricula)
             {
                 alumnos.remove(alumno);
+                new DAO(DAO.RUTA_ALUMNOS).guardarAlumnos(getAlumnos());
                 return;
             }
 
@@ -180,9 +184,11 @@ public class ControlEscolar
     {
 
         if (!existeAsignatura(claveAsignatura))
+        {
             asignaturas.add(new Asignatura(claveAsignatura, nombreAsignatura, licenciatura));
+            new DAO(DAO.RUTA_ASIGNATURAS).guardarAsignaturas(getAsignaturas());
 
-        else
+        } else
             System.out.println("Ya existe una asignatura con esa clave.");
 
     }
@@ -194,6 +200,7 @@ public class ControlEscolar
             if (asignatura.getClaveAsignatura() == claveAsignatura)
             {
                 asignaturas.remove(asignatura);
+                new DAO(DAO.RUTA_ASIGNATURAS).guardarAsignaturas(getAsignaturas());
                 return;
             }
 
@@ -201,7 +208,7 @@ public class ControlEscolar
 
     }
 
-    public void relacionarAsignatura(int claveMaestro, int claveAsignatura)
+    public void relacionarMaestroConAsignatura(int claveMaestro, int claveAsignatura)
     {
 
         if (existeMaestro(claveMaestro) && existeAsignatura(claveAsignatura))
@@ -216,38 +223,32 @@ public class ControlEscolar
             }
 
             Asignatura asignatura = obtenerAsignatura(claveAsignatura);
+            maestro.anadirAsignatura(asignatura);
 
-            boolean relacionSatisfactoria = maestro.anadirAsignatura(asignatura);
-
-            if (relacionSatisfactoria)
-            {
-                generarRelacion(claveMaestro, claveAsignatura);
-                System.out.println("El maestro " + maestro.getNombreCompleto()
-                        + " ahora imparte la asignatura " + asignatura.getDescripcion());
-
-            } else
-                System.out.println("El maestro ya está relacionado con la asignatura.");
+            guadarRelacionDeMaestroConAsignatura(claveMaestro, claveAsignatura);
+            System.out.println("El maestro " + maestro.getNombreCompleto()
+                    + " ahora imparte la asignatura " + asignatura.getDescripcion());
 
         } else
             System.out.println("Alguno de los datos es incorrecto.");
 
     }
 
-    public void quitarRelacionAsignatura(int claveAsignatura, int claveMaestro)
+    public void quitarRelacionDeMaestroConAsignatura(int claveAsignatura, int claveMaestro)
     {
 
         if (existeAsignatura(claveAsignatura) && existeMaestro(claveMaestro))
         {
             Maestro maestro = obtenerMaestro(claveMaestro);
             maestro.quitarAsignatura(claveAsignatura);
-            new DAO(DAO.RUTA_RELACIONES).guardarRelaciones(this);
+            new DAO(DAO.RUTA_RELACIONES).guardarRelacionesDeMaestrosConAsignaturas(this);
 
         } else
             System.out.println("Alguno de los datos es incorrecto.");
 
     }
 
-    public void relacionarAlumno(int claveMaestro, int claveAsignatura, int matricula)
+    public void relacionarAlumnoConAsignatura(int claveMaestro, int claveAsignatura, int matricula)
     {
 
         if (existeMaestro(claveMaestro) && existeAsignatura(claveAsignatura) && existeAlumno(matricula))
@@ -333,9 +334,9 @@ public class ControlEscolar
         return obtenerAlumno(matricula) != null;
     }
 
-    private void generarRelacion(int claveMaestro, int claveAsignatura)
+    private void guadarRelacionDeMaestroConAsignatura(int claveMaestro, int claveAsignatura)
     {
-        new DAO(DAO.RUTA_RELACIONES).guadarRelacion(new Relacion(claveMaestro, claveAsignatura));
+        new DAO(DAO.RUTA_RELACIONES).guadarRelacionDeMaestroConAsignatura(new Relacion(claveMaestro, claveAsignatura));
     }
 
     public ArrayList<Maestro> getMaestros()
