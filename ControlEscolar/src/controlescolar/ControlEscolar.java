@@ -82,7 +82,9 @@ public class ControlEscolar
         maestros.forEach(maestro ->
         {
             System.out.println("\n" + maestro.getNombreCompleto().toUpperCase() + ":");
-            maestro.getAsignaturas().forEach(asignatura -> System.out.printf("%-30s%S(%s)\n", " ", asignatura.getNombreAsignatura(), asignatura.getLicenciatura()));
+            maestro.getAsignaturas().forEach(asignatura -> System.out.printf("%-30s%S(%s)\n", " ",
+                    asignatura.getNombreAsignatura(),
+                    asignatura.getLicenciatura()));
         });
 
     }
@@ -108,7 +110,7 @@ public class ControlEscolar
         if (!existeMaestro(claveMaestro))
         {
             maestros.add(new Maestro(claveMaestro, nombre, apellido));
-            new DAO(DAO.RUTA_MAESTROS).guardarMaestros(getMaestros());
+            guardarMaestros();
 
         } else
             System.out.println("La clave ya existe, no se puede añadir al nuevo maestro.");
@@ -118,15 +120,10 @@ public class ControlEscolar
     public void eliminarMaestro(int claveMaestro)
     {
 
-        for (Maestro maestro : maestros)
-            if (maestro.getClaveMaestro() == claveMaestro)
-            {
-                maestros.remove(maestro);
-                new DAO(DAO.RUTA_MAESTROS).guardarMaestros(getMaestros());
-                return;
-            }
-
-        System.out.println("La clave del maestro no existe.");
+        if (maestros.removeIf(maestro -> maestro.getClaveMaestro() == claveMaestro))
+            guardarMaestros();
+        else
+            System.out.println("La clave del maestro no existe.");
 
     }
 
@@ -136,7 +133,7 @@ public class ControlEscolar
         if (!existeAlumno(matricula))
         {
             alumnos.add(new Alumno(matricula, nombre, apellido));
-            new DAO(DAO.RUTA_ALUMNOS).guardarAlumnos(getAlumnos());
+            guardarAlumnos();
 
         } else
             System.out.println("Ya existe un alumno con esa clave.");
@@ -146,15 +143,10 @@ public class ControlEscolar
     public void eliminarAlumno(int matricula)
     {
 
-        for (Alumno alumno : alumnos)
-            if (alumno.getMatricula() == matricula)
-            {
-                alumnos.remove(alumno);
-                new DAO(DAO.RUTA_ALUMNOS).guardarAlumnos(getAlumnos());
-                return;
-            }
-
-        System.out.println("La clave del alumno no existe.");
+        if (alumnos.removeIf(alumno -> alumno.getMatricula() == matricula))
+            guardarAlumnos();
+        else
+            System.out.println("La clave del alumno no existe.");
 
     }
 
@@ -164,7 +156,7 @@ public class ControlEscolar
         if (!existeAsignatura(claveAsignatura))
         {
             asignaturas.add(new Asignatura(claveAsignatura, nombreAsignatura, licenciatura));
-            new DAO(DAO.RUTA_ASIGNATURAS).guardarAsignaturas(getAsignaturas());
+            guardarAsignaturas();
 
         } else
             System.out.println("Ya existe una asignatura con esa clave.");
@@ -174,15 +166,10 @@ public class ControlEscolar
     public void eliminarAsignatura(int claveAsignatura)
     {
 
-        for (Asignatura asignatura : asignaturas)
-            if (asignatura.getClaveAsignatura() == claveAsignatura)
-            {
-                asignaturas.remove(asignatura);
-                new DAO(DAO.RUTA_ASIGNATURAS).guardarAsignaturas(getAsignaturas());
-                return;
-            }
-
-        System.out.println("La clave de la asignatura no existe.");
+        if (asignaturas.removeIf(asignatura -> asignatura.getClaveAsignatura() == claveAsignatura))
+            guardarAsignaturas();
+        else
+            System.out.println("La clave de la asignatura no existe.");
 
     }
 
@@ -219,7 +206,7 @@ public class ControlEscolar
         {
             Maestro maestro = obtenerMaestro(claveMaestro);
             maestro.quitarAsignatura(claveAsignatura);
-            new DAO(DAO.RUTA_RELACIONES).guardarRelacionesDeMaestrosConAsignaturas(this);
+            guardarRelacionesDeMaestrosConAsignaturas();
 
         } else
             System.out.println("Alguno de los datos es incorrecto.");
@@ -238,7 +225,7 @@ public class ControlEscolar
             int indiceAsignatura = maestro.getAsignaturas().indexOf(asignatura);
 
             maestro.getAsignaturas().get(indiceAsignatura).matricularAlumno(alumno);
-            new DAO(DAO.RUTA_REGISTROS).guardarRegistros(this);
+            guardarRegistros();
 
         } else
             System.out.println("Alguno de los datos es incorrecto.");
@@ -257,7 +244,7 @@ public class ControlEscolar
             int indiceAsignatura = maestro.getAsignaturas().indexOf(asignatura);
 
             maestro.getAsignaturas().get(indiceAsignatura).darBajaAlumno(alumno);
-            new DAO(DAO.RUTA_REGISTROS).guardarRegistros(this);
+            guardarRegistros();
 
         } else
             System.out.println("Alguno de los datos es incorrecto.");
@@ -315,6 +302,31 @@ public class ControlEscolar
     private void guadarRelacionDeMaestroConAsignatura(int claveMaestro, int claveAsignatura)
     {
         new DAO(DAO.RUTA_RELACIONES).guadarRelacionDeMaestroConAsignatura(new Relacion(claveMaestro, claveAsignatura));
+    }
+
+    private void guardarRelacionesDeMaestrosConAsignaturas()
+    {
+        new DAO(DAO.RUTA_RELACIONES).guardarRelacionesDeMaestrosConAsignaturas(this);
+    }
+
+    private void guardarMaestros()
+    {
+        new DAO(DAO.RUTA_MAESTROS).guardarMaestros(getMaestros());
+    }
+
+    private void guardarAlumnos()
+    {
+        new DAO(DAO.RUTA_ALUMNOS).guardarAlumnos(getAlumnos());
+    }
+
+    private void guardarAsignaturas()
+    {
+        new DAO(DAO.RUTA_ASIGNATURAS).guardarAsignaturas(getAsignaturas());
+    }
+
+    private void guardarRegistros()
+    {
+        new DAO(DAO.RUTA_REGISTROS).guardarRegistros(this);
     }
 
     public ArrayList<Maestro> getMaestros()

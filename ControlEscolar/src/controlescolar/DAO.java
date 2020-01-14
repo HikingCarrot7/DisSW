@@ -177,8 +177,9 @@ public class DAO
 
         String datosAsignaturas = "";
 
-        datosAsignaturas = asignaturas.stream().map((asignatura)
-                -> asignatura + System.getProperty("line.separator")).reduce(datosAsignaturas, String::concat);
+        datosAsignaturas = asignaturas.stream()
+                .map((asignatura) -> asignatura + System.getProperty("line.separator"))
+                .reduce(datosAsignaturas, String::concat);
 
         try (Formatter out = new Formatter(new FileWriter(file)))
         {
@@ -213,10 +214,11 @@ public class DAO
         String relacionesDeMaestrosConAsignaturas = "";
 
         for (Maestro maestro : controlEscolar.getMaestros())
-            relacionesDeMaestrosConAsignaturas = maestro.getAsignaturas().stream().map((asignatura)
-                    -> maestro.getClaveMaestro() + ","
+            relacionesDeMaestrosConAsignaturas = maestro.getAsignaturas().stream()
+                    .map((asignatura) -> maestro.getClaveMaestro() + ","
                     + asignatura.getClaveAsignatura()
-                    + System.getProperty("line.separator")).reduce(relacionesDeMaestrosConAsignaturas, String::concat);
+                    + System.getProperty("line.separator"))
+                    .reduce(relacionesDeMaestrosConAsignaturas, String::concat);
 
         try (Formatter out = new Formatter(new FileWriter(file)))
         {
@@ -266,11 +268,12 @@ public class DAO
 
         for (Maestro maestro : controlEscolar.getMaestros())
             for (Asignatura asignatura : maestro.getAsignaturas())
-                registros = asignatura.getAlumnos().stream().map((alumno)
-                        -> maestro.getClaveMaestro() + ","
+                registros = asignatura.getAlumnos().stream()
+                        .map((alumno) -> maestro.getClaveMaestro() + ","
                         + asignatura.getClaveAsignatura() + ","
                         + alumno.getMatricula()
-                        + System.getProperty("line.separator")).reduce(registros, String::concat);
+                        + System.getProperty("line.separator"))
+                        .reduce(registros, String::concat);
 
         try (Formatter out = new Formatter(new FileWriter(file)))
         {
