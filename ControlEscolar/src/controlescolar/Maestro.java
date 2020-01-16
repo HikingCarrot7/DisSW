@@ -70,7 +70,7 @@ public class Maestro extends Persona
 
     public boolean doyAsignatura(int claveAsignatura)
     {
-        return asignaturas.stream().anyMatch((asignatura) -> asignatura.getClaveAsignatura() == claveAsignatura);
+        return asignaturas.stream().anyMatch(asignatura -> asignatura.getClaveAsignatura() == claveAsignatura);
     }
 
     public void eliminarAsignatura(Asignatura asignatura)

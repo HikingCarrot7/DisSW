@@ -30,7 +30,8 @@ public class ControlEscolar
         ArrayList<Relacion> relacionesDeMaestrosConAsignaturas = new DAO(DAO.RUTA_RELACIONES).obtenerRelacionesDeMaestrosConAsignaturas();
         ArrayList<Registro> registros = new DAO(DAO.RUTA_REGISTROS).obtenerRegistros();
 
-        relacionesDeMaestrosConAsignaturas.forEach((relacion) ->
+        relacionesDeMaestrosConAsignaturas.forEach((relacion)
+                ->
         {
             Maestro maestro = obtenerMaestro(relacion.getClaveMaestro());
             Asignatura asignatura = obtenerAsignatura(relacion.getClaveAsignatura());
@@ -39,7 +40,8 @@ public class ControlEscolar
             maestros.get(indiceMaestro).anadirAsignatura(asignatura);
         });
 
-        registros.forEach((registro) ->
+        registros.forEach((registro)
+                ->
         {
             Maestro maestro = obtenerMaestro(registro.getClaveMaestro());
             Asignatura asignatura = maestro.obtenerAsignatura(registro.getClaveAsignatura());
@@ -79,7 +81,8 @@ public class ControlEscolar
     public void mostrarRelacionesDeMaestrosConAsignaturas()
     {
 
-        maestros.forEach(maestro ->
+        maestros.forEach(maestro
+                ->
         {
             System.out.println("\n" + maestro.getNombreCompleto().toUpperCase() + ":");
             maestro.getAsignaturas().forEach(asignatura -> System.out.printf("%-30s%S(%s)\n", " ",
@@ -92,10 +95,12 @@ public class ControlEscolar
     public void mostrarTodasLasRelaciones()
     {
 
-        maestros.forEach(maestro ->
+        maestros.forEach(maestro
+                ->
         {
             System.out.println("\n" + maestro.getNombreCompleto().toUpperCase() + ":");
-            maestro.getAsignaturas().forEach(asignatura ->
+            maestro.getAsignaturas().forEach(asignatura
+                    ->
             {
                 System.out.printf("%-30s%S(%s):\n\n", " ", asignatura.getNombreAsignatura(), asignatura.getLicenciatura());
                 asignatura.getAlumnos().forEach(alumno -> System.out.printf("%-70s%S\n", " ", alumno.getNombreCompleto()));
@@ -306,7 +311,7 @@ public class ControlEscolar
 
     private void guardarRelacionesDeMaestrosConAsignaturas()
     {
-        new DAO(DAO.RUTA_RELACIONES).guardarRelacionesDeMaestrosConAsignaturas(this);
+        new DAO(DAO.RUTA_RELACIONES).guardarRelacionesDeMaestrosConAsignaturas(getMaestros());
     }
 
     private void guardarMaestros()
@@ -326,7 +331,7 @@ public class ControlEscolar
 
     private void guardarRegistros()
     {
-        new DAO(DAO.RUTA_REGISTROS).guardarRegistros(this);
+        new DAO(DAO.RUTA_REGISTROS).guardarRegistros(getMaestros());
     }
 
     public ArrayList<Maestro> getMaestros()

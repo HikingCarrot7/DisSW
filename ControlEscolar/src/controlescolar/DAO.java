@@ -77,8 +77,10 @@ public class DAO
 
         String datosMaestros = "";
 
-        datosMaestros = maestros.stream().map((maestro)
-                -> maestro + System.getProperty("line.separator")).reduce(datosMaestros, String::concat);
+        datosMaestros = maestros
+                .stream()
+                .map((maestro) -> maestro + System.getProperty("line.separator"))
+                .reduce(datosMaestros, String::concat);
 
         try (Formatter out = new Formatter(new FileWriter(file)))
         {
@@ -127,8 +129,10 @@ public class DAO
 
         String datosAlumno = "";
 
-        datosAlumno = alumnos.stream().map((alumno)
-                -> alumno + System.getProperty("line.separator")).reduce(datosAlumno, String::concat);
+        datosAlumno = alumnos
+                .stream()
+                .map((alumno) -> alumno + System.getProperty("line.separator"))
+                .reduce(datosAlumno, String::concat);
 
         try (Formatter out = new Formatter(new FileWriter(file)))
         {
@@ -177,7 +181,8 @@ public class DAO
 
         String datosAsignaturas = "";
 
-        datosAsignaturas = asignaturas.stream()
+        datosAsignaturas = asignaturas
+                .stream()
                 .map((asignatura) -> asignatura + System.getProperty("line.separator"))
                 .reduce(datosAsignaturas, String::concat);
 
@@ -208,13 +213,14 @@ public class DAO
 
     }
 
-    public void guardarRelacionesDeMaestrosConAsignaturas(ControlEscolar controlEscolar)
+    public void guardarRelacionesDeMaestrosConAsignaturas(ArrayList<Maestro> maestros)
     {
 
         String relacionesDeMaestrosConAsignaturas = "";
 
-        for (Maestro maestro : controlEscolar.getMaestros())
-            relacionesDeMaestrosConAsignaturas = maestro.getAsignaturas().stream()
+        for (Maestro maestro : maestros)
+            relacionesDeMaestrosConAsignaturas = maestro.getAsignaturas()
+                    .stream()
                     .map((asignatura) -> maestro.getClaveMaestro() + ","
                     + asignatura.getClaveAsignatura()
                     + System.getProperty("line.separator"))
@@ -261,14 +267,15 @@ public class DAO
 
     }
 
-    public void guardarRegistros(ControlEscolar controlEscolar)
+    public void guardarRegistros(ArrayList<Maestro> maestros)
     {
 
         String registros = "";
 
-        for (Maestro maestro : controlEscolar.getMaestros())
+        for (Maestro maestro : maestros)
             for (Asignatura asignatura : maestro.getAsignaturas())
-                registros = asignatura.getAlumnos().stream()
+                registros = asignatura.getAlumnos()
+                        .stream()
                         .map((alumno) -> maestro.getClaveMaestro() + ","
                         + asignatura.getClaveAsignatura() + ","
                         + alumno.getMatricula()

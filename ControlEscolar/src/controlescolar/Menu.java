@@ -43,7 +43,7 @@ public class Menu
                 + "\n6.-Añadir a un maestro."
                 + "\n7.-Añadir a un alumno."
                 + "\n8.-Añadir una asignatura."
-                + "\n9.-Relacionar asignatura con maestro."
+                + "\n9.-Relacionar maestro con asignatura."
                 + "\n10.-Relacionar alumno con maestro y asignatura."
                 + "\n11.-Quitar relación entre asignatura y maestro."
                 + "\n12.-Dar de baja a un alumno de una asignatura."
