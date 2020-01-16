@@ -30,8 +30,7 @@ public class ControlEscolar
         ArrayList<Relacion> relacionesDeMaestrosConAsignaturas = new DAO(DAO.RUTA_RELACIONES).obtenerRelacionesDeMaestrosConAsignaturas();
         ArrayList<Registro> registros = new DAO(DAO.RUTA_REGISTROS).obtenerRegistros();
 
-        relacionesDeMaestrosConAsignaturas.forEach((relacion)
-                ->
+        relacionesDeMaestrosConAsignaturas.forEach((relacion) ->
         {
             Maestro maestro = obtenerMaestro(relacion.getClaveMaestro());
             Asignatura asignatura = obtenerAsignatura(relacion.getClaveAsignatura());
@@ -40,8 +39,7 @@ public class ControlEscolar
             maestros.get(indiceMaestro).anadirAsignatura(asignatura);
         });
 
-        registros.forEach((registro)
-                ->
+        registros.forEach((registro) ->
         {
             Maestro maestro = obtenerMaestro(registro.getClaveMaestro());
             Asignatura asignatura = maestro.obtenerAsignatura(registro.getClaveAsignatura());
@@ -81,8 +79,7 @@ public class ControlEscolar
     public void mostrarRelacionesDeMaestrosConAsignaturas()
     {
 
-        maestros.forEach(maestro
-                ->
+        maestros.forEach(maestro ->
         {
             System.out.println("\n" + maestro.getNombreCompleto().toUpperCase() + ":");
             maestro.getAsignaturas().forEach(asignatura -> System.out.printf("%-30s%S(%s)\n", " ",
@@ -95,8 +92,7 @@ public class ControlEscolar
     public void mostrarTodasLasRelaciones()
     {
 
-        maestros.forEach(maestro
-                ->
+        maestros.forEach(maestro ->
         {
             System.out.println("\n" + maestro.getNombreCompleto().toUpperCase() + ":");
             maestro.getAsignaturas().forEach(asignatura
