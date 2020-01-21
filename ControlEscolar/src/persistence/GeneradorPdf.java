@@ -6,6 +6,7 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import model.Alumno;
 import model.Asignatura;
@@ -28,22 +29,27 @@ public class GeneradorPdf
 
         try
         {
-            FileOutputStream file = new FileOutputStream(RUTA_REPORTES + maestro.getNombreCompleto().toUpperCase() + ".pdf");
-            Document doc = new Document();
-            PdfWriter.getInstance(doc, file);
-            doc.open();
+            try (FileOutputStream file = new FileOutputStream(RUTA_REPORTES + maestro.getNombreCompleto().toUpperCase() + ".pdf"))
+            {
+                Document doc = new Document();
+                PdfWriter.getInstance(doc, file);
+                doc.open();
 
-            ponerEncabezado(titulo, maestro, asignatura);
-            ponerAlumnos(alumnos, asignatura);
+                ponerEncabezado(titulo, maestro, asignatura);
+                ponerAlumnos(alumnos, asignatura);
 
-            doc.add(titulo);
-            doc.add(alumnos);
-            doc.close();
+                doc.add(titulo);
+                doc.add(alumnos);
+                doc.close();
+            }
 
         } catch (FileNotFoundException | DocumentException ex)
         {
             System.out.println(ex.getMessage());
 
+        } catch (IOException ex)
+        {
+            System.out.println(ex.getMessage());
         }
 
     }
@@ -67,7 +73,7 @@ public class GeneradorPdf
         for (int i = 0; i < alumnos.size(); i++)
         {
             Alumno alumno = alumnos.get(i);
-            listaAlumnos.add((i + 1) + ".-" + alumno.getNombreInvertido().toUpperCase());
+            listaAlumnos.add(String.format("%02d", (i + 1)) + ".-" + alumno.getNombreInvertido().toUpperCase());
             listaAlumnos.add(SATO_LINEA);
         }
 
