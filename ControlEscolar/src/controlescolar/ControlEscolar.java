@@ -1,5 +1,11 @@
 package controlescolar;
 
+import model.Registro;
+import model.Maestro;
+import model.Alumno;
+import model.Relacion;
+import model.Asignatura;
+import persistence.DAO;
 import java.util.ArrayList;
 
 /**

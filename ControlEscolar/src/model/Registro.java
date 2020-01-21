@@ -1,20 +1,21 @@
-package controlescolar;
+package model;
 
 /**
  *
  * @author HikingCarrot7
  */
-public class Relacion
+public class Registro
 {
 
     private int claveMaestro;
     private int claveAsignatura;
+    private int matricula;
 
-    public Relacion(int claveMaestro, int claveAsignatura)
+    public Registro(int claveMaestro, int claveAsignatura, int matricula)
     {
         this.claveMaestro = claveMaestro;
         this.claveAsignatura = claveAsignatura;
-
+        this.matricula = matricula;
     }
 
     public int getClaveMaestro()
@@ -37,10 +38,14 @@ public class Relacion
         this.claveAsignatura = claveAsignatura;
     }
 
-    @Override
-    public String toString()
+    public int getMatricula()
     {
-        return getClaveMaestro() + "," + getClaveAsignatura();
+        return matricula;
+    }
+
+    public void setMatricula(int matricula)
+    {
+        this.matricula = matricula;
     }
 
 }

@@ -1,4 +1,6 @@
-package controlescolar;
+package test;
+
+import controlescolar.Menu;
 
 /**
  *

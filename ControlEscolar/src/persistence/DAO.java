@@ -1,4 +1,4 @@
-package controlescolar;
+package persistence;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,6 +9,11 @@ import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+import model.Alumno;
+import model.Asignatura;
+import model.Maestro;
+import model.Registro;
+import model.Relacion;
 
 /**
  *
@@ -321,7 +326,6 @@ public class DAO
         }
 
         return registros;
-
     }
 
 }
