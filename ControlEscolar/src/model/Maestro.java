@@ -20,7 +20,6 @@ public class Maestro extends Persona
 
         asignaturas = new ArrayList<>();
         this.claveMaestro = clave;
-
     }
 
     public boolean anadirAsignatura(Asignatura asignatura)
@@ -39,7 +38,6 @@ public class Maestro extends Persona
                 asignatura.getLicenciatura()));
 
         return true;
-
     }
 
     public boolean quitarAsignatura(int claveAsignatura)
@@ -54,7 +52,6 @@ public class Maestro extends Persona
 
         System.out.println("Este maestro no imparte esta asignatura.");
         return false;
-
     }
 
     public Asignatura obtenerAsignatura(int claveAsignatura)
@@ -65,7 +62,6 @@ public class Maestro extends Persona
                 return asignatura;
 
         return null;
-
     }
 
     public boolean doyAsignatura(int claveAsignatura)
@@ -100,7 +96,6 @@ public class Maestro extends Persona
         hash = 23 * hash + this.claveMaestro;
         hash = 23 * hash + Objects.hashCode(this.asignaturas);
         return hash;
-
     }
 
     @Override
@@ -119,7 +114,6 @@ public class Maestro extends Persona
         final Maestro other = (Maestro) obj;
 
         return this.claveMaestro == other.claveMaestro;
-
     }
 
     @Override
