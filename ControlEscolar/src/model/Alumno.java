@@ -27,6 +27,11 @@ public class Alumno extends Persona
         this.matricula = matricula;
     }
 
+    public String getNombreInvertido()
+    {
+        return getApellido() + " " + getNombre();
+    }
+
     @Override
     public int hashCode()
     {

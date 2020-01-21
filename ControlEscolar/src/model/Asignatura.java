@@ -1,7 +1,9 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -20,14 +22,11 @@ public class Asignatura
         this.claveAsignatura = clave;
         this.nombreAsignatura = nombreAsignatura;
         this.licenciatura = licenciatura;
-
         alumnos = new ArrayList<>();
-
     }
 
     public boolean matricularAlumno(Alumno alumno)
     {
-
         if (existeAlumnoMatriculado(claveAsignatura))
         {
             System.out.println("Este alumno ya está matriculado a esta asignatura");
@@ -36,17 +35,35 @@ public class Asignatura
 
         alumnos.add(alumno);
         return true;
-
     }
 
     public void darBajaAlumno(Alumno alumno)
     {
-
         if (!existeAlumnoMatriculado(alumno.getMatricula()))
             System.out.println("El alumno no está matriculado con esta asignatura.");
         else
             alumnos.remove(alumno);
+    }
 
+    public String getIniciales()
+    {
+        String[] palabras = nombreAsignatura.split("\\s+");
+        String result = "";
+
+        for (String palabra : palabras)
+            if (palabra.length() > 3)
+                result += palabra.substring(0, 3).toUpperCase();
+
+        return result;
+    }
+
+    public ArrayList<Alumno> obtenerAlumnosOrdenados()
+    {
+        ArrayList<Alumno> alumnosOrdenados = new ArrayList<>(alumnos);
+
+        return (ArrayList<Alumno>) alumnosOrdenados.stream()
+                .sorted(Comparator.comparing(Alumno::getApellido))
+                .collect(Collectors.toList());
     }
 
     public boolean existeAlumnoMatriculado(int matricula)

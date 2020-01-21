@@ -11,6 +11,7 @@ import persistence.DAOAsignatura;
 import persistence.DAOMaestro;
 import persistence.DAORegistro;
 import persistence.DAORelacion;
+import persistence.GeneradorPdf;
 
 /**
  *
@@ -25,20 +26,17 @@ public class ControlEscolar
 
     public ControlEscolar()
     {
-
-        maestros = new DAOMaestro().obtenerEntidades();
-        asignaturas = new DAOAsignatura().obtenerEntidades();
-        alumnos = new DAOAlumno().obtenerEntidades();
+        maestros = new DAOMaestro().obtenerItems();
+        asignaturas = new DAOAsignatura().obtenerItems();
+        alumnos = new DAOAlumno().obtenerItems();
 
         cargarDatos();
-
     }
 
     private void cargarDatos()
     {
-
-        ArrayList<Relacion> relacionesDeMaestrosConAsignaturas = new DAORelacion().obtenerEntidades();
-        ArrayList<Registro> registros = new DAORegistro().obtenerEntidades();
+        ArrayList<Relacion> relacionesDeMaestrosConAsignaturas = new DAORelacion().obtenerItems();
+        ArrayList<Registro> registros = new DAORegistro().obtenerItems();
 
         relacionesDeMaestrosConAsignaturas.forEach((relacion) ->
         {
@@ -69,26 +67,22 @@ public class ControlEscolar
 
     public void mostrarAsignaturas()
     {
-
         System.out.printf("ASIGNATURAS:\n%-15s%-40s%s\n", "Clave", "Nombre", "Licenciatura");
 
         asignaturas.forEach(asignatura -> System.out.printf("%-15s%-40S%S\n",
                 asignatura.getClaveAsignatura(),
                 asignatura.getNombreAsignatura(),
                 asignatura.getLicenciatura()));
-
     }
 
     public void mostrarAlumnos()
     {
         System.out.printf("ALUMNOS:\n%-15s%s\n", "Matrícula", "Nombre");
         alumnos.forEach(alumno -> System.out.printf("%-15s%S\n", alumno.getMatricula(), alumno.getNombreCompleto()));
-
     }
 
     public void mostrarRelacionesDeMaestrosConAsignaturas()
     {
-
         maestros.forEach(maestro ->
         {
             System.out.println("\n" + maestro.getNombreCompleto().toUpperCase() + ":");
@@ -101,7 +95,6 @@ public class ControlEscolar
 
     public void mostrarTodasLasRelaciones()
     {
-
         maestros.forEach(maestro ->
         {
             System.out.println("\n" + maestro.getNombreCompleto().toUpperCase() + ":");
@@ -117,7 +110,6 @@ public class ControlEscolar
 
     public void anadirMaestro(int claveMaestro, String nombre, String apellido)
     {
-
         if (!existeMaestro(claveMaestro))
         {
             maestros.add(new Maestro(claveMaestro, nombre, apellido));
@@ -130,7 +122,6 @@ public class ControlEscolar
 
     public void eliminarMaestro(int claveMaestro)
     {
-
         if (maestros.removeIf(maestro -> maestro.getClaveMaestro() == claveMaestro))
             guardarMaestros();
         else
@@ -140,7 +131,6 @@ public class ControlEscolar
 
     public void anadirAlumno(int matricula, String nombre, String apellido)
     {
-
         if (!existeAlumno(matricula))
         {
             alumnos.add(new Alumno(matricula, nombre, apellido));
@@ -153,7 +143,6 @@ public class ControlEscolar
 
     public void eliminarAlumno(int matricula)
     {
-
         if (alumnos.removeIf(alumno -> alumno.getMatricula() == matricula))
             guardarAlumnos();
         else
@@ -163,7 +152,6 @@ public class ControlEscolar
 
     public void anadirAsignatura(int claveAsignatura, String nombreAsignatura, String licenciatura)
     {
-
         if (!existeAsignatura(claveAsignatura))
         {
             asignaturas.add(new Asignatura(claveAsignatura, nombreAsignatura, licenciatura));
@@ -176,7 +164,6 @@ public class ControlEscolar
 
     public void eliminarAsignatura(int claveAsignatura)
     {
-
         if (asignaturas.removeIf(asignatura -> asignatura.getClaveAsignatura() == claveAsignatura))
             guardarAsignaturas();
         else
@@ -186,7 +173,6 @@ public class ControlEscolar
 
     public void relacionarMaestroConAsignatura(int claveMaestro, int claveAsignatura)
     {
-
         if (existeMaestro(claveMaestro) && existeAsignatura(claveAsignatura))
         {
 
@@ -212,7 +198,6 @@ public class ControlEscolar
 
     public void quitarRelacionDeMaestroConAsignatura(int claveAsignatura, int claveMaestro)
     {
-
         if (existeAsignatura(claveAsignatura) && existeMaestro(claveMaestro))
         {
             Maestro maestro = obtenerMaestro(claveMaestro);
@@ -226,7 +211,6 @@ public class ControlEscolar
 
     public void relacionarAlumnoConAsignatura(int claveMaestro, int claveAsignatura, int matricula)
     {
-
         if (existeMaestro(claveMaestro) && existeAsignatura(claveAsignatura) && existeAlumno(matricula))
         {
 
@@ -245,10 +229,8 @@ public class ControlEscolar
 
     public void darBajaAlumnoDeAsignatura(int claveMaestro, int claveAsignatura, int matricula)
     {
-
         if (existeMaestro(claveMaestro) && existeAsignatura(claveAsignatura) && existeAlumno(matricula))
         {
-
             Maestro maestro = obtenerMaestro(claveMaestro);
             Asignatura asignatura = obtenerAsignatura(claveAsignatura);
             Alumno alumno = obtenerAlumno(matricula);
@@ -262,37 +244,47 @@ public class ControlEscolar
 
     }
 
+    public void generarReporte(int claveMaestro, int claveAsignatura)
+    {
+        if (existeMaestro(claveMaestro) && existeAsignatura(claveAsignatura))
+        {
+            Maestro maestro = obtenerMaestro(claveMaestro);
+
+            if (maestro.doyAsignatura(claveAsignatura))
+                new GeneradorPdf().generarPdf(obtenerMaestro(claveMaestro), maestro.obtenerAsignatura(claveAsignatura));
+            else
+                System.out.println("El maestro no imparte esta asignatura.");
+
+        } else
+            System.out.println("La clave del maestro o asignatura no existe.");
+
+    }
+
     public Asignatura obtenerAsignatura(int claveAsignatura)
     {
-
         for (Asignatura asignatura : asignaturas)
             if (asignatura.getClaveAsignatura() == claveAsignatura)
                 return asignatura;
 
         return null;
-
     }
 
     public Maestro obtenerMaestro(int claveMaestro)
     {
-
         for (Maestro maestro : maestros)
             if (maestro.getClaveMaestro() == claveMaestro)
                 return maestro;
 
         return null;
-
     }
 
     public Alumno obtenerAlumno(int matricula)
     {
-
         for (Alumno alumno : alumnos)
             if (alumno.getMatricula() == matricula)
                 return alumno;
 
         return null;
-
     }
 
     public boolean existeMaestro(int claveMaestro)
@@ -317,27 +309,27 @@ public class ControlEscolar
 
     private void guardarRelacionesDeMaestrosConAsignaturas()
     {
-        new DAORelacion().guardarEntidades(getMaestros());
+        new DAORelacion().guardarItems(getMaestros());
     }
 
     private void guardarMaestros()
     {
-        new DAOMaestro().guardarEntidades(getMaestros());
+        new DAOMaestro().guardarItems(getMaestros());
     }
 
     private void guardarAlumnos()
     {
-        new DAOAlumno().guardarEntidades(getAlumnos());
+        new DAOAlumno().guardarItems(getAlumnos());
     }
 
     private void guardarAsignaturas()
     {
-        new DAOAsignatura().guardarEntidades(getAsignaturas());
+        new DAOAsignatura().guardarItems(getAsignaturas());
     }
 
     private void guardarRegistros()
     {
-        new DAORegistro().guardarEntidades(getMaestros());
+        new DAORegistro().guardarItems(getMaestros());
     }
 
     public ArrayList<Maestro> getMaestros()

@@ -24,7 +24,7 @@ public class DAOAsignatura extends DAOGeneral<Asignatura>
     }
 
     @Override
-    public void guardarEntidades(ArrayList<Asignatura> asignaturas)
+    public void guardarItems(ArrayList<Asignatura> asignaturas)
     {
         String datosAsignaturas = "";
 
@@ -35,7 +35,6 @@ public class DAOAsignatura extends DAOGeneral<Asignatura>
 
         try (Formatter out = new Formatter(new FileWriter(file)))
         {
-
             out.format("%s", datosAsignaturas);
 
         } catch (IOException ex)
@@ -46,16 +45,14 @@ public class DAOAsignatura extends DAOGeneral<Asignatura>
     }
 
     @Override
-    public ArrayList<Asignatura> obtenerEntidades()
+    public ArrayList<Asignatura> obtenerItems()
     {
         ArrayList<Asignatura> asignaturas = new ArrayList<>();
 
         try (Scanner in = new Scanner(new FileReader(file)))
         {
-
             while (in.hasNext())
             {
-
                 String[] datos = in.nextLine().split(",");
 
                 int clave = Integer.parseInt(datos[0]);
@@ -63,7 +60,6 @@ public class DAOAsignatura extends DAOGeneral<Asignatura>
                 String licenciatura = datos[2];
 
                 asignaturas.add(new Asignatura(clave, nombreAsignatura, licenciatura));
-
             }
 
         } catch (FileNotFoundException ex)

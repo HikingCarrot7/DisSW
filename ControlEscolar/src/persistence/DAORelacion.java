@@ -25,22 +25,22 @@ public class DAORelacion extends DAOGeneral<Maestro>
     }
 
     @Override
-    public void guardarEntidades(ArrayList<Maestro> maestros)
+    public void guardarItems(ArrayList<Maestro> maestros)
     {
-        String relacionesDeMaestrosConAsignaturas = "";
+        String relaciones = "";
 
         for (Maestro maestro : maestros)
-            relacionesDeMaestrosConAsignaturas = maestro.getAsignaturas()
+            relaciones = maestro.getAsignaturas()
                     .stream()
                     .map((asignatura) -> maestro.getClaveMaestro() + ","
-                    + asignatura.getClaveAsignatura()
+                    + asignatura.getClaveAsignatura() + ","
+                    + asignatura.getIniciales()
                     + System.getProperty("line.separator"))
-                    .reduce(relacionesDeMaestrosConAsignaturas, String::concat);
+                    .reduce(relaciones, String::concat);
 
         try (Formatter out = new Formatter(new FileWriter(file)))
         {
-
-            out.format("%s", relacionesDeMaestrosConAsignaturas);
+            out.format("%s", relaciones);
 
         } catch (IOException ex)
         {
@@ -50,7 +50,7 @@ public class DAORelacion extends DAOGeneral<Maestro>
     }
 
     @Override
-    public ArrayList<Relacion> obtenerEntidades()
+    public ArrayList<Relacion> obtenerItems()
     {
         ArrayList<Relacion> relacionesDeMaestrosConAsignaturas = new ArrayList<>();
 
@@ -59,14 +59,12 @@ public class DAORelacion extends DAOGeneral<Maestro>
 
             while (in.hasNext())
             {
-
                 String[] relacion = in.nextLine().split(",");
 
                 int claveMaestro = Integer.parseInt(relacion[0]);
                 int claveAsignatura = Integer.parseInt(relacion[1]);
 
                 relacionesDeMaestrosConAsignaturas.add(new Relacion(claveMaestro, claveAsignatura));
-
             }
 
         } catch (FileNotFoundException ex)
@@ -79,10 +77,8 @@ public class DAORelacion extends DAOGeneral<Maestro>
 
     public void guadarRelacionDeMaestroConAsignatura(Relacion relacion)
     {
-
         try (Formatter out = new Formatter(new FileWriter(file, true)))
         {
-
             out.format("%s", relacion + System.getProperty("line.separator"));
 
         } catch (IOException ex)

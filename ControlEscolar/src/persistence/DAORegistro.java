@@ -27,7 +27,7 @@ public class DAORegistro extends DAOGeneral<Maestro>
     }
 
     @Override
-    public void guardarEntidades(ArrayList<Maestro> maestros)
+    public void guardarItems(ArrayList<Maestro> maestros)
     {
         String registros = "";
 
@@ -43,7 +43,6 @@ public class DAORegistro extends DAOGeneral<Maestro>
 
         try (Formatter out = new Formatter(new FileWriter(file)))
         {
-
             out.format("%s", registros);
 
         } catch (IOException ex)
@@ -54,16 +53,14 @@ public class DAORegistro extends DAOGeneral<Maestro>
     }
 
     @Override
-    public ArrayList<Registro> obtenerEntidades()
+    public ArrayList<Registro> obtenerItems()
     {
         ArrayList<Registro> registros = new ArrayList<>();
 
         try (Scanner in = new Scanner(new FileReader(file)))
         {
-
             while (in.hasNext())
             {
-
                 String[] registro = in.nextLine().split(",");
 
                 int claveMaestro = Integer.parseInt(registro[0]);
@@ -71,7 +68,6 @@ public class DAORegistro extends DAOGeneral<Maestro>
                 int maticula = Integer.parseInt(registro[2]);
 
                 registros.add(new Registro(claveMaestro, claveAsignatura, maticula));
-
             }
 
         } catch (FileNotFoundException | NoSuchElementException ex)

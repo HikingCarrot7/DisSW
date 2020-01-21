@@ -16,7 +16,6 @@ public abstract class DAOGeneral<E>
 
     public DAOGeneral(String ruta)
     {
-
         file = new File(ruta);
 
         if (!file.exists())
@@ -31,8 +30,8 @@ public abstract class DAOGeneral<E>
 
     }
 
-    public abstract void guardarEntidades(ArrayList<E> entidades);
+    public abstract void guardarItems(ArrayList<E> entidades);
 
-    public abstract ArrayList<?> obtenerEntidades();
+    public abstract ArrayList<?> obtenerItems();
 
 }

@@ -24,7 +24,7 @@ public class DAOAlumno extends DAOGeneral<Alumno>
     }
 
     @Override
-    public void guardarEntidades(ArrayList<Alumno> alumnos)
+    public void guardarItems(ArrayList<Alumno> alumnos)
     {
         String datosAlumno = "";
 
@@ -46,7 +46,7 @@ public class DAOAlumno extends DAOGeneral<Alumno>
     }
 
     @Override
-    public ArrayList<Alumno> obtenerEntidades()
+    public ArrayList<Alumno> obtenerItems()
     {
         ArrayList<Alumno> alumnos = new ArrayList<>();
 

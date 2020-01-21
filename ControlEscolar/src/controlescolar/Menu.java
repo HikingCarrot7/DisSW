@@ -16,18 +16,14 @@ public class Menu
     {
         controlEscolar = new ControlEscolar();
         in = new Scanner(System.in);
-
     }
 
     public void mostrarMenu()
     {
-
         while (true)
         {
-
             mostrarOpciones();
             eligirOpcion();
-
         }
 
     }
@@ -50,6 +46,7 @@ public class Menu
                 + "\n13.-Eliminar a un maestro."
                 + "\n14.-Eliminar a un alumno."
                 + "\n15.-Eliminar una asignatura."
+                + "\n16.-Generar reporte de un maestro."
                 + "\nOpción: ");
 
     }
@@ -144,13 +141,17 @@ public class Menu
                     claveAsignatura = getDatoEntero("Inserte la clave de la asignatura: ");
                     controlEscolar.eliminarAsignatura(claveAsignatura);
                     break;
+                case 16:
+                    claveMaestro = getDatoEntero("Inserte la clave del maestro: ");
+                    claveAsignatura = getDatoEntero("Inserte la clave de la asignatura: ");
+                    controlEscolar.generarReporte(claveMaestro, claveAsignatura);
+                    break;
                 default:
                     System.out.println("La opción no es correcta.");
 
             }
 
         in.nextLine();
-
     }
 
     public int getDatoEntero(String mensajeMostrar)
@@ -158,7 +159,6 @@ public class Menu
         System.out.println(mensajeMostrar);
         int dato = in.nextInt();
         return dato;
-
     }
 
     public String getDatoString(String mensajeMostrar)
@@ -167,7 +167,6 @@ public class Menu
         System.out.println(mensajeMostrar);
         String dato = in.nextLine();
         return dato;
-
     }
 
 }
