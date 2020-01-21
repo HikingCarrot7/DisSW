@@ -14,7 +14,6 @@ public class Relacion
     {
         this.claveMaestro = claveMaestro;
         this.claveAsignatura = claveAsignatura;
-
     }
 
     public int getClaveMaestro()

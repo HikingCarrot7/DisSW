@@ -12,9 +12,7 @@ public class Alumno extends Persona
     public Alumno(int matricula, String nombre, String apellido)
     {
         super(nombre, apellido);
-
         this.matricula = matricula;
-
     }
 
     public int getMatricula()

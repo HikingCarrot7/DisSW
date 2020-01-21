@@ -15,16 +15,13 @@ public class Maestro extends Persona
 
     public Maestro(int clave, String nombre, String apellido)
     {
-
         super(nombre, apellido);
-
         asignaturas = new ArrayList<>();
         this.claveMaestro = clave;
     }
 
     public boolean anadirAsignatura(Asignatura asignatura)
     {
-
         for (Asignatura asig : asignaturas)
             if (asig.equals(asignatura))
             {
@@ -42,7 +39,6 @@ public class Maestro extends Persona
 
     public boolean quitarAsignatura(int claveAsignatura)
     {
-
         for (Asignatura asignatura : asignaturas)
             if (asignatura.getClaveAsignatura() == claveAsignatura)
             {
@@ -56,7 +52,6 @@ public class Maestro extends Persona
 
     public Asignatura obtenerAsignatura(int claveAsignatura)
     {
-
         for (Asignatura asignatura : asignaturas)
             if (asignatura.getClaveAsignatura() == claveAsignatura)
                 return asignatura;
@@ -101,7 +96,6 @@ public class Maestro extends Persona
     @Override
     public boolean equals(Object obj)
     {
-
         if (this == obj)
             return true;
 

@@ -38,7 +38,8 @@ public class ControlEscolar
         ArrayList<Relacion> relacionesDeMaestrosConAsignaturas = new DAORelacion().obtenerItems();
         ArrayList<Registro> registros = new DAORegistro().obtenerItems();
 
-        relacionesDeMaestrosConAsignaturas.forEach((relacion) ->
+        relacionesDeMaestrosConAsignaturas.forEach((relacion)
+                ->
         {
             Maestro maestro = obtenerMaestro(relacion.getClaveMaestro());
             Asignatura asignatura = obtenerAsignatura(relacion.getClaveAsignatura());
@@ -49,7 +50,8 @@ public class ControlEscolar
 
         });
 
-        registros.forEach((registro) ->
+        registros.forEach((registro)
+                ->
         {
             Maestro maestro = obtenerMaestro(registro.getClaveMaestro());
             Asignatura asignatura = maestro.obtenerAsignatura(registro.getClaveAsignatura());
@@ -57,7 +59,7 @@ public class ControlEscolar
             int indiceAsignatura = maestro.getAsignaturas().indexOf(asignatura);
 
             if (!maestro.getAsignaturas().get(indiceAsignatura).existeAlumnoMatriculado(alumno.getMatricula()))
-                maestro.getAsignaturas().get(indiceAsignatura).matricularAlumno(alumno);
+                maestro.getAsignaturas().get(indiceAsignatura).anadirAlumno(alumno);
 
         });
 
@@ -87,7 +89,8 @@ public class ControlEscolar
 
     public void mostrarRelacionesDeMaestrosConAsignaturas()
     {
-        maestros.forEach(maestro ->
+        maestros.forEach(maestro
+                ->
         {
             System.out.println("\n" + maestro.getNombreCompleto().toUpperCase() + ":");
             maestro.getAsignaturas().forEach(asignatura -> System.out.printf("%-30s%S(%s)\n", " ",
@@ -99,10 +102,12 @@ public class ControlEscolar
 
     public void mostrarTodasLasRelaciones()
     {
-        maestros.forEach(maestro ->
+        maestros.forEach(maestro
+                ->
         {
             System.out.println("\n" + maestro.getNombreCompleto().toUpperCase() + ":");
-            maestro.getAsignaturas().forEach(asignatura ->
+            maestro.getAsignaturas().forEach(asignatura
+                    ->
             {
                 System.out.printf("%-30s%S(%s):\n\n", " ", asignatura.getNombreAsignatura(), asignatura.getLicenciatura());
                 asignatura.getAlumnos().forEach(alumno -> System.out.printf("%-70s%S\n", " ", alumno.getNombreCompleto()));
@@ -222,7 +227,7 @@ public class ControlEscolar
             Alumno alumno = obtenerAlumno(matricula);
             int indiceAsignatura = maestro.getAsignaturas().indexOf(asignatura);
 
-            maestro.getAsignaturas().get(indiceAsignatura).matricularAlumno(alumno);
+            maestro.getAsignaturas().get(indiceAsignatura).anadirAlumno(alumno);
             guardarRegistros();
 
         } else
@@ -239,7 +244,7 @@ public class ControlEscolar
             Alumno alumno = obtenerAlumno(matricula);
             int indiceAsignatura = maestro.getAsignaturas().indexOf(asignatura);
 
-            maestro.getAsignaturas().get(indiceAsignatura).darBajaAlumno(alumno);
+            maestro.getAsignaturas().get(indiceAsignatura).eliminarAlumno(alumno);
             guardarRegistros();
 
         } else

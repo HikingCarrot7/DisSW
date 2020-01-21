@@ -25,7 +25,7 @@ public class Asignatura
         alumnos = new ArrayList<>();
     }
 
-    public boolean matricularAlumno(Alumno alumno)
+    public boolean anadirAlumno(Alumno alumno)
     {
         if (existeAlumnoMatriculado(claveAsignatura))
         {
@@ -37,7 +37,7 @@ public class Asignatura
         return true;
     }
 
-    public void darBajaAlumno(Alumno alumno)
+    public void eliminarAlumno(Alumno alumno)
     {
         if (!existeAlumnoMatriculado(alumno.getMatricula()))
             System.out.println("El alumno no está matriculado con esta asignatura.");
