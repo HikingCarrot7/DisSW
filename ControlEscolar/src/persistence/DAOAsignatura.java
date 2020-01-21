@@ -13,14 +13,14 @@ import model.Asignatura;
  *
  * @author HikingC7
  */
-public class DAOAsignatura extends DAOGeneral<Asignatura, Asignatura>
+public class DAOAsignatura extends DAOGeneral<Asignatura>
 {
 
     public static final String RUTA_ASIGNATURAS = "datos/Asignaturas.csv";
 
-    public DAOAsignatura(String ruta)
+    public DAOAsignatura()
     {
-        super(ruta);
+        super(RUTA_ASIGNATURAS);
     }
 
     @Override

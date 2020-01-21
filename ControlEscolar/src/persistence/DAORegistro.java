@@ -16,12 +16,14 @@ import model.Registro;
  *
  * @author HikingC7
  */
-public class DAORegistro extends DAOGeneral<Maestro, Registro>
+public class DAORegistro extends DAOGeneral<Maestro>
 {
 
-    public DAORegistro(String ruta)
+    public static final String RUTA_REGISTROS = "datos/Registros.csv";
+
+    public DAORegistro()
     {
-        super(ruta);
+        super(RUTA_REGISTROS);
     }
 
     @Override

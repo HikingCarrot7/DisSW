@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * @author HikingC7
  * @param <E>
  */
-public abstract class DAOGeneral<E, R>
+public abstract class DAOGeneral<E>
 {
 
     protected File file;
@@ -33,6 +33,6 @@ public abstract class DAOGeneral<E, R>
 
     public abstract void guardarEntidades(ArrayList<E> entidades);
 
-    public abstract ArrayList<R> obtenerEntidades();
+    public abstract ArrayList<?> obtenerEntidades();
 
 }

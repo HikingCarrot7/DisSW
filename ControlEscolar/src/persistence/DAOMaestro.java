@@ -13,14 +13,14 @@ import model.Maestro;
  *
  * @author HikingC7
  */
-public class DAOMaestro extends DAOGeneral<Maestro, Maestro>
+public class DAOMaestro extends DAOGeneral<Maestro>
 {
 
     public static final String RUTA_MAESTROS = "datos/Maestros.csv";
 
-    public DAOMaestro(String ruta)
+    public DAOMaestro()
     {
-        super(ruta);
+        super(RUTA_MAESTROS);
     }
 
     @Override

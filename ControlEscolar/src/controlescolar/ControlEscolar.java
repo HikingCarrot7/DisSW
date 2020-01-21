@@ -1,12 +1,16 @@
 package controlescolar;
 
-import model.Registro;
-import model.Maestro;
-import model.Alumno;
-import model.Relacion;
-import model.Asignatura;
-import persistence.DAO;
 import java.util.ArrayList;
+import model.Alumno;
+import model.Asignatura;
+import model.Maestro;
+import model.Registro;
+import model.Relacion;
+import persistence.DAOAlumno;
+import persistence.DAOAsignatura;
+import persistence.DAOMaestro;
+import persistence.DAORegistro;
+import persistence.DAORelacion;
 
 /**
  *
@@ -22,9 +26,9 @@ public class ControlEscolar
     public ControlEscolar()
     {
 
-        maestros = new DAO(DAO.RUTA_MAESTROS).obtenerMaestros();
-        asignaturas = new DAO(DAO.RUTA_ASIGNATURAS).obtenerAsignaturas();
-        alumnos = new DAO(DAO.RUTA_ALUMNOS).obtenerAlumnos();
+        maestros = new DAOMaestro().obtenerEntidades();
+        asignaturas = new DAOAsignatura().obtenerEntidades();
+        alumnos = new DAOAlumno().obtenerEntidades();
 
         cargarDatos();
 
@@ -33,8 +37,8 @@ public class ControlEscolar
     private void cargarDatos()
     {
 
-        ArrayList<Relacion> relacionesDeMaestrosConAsignaturas = new DAO(DAO.RUTA_RELACIONES).obtenerRelacionesDeMaestrosConAsignaturas();
-        ArrayList<Registro> registros = new DAO(DAO.RUTA_REGISTROS).obtenerRegistros();
+        ArrayList<Relacion> relacionesDeMaestrosConAsignaturas = new DAORelacion().obtenerEntidades();
+        ArrayList<Registro> registros = new DAORegistro().obtenerEntidades();
 
         relacionesDeMaestrosConAsignaturas.forEach((relacion) ->
         {
@@ -308,32 +312,32 @@ public class ControlEscolar
 
     private void guadarRelacionDeMaestroConAsignatura(int claveMaestro, int claveAsignatura)
     {
-        new DAO(DAO.RUTA_RELACIONES).guadarRelacionDeMaestroConAsignatura(new Relacion(claveMaestro, claveAsignatura));
+        new DAORelacion().guadarRelacionDeMaestroConAsignatura(new Relacion(claveMaestro, claveAsignatura));
     }
 
     private void guardarRelacionesDeMaestrosConAsignaturas()
     {
-        new DAO(DAO.RUTA_RELACIONES).guardarRelacionesDeMaestrosConAsignaturas(getMaestros());
+        new DAORelacion().guardarEntidades(getMaestros());
     }
 
     private void guardarMaestros()
     {
-        new DAO(DAO.RUTA_MAESTROS).guardarMaestros(getMaestros());
+        new DAOMaestro().guardarEntidades(getMaestros());
     }
 
     private void guardarAlumnos()
     {
-        new DAO(DAO.RUTA_ALUMNOS).guardarAlumnos(getAlumnos());
+        new DAOAlumno().guardarEntidades(getAlumnos());
     }
 
     private void guardarAsignaturas()
     {
-        new DAO(DAO.RUTA_ASIGNATURAS).guardarAsignaturas(getAsignaturas());
+        new DAOAsignatura().guardarEntidades(getAsignaturas());
     }
 
     private void guardarRegistros()
     {
-        new DAO(DAO.RUTA_REGISTROS).guardarRegistros(getMaestros());
+        new DAORegistro().guardarEntidades(getMaestros());
     }
 
     public ArrayList<Maestro> getMaestros()
