@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
-import model.Asignatura;
+import model.Curso;
 import model.Maestro;
 import model.Registro;
 
@@ -32,11 +32,11 @@ public class DAORegistro extends DAOGeneral<Maestro>
         String registros = "";
 
         for (Maestro maestro : maestros)
-            for (Asignatura asignatura : maestro.getAsignaturas())
-                registros = asignatura.getAlumnos()
+            for (Curso curso : maestro.getCursos())
+                registros = curso.getAlumnos()
                         .stream()
                         .map((alumno) -> maestro.getClaveMaestro() + ","
-                        + asignatura.getClaveAsignatura() + ","
+                        + curso.getAsignatura().getClaveAsignatura() + ","
                         + alumno.getMatricula()
                         + System.getProperty("line.separator"))
                         .reduce(registros, String::concat);

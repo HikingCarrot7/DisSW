@@ -9,7 +9,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import model.Alumno;
-import model.Asignatura;
+import model.Curso;
 import model.Maestro;
 
 /**
@@ -22,21 +22,24 @@ public class GeneradorPdf
     public static final String RUTA_REPORTES = "reportes/";
     private final String SATO_LINEA = "\r\n";
 
-    public void generarPdf(Maestro maestro, Asignatura asignatura)
+    public void generarPdf(Maestro maestro, Curso curso)
     {
         Paragraph titulo = new Paragraph();
         Paragraph alumnos = new Paragraph();
+        String nombreArchivo = RUTA_REPORTES
+                + maestro.getNombreCompleto().toUpperCase() + "-"
+                + curso.getAsignatura().getNombreAsignatura() + ".pdf";
 
         try
         {
-            try (FileOutputStream file = new FileOutputStream(RUTA_REPORTES + maestro.getNombreCompleto().toUpperCase() + ".pdf"))
+            try (FileOutputStream file = new FileOutputStream(nombreArchivo))
             {
                 Document doc = new Document();
                 PdfWriter.getInstance(doc, file);
                 doc.open();
 
-                ponerEncabezado(titulo, maestro, asignatura);
-                ponerAlumnos(alumnos, asignatura);
+                ponerEncabezado(titulo, maestro, curso);
+                ponerAlumnos(alumnos, curso);
 
                 doc.add(titulo);
                 doc.add(alumnos);
@@ -54,21 +57,21 @@ public class GeneradorPdf
 
     }
 
-    private void ponerEncabezado(Paragraph titulo, Maestro maestro, Asignatura asignatura)
+    private void ponerEncabezado(Paragraph titulo, Maestro maestro, Curso curso)
     {
         titulo.setAlignment("center");
-        titulo.add(asignatura.getNombreAsignatura().toUpperCase());
+        titulo.add(curso.getAsignatura().getNombreAsignatura().toUpperCase());
         titulo.add(SATO_LINEA);
         titulo.add(maestro.getNombreCompleto().toUpperCase());
         titulo.add(SATO_LINEA);
     }
 
-    private void ponerAlumnos(Paragraph listaAlumnos, Asignatura asignatura)
+    private void ponerAlumnos(Paragraph listaAlumnos, Curso curso)
     {
         listaAlumnos.setAlignment("left");
         listaAlumnos.add(SATO_LINEA);
 
-        ArrayList<Alumno> alumnos = asignatura.obtenerAlumnosOrdenados();
+        ArrayList<Alumno> alumnos = curso.obtenerAlumnosOrdenados();
 
         for (int i = 0; i < alumnos.size(); i++)
         {

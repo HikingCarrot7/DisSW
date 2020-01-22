@@ -1,9 +1,6 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  *
@@ -13,7 +10,6 @@ public class Asignatura
 {
 
     private int claveAsignatura;
-    private ArrayList<Alumno> alumnos;
     private String nombreAsignatura;
     private String licenciatura;
 
@@ -22,53 +18,6 @@ public class Asignatura
         this.claveAsignatura = clave;
         this.nombreAsignatura = nombreAsignatura;
         this.licenciatura = licenciatura;
-        alumnos = new ArrayList<>();
-    }
-
-    public boolean matricularAlumno(Alumno alumno)
-    {
-        if (existeAlumnoMatriculado(claveAsignatura))
-        {
-            System.out.println("Este alumno ya está matriculado a esta asignatura");
-            return false;
-        }
-
-        alumnos.add(alumno);
-        return true;
-    }
-
-    public void darBajaAlumno(Alumno alumno)
-    {
-        if (!existeAlumnoMatriculado(alumno.getMatricula()))
-            System.out.println("El alumno no está matriculado con esta asignatura.");
-        else
-            alumnos.remove(alumno);
-    }
-
-    public String getIniciales()
-    {
-        String[] palabras = nombreAsignatura.split("\\s+");
-        String result = "";
-
-        for (String palabra : palabras)
-            if (palabra.length() > 3)
-                result += palabra.substring(0, 3).toUpperCase();
-
-        return result;
-    }
-
-    public ArrayList<Alumno> obtenerAlumnosOrdenados()
-    {
-        ArrayList<Alumno> alumnosOrdenados = new ArrayList<>(alumnos);
-
-        return (ArrayList<Alumno>) alumnosOrdenados.stream()
-                .sorted(Comparator.comparing(Alumno::getApellido))
-                .collect(Collectors.toList());
-    }
-
-    public boolean existeAlumnoMatriculado(int matricula)
-    {
-        return alumnos.stream().anyMatch((alumno) -> alumno.getMatricula() == matricula);
     }
 
     public int getClaveAsignatura()
@@ -101,11 +50,6 @@ public class Asignatura
         this.licenciatura = licenciatura;
     }
 
-    public ArrayList<Alumno> getAlumnos()
-    {
-        return alumnos;
-    }
-
     public String getDescripcion()
     {
         return getNombreAsignatura() + " - " + getLicenciatura();
@@ -116,7 +60,6 @@ public class Asignatura
     {
         int hash = 5;
         hash = 67 * hash + this.claveAsignatura;
-        hash = 67 * hash + Objects.hashCode(this.alumnos);
         hash = 67 * hash + Objects.hashCode(this.nombreAsignatura);
         hash = 67 * hash + Objects.hashCode(this.licenciatura);
         return hash;

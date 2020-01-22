@@ -106,7 +106,7 @@ public class Menu
                     claveMaestro = getDatoEntero("Inserte la clave del maestro: ");
                     claveAsignatura = getDatoEntero("Inserte la clave de la asignatura: ");
 
-                    controlEscolar.relacionarMaestroConAsignatura(claveMaestro, claveAsignatura);
+                    controlEscolar.relacionarMaestroConCurso(claveMaestro, claveAsignatura);
                     break;
 
                 case 10:
@@ -114,13 +114,13 @@ public class Menu
                     claveAsignatura = getDatoEntero("Inserte la clave de la asignatura: ");
                     matricula = getDatoEntero("Inserte la matrícula del alumno: ");
 
-                    controlEscolar.relacionarAlumnoConAsignatura(claveMaestro, claveAsignatura, matricula);
+                    controlEscolar.relacionarAlumnoConCurso(claveMaestro, claveAsignatura, matricula);
                     break;
                 case 11:
                     claveMaestro = getDatoEntero("Inserte la clave del maestro: ");
                     claveAsignatura = getDatoEntero("Inserte la clave de la asignatura: ");
 
-                    controlEscolar.quitarRelacionDeMaestroConAsignatura(claveAsignatura, claveMaestro);
+                    controlEscolar.quitarRelacionDeMaestroConCurso(claveAsignatura, claveMaestro);
                     break;
                 case 12:
                     claveMaestro = getDatoEntero("Inserte la clave del maestro: ");

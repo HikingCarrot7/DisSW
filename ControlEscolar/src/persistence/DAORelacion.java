@@ -30,11 +30,12 @@ public class DAORelacion extends DAOGeneral<Maestro>
         String relaciones = "";
 
         for (Maestro maestro : maestros)
-            relaciones = maestro.getAsignaturas()
+            relaciones = maestro
+                    .getCursos()
                     .stream()
-                    .map((asignatura) -> maestro.getClaveMaestro() + ","
-                    + asignatura.getClaveAsignatura() + ","
-                    + asignatura.getIniciales()
+                    .map((curso) -> maestro.getClaveMaestro() + ","
+                    + curso.getAsignatura().getClaveAsignatura() + ","
+                    + curso.getInicialesCurso()
                     + System.getProperty("line.separator"))
                     .reduce(relaciones, String::concat);
 
