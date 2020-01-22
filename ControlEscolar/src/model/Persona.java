@@ -4,7 +4,7 @@ package model;
  *
  * @author HikingCarrot7
  */
-public class Persona
+public abstract class Persona
 {
 
     String nombre;

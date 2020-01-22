@@ -28,7 +28,7 @@ public class GeneradorPdf
         Paragraph alumnos = new Paragraph();
         String nombreArchivo = RUTA_REPORTES
                 + maestro.getNombreCompleto().toUpperCase() + "-"
-                + curso.getAsignatura().getNombreAsignatura() + ".pdf";
+                + curso.getAsignatura().getNombreAsignatura().toUpperCase() + ".pdf";
 
         try
         {

@@ -265,7 +265,10 @@ public class ControlEscolar
 
     public ArrayList<Curso> obtenerCursosMatriculadosConAlumno(int matricula)
     {
-        return (ArrayList<Curso>) maestros.stream().map(Maestro::getCursos).flatMap(Collection::stream)
+        return (ArrayList<Curso>) maestros
+                .stream()
+                .map(Maestro::getCursos)
+                .flatMap(Collection::stream)
                 .filter(curso -> curso.existeAlumnoMatriculado(matricula)).collect(Collectors.toList());
     }
 
