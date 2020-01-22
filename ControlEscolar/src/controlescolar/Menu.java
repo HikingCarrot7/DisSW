@@ -31,6 +31,8 @@ public class Menu
     private void mostrarOpciones()
     {
 
+        controlEscolar.mostrarInformacionAlumno(15001169);
+
         System.out.println("\n\n1.-Consultar maestros."
                 + "\n2.-Consultar asignaturas."
                 + "\n3.-Consultar alumnos."
@@ -127,7 +129,7 @@ public class Menu
                     claveAsignatura = getDatoEntero("Inserte la clave de la asignatura: ");
                     matricula = getDatoEntero("Inserte la matrícula del alumno: ");
 
-                    controlEscolar.darBajaAlumnoDeAsignatura(claveMaestro, claveAsignatura, matricula);
+                    controlEscolar.darBajaAlumnoDeCurso(claveMaestro, claveAsignatura, matricula);
                     break;
                 case 13:
                     claveMaestro = getDatoEntero("Inserte la clave del maestro: ");

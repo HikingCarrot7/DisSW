@@ -11,32 +11,32 @@ public class Maestro extends Persona
 {
 
     private int claveMaestro;
-    private ArrayList<Curso> cursosImparto;
+    private ArrayList<Curso> cursosImpartidos;
 
     public Maestro(int clave, String nombre, String apellido)
     {
         super(nombre, apellido);
         this.claveMaestro = clave;
-        cursosImparto = new ArrayList<>();
+        cursosImpartidos = new ArrayList<>();
     }
 
-    public boolean anadirCurso(Asignatura asignatura)
+    public boolean anadeCurso(Asignatura asignatura)
     {
-        for (Curso curso : cursosImparto)
+        for (Curso curso : cursosImpartidos)
             if (curso.getAsignatura().getClaveAsignatura() == asignatura.getClaveAsignatura())
             {
                 System.out.println("Este curso ya está añadido.");
                 return false;
             }
 
-        cursosImparto.add(new Curso(new Asignatura(asignatura.getClaveAsignatura(), asignatura.getNombreAsignatura(),
+        cursosImpartidos.add(new Curso(this, new Asignatura(asignatura.getClaveAsignatura(), asignatura.getNombreAsignatura(),
                 asignatura.getLicenciatura())));
         return true;
     }
 
-    public boolean quitarCurso(int claveAsignatura)
+    public boolean quitaCurso(int claveAsignatura)
     {
-        for (Curso curso : cursosImparto)
+        for (Curso curso : cursosImpartidos)
             if (curso.getAsignatura().getClaveAsignatura() == claveAsignatura)
             {
                 eliminarCurso(curso);
@@ -47,28 +47,28 @@ public class Maestro extends Persona
         return false;
     }
 
-    public Asignatura obtenerAsignaturaDeCurso(int claveAsignatura)
+    public Asignatura dameAsignaturaDelCurso(int claveAsignatura)
     {
-        for (Curso curso : cursosImparto)
+        for (Curso curso : cursosImpartidos)
             if (curso.getAsignatura().getClaveAsignatura() == claveAsignatura)
                 return curso.getAsignatura();
 
         return null;
     }
 
-    public Curso obtenerCurso(int claveAsignatura)
+    public Curso dameCurso(int claveAsignatura)
     {
-        for (Curso curso : cursosImparto)
+        for (Curso curso : cursosImpartidos)
             if (curso.getAsignatura().getClaveAsignatura() == claveAsignatura)
                 return curso;
 
         return null;
     }
 
-    public int indiceCurso(int claveAsignatura)
+    public int dameIndiceDelCurso(int claveAsignatura)
     {
-        for (int i = 0; i < cursosImparto.size(); i++)
-            if (cursosImparto.get(i).getAsignatura().getClaveAsignatura() == claveAsignatura)
+        for (int i = 0; i < cursosImpartidos.size(); i++)
+            if (cursosImpartidos.get(i).getAsignatura().getClaveAsignatura() == claveAsignatura)
                 return i;
 
         return -1;
@@ -76,12 +76,12 @@ public class Maestro extends Persona
 
     public boolean doyCurso(int claveAsignatura)
     {
-        return cursosImparto.stream().anyMatch(curso -> curso.getAsignatura().getClaveAsignatura() == claveAsignatura);
+        return cursosImpartidos.stream().anyMatch(curso -> curso.getAsignatura().getClaveAsignatura() == claveAsignatura);
     }
 
     public void eliminarCurso(Curso curso)
     {
-        cursosImparto.remove(curso);
+        cursosImpartidos.remove(curso);
     }
 
     public int getClaveMaestro()
@@ -96,7 +96,7 @@ public class Maestro extends Persona
 
     public ArrayList<Curso> getCursos()
     {
-        return cursosImparto;
+        return cursosImpartidos;
     }
 
     @Override
@@ -104,7 +104,7 @@ public class Maestro extends Persona
     {
         int hash = 7;
         hash = 23 * hash + this.claveMaestro;
-        hash = 23 * hash + Objects.hashCode(this.cursosImparto);
+        hash = 23 * hash + Objects.hashCode(this.cursosImpartidos);
         return hash;
     }
 

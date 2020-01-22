@@ -50,4 +50,11 @@ public class Sesion
         this.finalClase = finalClase;
     }
 
+    public static boolean chocanSesiones(Sesion sesion1, Sesion sesion2)
+    {
+        return sesion1.getDia() != sesion2.getDia()
+                && sesion1.getInicioClase().before(sesion2.getFinalClase())
+                && sesion1.getFinalClase().after(sesion2.getInicioClase());
+    }
+
 }
