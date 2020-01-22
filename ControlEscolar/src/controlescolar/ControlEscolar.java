@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import model.Alumno;
 import model.Asignatura;
 import model.Curso;
+import model.Horario;
 import model.Maestro;
 import model.Registro;
 import model.Relacion;
@@ -270,6 +271,12 @@ public class ControlEscolar
                 .map(Maestro::getCursos)
                 .flatMap(Collection::stream)
                 .filter(curso -> curso.existeAlumnoMatriculado(matricula)).collect(Collectors.toList());
+    }
+
+    public boolean chocaCursoConCursosAlumno(Curso nuevoCurso, int matricula)
+    {
+        ArrayList<Curso> cursos = obtenerCursosMatriculadosConAlumno(matricula);
+        return cursos.stream().anyMatch(curso -> Horario.chocanHorarios(curso, nuevoCurso));
     }
 
     public Asignatura obtenerAsignatura(int claveAsignatura)

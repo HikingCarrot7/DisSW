@@ -25,7 +25,7 @@ public class Maestro extends Persona
         for (Curso curso : cursosImparto)
             if (curso.getAsignatura().getClaveAsignatura() == asignatura.getClaveAsignatura())
             {
-                System.out.println("Está asignatura ya está añadida.");
+                System.out.println("Este curso ya está añadido.");
                 return false;
             }
 
@@ -43,7 +43,7 @@ public class Maestro extends Persona
                 return true;
             }
 
-        System.out.println("Este maestro no imparte esta asignatura.");
+        System.out.println("Este maestro no imparte este curso.");
         return false;
     }
 

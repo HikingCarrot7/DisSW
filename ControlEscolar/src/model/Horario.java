@@ -26,4 +26,9 @@ public class Horario
         this.sesiones = sesiones;
     }
 
+    public static boolean chocanHorarios(Curso curso1, Curso curso2)
+    {
+        return false;
+    }
+
 }
