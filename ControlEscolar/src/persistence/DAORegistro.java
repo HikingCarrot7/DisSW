@@ -33,7 +33,7 @@ public class DAORegistro extends DAOGeneral<Maestro>
 
         for (Maestro maestro : maestros)
             for (Curso curso : maestro.getCursos())
-                registros = curso.getAlumnos()
+                registros = curso.getAlumnosInscritos()
                         .stream()
                         .map((alumno) -> maestro.getClaveMaestro() + ","
                         + curso.getAsignatura().getClaveAsignatura() + ","

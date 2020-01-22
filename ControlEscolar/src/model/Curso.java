@@ -14,11 +14,13 @@ public class Curso
 
     private Horario horario;
     private Asignatura asignatura;
+    private Maestro maestro;
     private ArrayList<Alumno> alumnosInscritos;
 
-    public Curso(Asignatura asignatura)
+    public Curso(Maestro maestro, Asignatura asignatura)
     {
         this.asignatura = asignatura;
+        this.maestro = maestro;
         horario = new Horario();
         alumnosInscritos = new ArrayList<>();
     }
@@ -71,6 +73,16 @@ public class Curso
         return alumnosInscritos.stream().anyMatch(alumno -> alumno.getMatricula() == matricula);
     }
 
+    public Maestro getMaestro()
+    {
+        return maestro;
+    }
+
+    public void setMaestro(Maestro maestro)
+    {
+        this.maestro = maestro;
+    }
+
     public Horario getHorario()
     {
         return horario;
@@ -91,7 +103,7 @@ public class Curso
         this.asignatura = asignatura;
     }
 
-    public ArrayList<Alumno> getAlumnos()
+    public ArrayList<Alumno> getAlumnosInscritos()
     {
         return alumnosInscritos;
     }
@@ -124,6 +136,14 @@ public class Curso
         final Curso other = (Curso) obj;
 
         return asignatura.getClaveAsignatura() == other.getAsignatura().getClaveAsignatura();
+    }
+
+    @Override
+    public String toString()
+    {
+        return String.format("%-45S%-15S%S", getAsignatura().getNombreAsignatura(),
+                getAsignatura().getLicenciatura(),
+                getMaestro().getNombreCompleto());
     }
 
 }

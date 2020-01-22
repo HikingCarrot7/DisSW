@@ -41,4 +41,9 @@ public abstract class Persona
         return getNombre() + " " + getApellido();
     }
 
+    public String getNombreInvertido()
+    {
+        return getApellido() + " " + getNombre();
+    }
+
 }
