@@ -3,12 +3,10 @@ package model;
 import java.util.Objects;
 
 /**
- *
  * @author HikingCarrot7
  */
 public class Asignatura
 {
-
     private int claveAsignatura;
     private String nombreAsignatura;
     private String licenciatura;
@@ -70,15 +68,11 @@ public class Asignatura
     {
         if (this == obj)
             return true;
-
         if (obj == null)
             return false;
-
         if (getClass() != obj.getClass())
             return false;
-
         final Asignatura other = (Asignatura) obj;
-
         return this.claveAsignatura == other.claveAsignatura;
     }
 
@@ -87,5 +81,4 @@ public class Asignatura
     {
         return String.format("%s,%s,%s", getClaveAsignatura(), getNombreAsignatura(), getLicenciatura());
     }
-
 }

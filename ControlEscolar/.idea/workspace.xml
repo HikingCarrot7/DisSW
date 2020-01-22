@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="c89822b6-e6a1-443a-b101-e0b633598f34" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/src/controlescolar/ControlEscolar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controlescolar/ControlEscolar.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controlescolar/Menu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controlescolar/Menu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/Alumno.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Alumno.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/Asignatura.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Asignatura.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/Curso.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Curso.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/Dia.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Dia.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/Horario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Horario.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/Maestro.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Maestro.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/Persona.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Persona.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/Registro.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Registro.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/Relacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Relacion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/Sesion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Sesion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/persistence/DAOAlumno.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/persistence/DAOAlumno.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/persistence/DAOAsignatura.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/persistence/DAOAsignatura.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/persistence/DAOGeneral.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/persistence/DAOGeneral.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/persistence/DAOMaestro.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/persistence/DAOMaestro.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/persistence/DAORegistro.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/persistence/DAORegistro.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/persistence/DAORelacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/persistence/DAORelacion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/persistence/GeneradorPdf.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/persistence/GeneradorPdf.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/PruebaControlEscolar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/PruebaControlEscolar.java" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DefaultGradleProjectSettings">
+    <option name="testRunner" value="GRADLE" />
+    <option name="delegatedBuild" value="true" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/src/model/Alumno.java" />
+        <option value="$PROJECT_DIR$/src/persistence/DAORegistro.java" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectConfigurationFiles">
+    <option name="files">
+      <list>
+        <option value="$PROJECT_DIR$/.idea/ControlEscolar.iml" />
+        <option value="$PROJECT_DIR$/.idea/vcs.xml" />
+        <option value="$PROJECT_DIR$/.idea/modules.xml" />
+        <option value="$PROJECT_DIR$/.idea/codeStyles/Project.xml" />
+        <option value="$PROJECT_DIR$/.idea/saveactions_settings.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="260" />
+    <option name="y" value="20" />
+    <option name="width" value="1400" />
+    <option name="height" value="1000" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="PackagesPane" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="ControlEscolar" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ControlEscolar" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ControlEscolar" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ControlEscolar" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ControlEscolar" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ControlEscolar" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="controlescolar" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ControlEscolar" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ControlEscolar" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="model" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ControlEscolar" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ControlEscolar" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="persistence" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="settings.saveactions" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c89822b6-e6a1-443a-b101-e0b633598f34" name="Default Changelist" comment="" />
+      <created>1579732984701</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1579732984701</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" visible="true" weight="0.12697576" />
+      <window_info id="Structure" side_tool="true" />
+      <window_info id="Image Layers" />
+      <window_info id="Designer" />
+      <window_info id="Resources Explorer" />
+      <window_info id="Capture Tool" />
+      <window_info id="Favorites" side_tool="true" />
+      <window_info id="Captures" order="0" weight="0.25" />
+      <window_info anchor="bottom" id="Version Control" />
+      <window_info anchor="bottom" id="TODO" />
+      <window_info anchor="bottom" id="Find" />
+      <window_info anchor="bottom" id="Terminal" />
+      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info anchor="right" id="Capture Analysis" />
+      <window_info anchor="right" id="Theme Preview" />
+      <window_info anchor="right" id="Palette&#9;" />
+    </layout>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/model/Alumno.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="29" column="42" selection-start-line="29" selection-start-column="42" selection-end-line="29" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/persistence/DAOAlumno.java">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/persistence/DAOMaestro.java">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/persistence/DAORegistro.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="543">
+          <caret line="57" column="49" selection-start-line="57" selection-start-column="49" selection-end-line="57" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/controlescolar/ControlEscolar.java">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+  </component>
+</project>

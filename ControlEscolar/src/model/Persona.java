@@ -1,12 +1,10 @@
 package model;
 
 /**
- *
  * @author HikingCarrot7
  */
 public abstract class Persona
 {
-
     String nombre;
     String apellido;
 
@@ -45,5 +43,4 @@ public abstract class Persona
     {
         return getApellido() + " " + getNombre();
     }
-
 }

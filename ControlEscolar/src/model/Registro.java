@@ -1,12 +1,10 @@
 package model;
 
 /**
- *
  * @author HikingCarrot7
  */
 public class Registro
 {
-
     private int claveMaestro;
     private int claveAsignatura;
     private int matricula;
@@ -47,5 +45,4 @@ public class Registro
     {
         this.matricula = matricula;
     }
-
 }

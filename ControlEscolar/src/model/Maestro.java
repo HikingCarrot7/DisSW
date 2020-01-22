@@ -4,12 +4,10 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 /**
- *
  * @author HikingCarrot7
  */
 public class Maestro extends Persona
 {
-
     private int claveMaestro;
     private ArrayList<Curso> cursosImpartidos;
 
@@ -28,7 +26,6 @@ public class Maestro extends Persona
                 System.out.println("Este curso ya está añadido.");
                 return false;
             }
-
         cursosImpartidos.add(new Curso(this, new Asignatura(asignatura.getClaveAsignatura(), asignatura.getNombreAsignatura(),
                 asignatura.getLicenciatura())));
         return true;
@@ -42,7 +39,6 @@ public class Maestro extends Persona
                 eliminarCurso(curso);
                 return true;
             }
-
         System.out.println("Este maestro no imparte este curso.");
         return false;
     }
@@ -52,7 +48,6 @@ public class Maestro extends Persona
         for (Curso curso : cursosImpartidos)
             if (curso.getAsignatura().getClaveAsignatura() == claveAsignatura)
                 return curso.getAsignatura();
-
         return null;
     }
 
@@ -61,7 +56,6 @@ public class Maestro extends Persona
         for (Curso curso : cursosImpartidos)
             if (curso.getAsignatura().getClaveAsignatura() == claveAsignatura)
                 return curso;
-
         return null;
     }
 
@@ -70,7 +64,6 @@ public class Maestro extends Persona
         for (int i = 0; i < cursosImpartidos.size(); i++)
             if (cursosImpartidos.get(i).getAsignatura().getClaveAsignatura() == claveAsignatura)
                 return i;
-
         return -1;
     }
 
@@ -113,15 +106,11 @@ public class Maestro extends Persona
     {
         if (this == obj)
             return true;
-
         if (obj == null)
             return false;
-
         if (getClass() != obj.getClass())
             return false;
-
         final Maestro other = (Maestro) obj;
-
         return this.claveMaestro == other.claveMaestro;
     }
 
@@ -130,5 +119,4 @@ public class Maestro extends Persona
     {
         return String.format("%s,%s,%s", getClaveMaestro(), getNombre(), getApellido());
     }
-
 }

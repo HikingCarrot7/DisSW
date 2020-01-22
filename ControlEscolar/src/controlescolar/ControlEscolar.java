@@ -3,6 +3,7 @@ package controlescolar;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Collectors;
+
 import model.Alumno;
 import model.Asignatura;
 import model.Curso;
@@ -18,12 +19,10 @@ import persistence.DAORelacion;
 import persistence.GeneradorPdf;
 
 /**
- *
  * @author HikingCarrot7
  */
 public class ControlEscolar
 {
-
     private ArrayList<Maestro> maestros;
     private ArrayList<Asignatura> asignaturas;
     private ArrayList<Alumno> alumnos;
@@ -40,28 +39,22 @@ public class ControlEscolar
     {
         ArrayList<Relacion> relacionesMaestrosConCursos = new DAORelacion().obtenerItems();
         ArrayList<Registro> registros = new DAORegistro().obtenerItems();
-
         relacionesMaestrosConCursos.forEach((relacion) ->
         {
             Maestro maestro = obtenerMaestro(relacion.getClaveMaestro());
             Asignatura asignatura = obtenerAsignatura(relacion.getClaveAsignatura());
             int indiceMaestro = maestros.indexOf(maestro);
-
             if (!maestros.get(indiceMaestro).doyCurso(asignatura.getClaveAsignatura()))
                 maestros.get(indiceMaestro).anadeCurso(asignatura);
         });
-
         registros.forEach((registro) ->
         {
             Maestro maestro = obtenerMaestro(registro.getClaveMaestro());
             Alumno alumno = obtenerAlumno(registro.getMatricula());
             int indiceCurso = maestro.dameIndiceDelCurso(registro.getClaveAsignatura());
-
             if (!maestro.getCursos().get(indiceCurso).existeAlumnoMatriculado(alumno.getMatricula()))
                 maestro.getCursos().get(indiceCurso).matricularAlumno(alumno);
-
         });
-
     }
 
     public void mostrarMaestros()
@@ -74,7 +67,6 @@ public class ControlEscolar
     public void mostrarAsignaturas()
     {
         System.out.printf("ASIGNATURAS:\n%-15s%-40s%s\n", "Clave", "Nombre", "Licenciatura");
-
         asignaturas.forEach(asignatura -> System.out.printf("%-15s%-40S%S\n", asignatura.getClaveAsignatura(),
                 asignatura.getNombreAsignatura(), asignatura.getLicenciatura()));
     }
@@ -93,7 +85,6 @@ public class ControlEscolar
             maestro.getCursos().forEach(curso -> System.out.printf("%-30s%S(%s)\n", " ",
                     curso.getAsignatura().getNombreAsignatura(), curso.getAsignatura().getLicenciatura()));
         });
-
     }
 
     public void mostrarTodasLasRelaciones()
@@ -109,7 +100,6 @@ public class ControlEscolar
                         .forEach(alumno -> System.out.printf("%-70s%S\n", " ", alumno.getNombreCompleto()));
             });
         });
-
     }
 
     public void mostrarInformacionAlumno(int matricula)
@@ -120,20 +110,16 @@ public class ControlEscolar
             System.out.printf("%-20s%s\n%-20s%s\n\n", "Matrícula", "Nombre", alumno.getMatricula(),
                     alumno.getNombreCompleto());
             ArrayList<Curso> cursosInscritos = obtenerCursosMatriculadosConAlumno(matricula);
-
             if (cursosInscritos.isEmpty())
                 System.out.println("El alumno no se encuentra inscrito a ningún curso.");
-
             else
             {
                 System.out.printf("Cursos a los que este alumno se encuentra inscrito son:\n" + "%-45s%-15s%s\n",
                         "Asignatura", "Licenciatura", "Maestro");
                 cursosInscritos.forEach(System.out::println);
             }
-
         } else
             System.out.println("El alumno no existe.");
-
     }
 
     public void anadirMaestro(int claveMaestro, String nombre, String apellido)
@@ -142,20 +128,16 @@ public class ControlEscolar
         {
             maestros.add(new Maestro(claveMaestro, nombre, apellido));
             guardarMaestros();
-
         } else
             System.out.println("La clave ya existe, no se puede añadir al nuevo maestro.");
-
     }
 
     public void eliminarMaestro(int claveMaestro)
     {
         if (maestros.removeIf(maestro -> maestro.getClaveMaestro() == claveMaestro))
             guardarMaestros();
-
         else
             System.out.println("La clave del maestro no existe.");
-
     }
 
     public void anadirAlumno(int matricula, String nombre, String apellido)
@@ -164,20 +146,16 @@ public class ControlEscolar
         {
             alumnos.add(new Alumno(matricula, nombre, apellido));
             guardarAlumnos();
-
         } else
             System.out.println("Ya existe un alumno con esa clave.");
-
     }
 
     public void eliminarAlumno(int matricula)
     {
         if (alumnos.removeIf(alumno -> alumno.getMatricula() == matricula))
             guardarAlumnos();
-
         else
             System.out.println("La clave del alumno no existe.");
-
     }
 
     public void anadirAsignatura(int claveAsignatura, String nombreAsignatura, String licenciatura)
@@ -186,20 +164,16 @@ public class ControlEscolar
         {
             asignaturas.add(new Asignatura(claveAsignatura, nombreAsignatura, licenciatura));
             guardarAsignaturas();
-
         } else
             System.out.println("Ya existe una asignatura con esa clave.");
-
     }
 
     public void eliminarAsignatura(int claveAsignatura)
     {
         if (asignaturas.removeIf(asignatura -> asignatura.getClaveAsignatura() == claveAsignatura))
             guardarAsignaturas();
-
         else
             System.out.println("La clave de la asignatura no existe.");
-
     }
 
     public void relacionarMaestroConCurso(int claveMaestro, int claveAsignatura)
@@ -207,23 +181,18 @@ public class ControlEscolar
         if (existeMaestro(claveMaestro) && existeAsignatura(claveAsignatura))
         {
             Maestro maestro = obtenerMaestro(claveMaestro);
-
             if (maestro.doyCurso(claveAsignatura))
             {
                 System.out.println("El maestro ya está relacionado con este curso.");
                 return;
             }
-
             Asignatura asignatura = obtenerAsignatura(claveAsignatura);
             maestro.anadeCurso(asignatura);
-
             guadarRelacionDeMaestroConCurso(claveMaestro, claveAsignatura);
             System.out.println("El maestro " + maestro.getNombreCompleto() + " ahora imparte el curso "
                     + asignatura.getDescripcion());
-
         } else
             System.out.println("Alguno de los datos es incorrecto.");
-
     }
 
     public void quitarRelacionDeMaestroConCurso(int claveAsignatura, int claveMaestro)
@@ -233,10 +202,8 @@ public class ControlEscolar
             Maestro maestro = obtenerMaestro(claveMaestro);
             maestro.quitaCurso(claveAsignatura);
             guardarRelacionesDeMaestrosConCursos();
-
         } else
             System.out.println("Alguno de los datos es incorrecto.");
-
     }
 
     public void relacionarAlumnoConCurso(int claveMaestro, int claveAsignatura, int matricula)
@@ -247,13 +214,10 @@ public class ControlEscolar
             Asignatura asignatura = obtenerAsignatura(claveAsignatura);
             Alumno alumno = obtenerAlumno(matricula);
             int indiceAsignatura = maestro.getCursos().indexOf(asignatura);
-
             maestro.getCursos().get(indiceAsignatura).matricularAlumno(alumno);
             guardarRegistros();
-
         } else
             System.out.println("Alguno de los datos es incorrecto.");
-
     }
 
     public void darBajaAlumnoDeCurso(int claveMaestro, int claveAsignatura, int matricula)
@@ -264,13 +228,10 @@ public class ControlEscolar
             Asignatura asignatura = obtenerAsignatura(claveAsignatura);
             Alumno alumno = obtenerAlumno(matricula);
             int indiceAsignatura = maestro.getCursos().indexOf(asignatura);
-
             maestro.getCursos().get(indiceAsignatura).darBajaAlumno(alumno);
             guardarRegistros();
-
         } else
             System.out.println("Alguno de los datos es incorrecto.");
-
     }
 
     public void generarReporte(int claveMaestro, int claveAsignatura)
@@ -278,25 +239,19 @@ public class ControlEscolar
         if (existeMaestro(claveMaestro) && existeAsignatura(claveAsignatura))
         {
             Maestro maestro = obtenerMaestro(claveMaestro);
-
             if (maestro.doyCurso(claveAsignatura))
                 new GeneradorPdf().generarPdf(obtenerMaestro(claveMaestro), maestro.dameCurso(claveAsignatura));
-
             else
                 System.out.println("El maestro no imparte esta asignatura.");
-
         } else
             System.out.println("La clave del maestro o asignatura no existe.");
-
     }
 
     /**
-     * @deprecated
-     *
      * @param nuevoCurso
      * @param matricula
-     *
      * @return
+     * @deprecated
      */
     public boolean chocaHorarioConCursosAlumno(Curso nuevoCurso, int matricula)
     {
@@ -318,7 +273,6 @@ public class ControlEscolar
         for (Asignatura asignatura : asignaturas)
             if (asignatura.getClaveAsignatura() == claveAsignatura)
                 return asignatura;
-
         return null;
     }
 
@@ -327,7 +281,6 @@ public class ControlEscolar
         for (Maestro maestro : maestros)
             if (maestro.getClaveMaestro() == claveMaestro)
                 return maestro;
-
         return null;
     }
 
@@ -336,7 +289,6 @@ public class ControlEscolar
         for (Alumno alumno : alumnos)
             if (alumno.getMatricula() == matricula)
                 return alumno;
-
         return null;
     }
 
@@ -399,5 +351,4 @@ public class ControlEscolar
     {
         return alumnos;
     }
-
 }

@@ -1,7 +1,6 @@
 package model;
 
 /**
- *
  * @author HikingCarrot7
  */
 public enum Dia
@@ -13,5 +12,4 @@ public enum Dia
     VIERNES,
     SABADO,
     DOMINGO
-
 }

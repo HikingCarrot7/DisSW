@@ -3,12 +3,10 @@ package controlescolar;
 import java.util.Scanner;
 
 /**
- *
  * @author HikingCarrot7
  */
 public class Menu
 {
-
     private ControlEscolar controlEscolar;
     private Scanner in;
 
@@ -25,14 +23,11 @@ public class Menu
             mostrarOpciones();
             eligirOpcion();
         }
-
     }
 
     private void mostrarOpciones()
     {
-
         controlEscolar.mostrarInformacionAlumno(15001201);
-
         System.out.println("\n\n1.-Consultar maestros."
                 + "\n2.-Consultar asignaturas."
                 + "\n3.-Consultar alumnos."
@@ -50,7 +45,6 @@ public class Menu
                 + "\n15.-Eliminar una asignatura."
                 + "\n16.-Generar reporte de un maestro."
                 + "\nOpción: ");
-
     }
 
     private void eligirOpcion()
@@ -62,9 +56,7 @@ public class Menu
         String licenciatura;
         String nombreAlumno;
         String apellidoAlumno;
-
         String opcion = in.nextLine();
-
         if (opcion.matches("^[0-9]+$"))
             switch (Integer.parseInt(opcion))
             {
@@ -87,48 +79,40 @@ public class Menu
                     claveMaestro = getDatoEntero("Inserte la clave del maestro: ");
                     String nombreMaestro = getDatoString("Inserte el nombre del maestro: ");
                     String apellidoMaestro = getDatoString("Inserte el apellido del maestro: ");
-
                     controlEscolar.anadirMaestro(claveMaestro, nombreMaestro, apellidoMaestro);
                     break;
                 case 7:
                     matricula = getDatoEntero("Inserte la matrícula del alumno: ");
                     nombreAlumno = getDatoString("Inserte el nombre del alumno: ");
                     apellidoAlumno = getDatoString("Inserte el apellido del alumno: ");
-
                     controlEscolar.anadirAlumno(matricula, nombreAlumno, apellidoAlumno);
                     break;
                 case 8:
                     claveAsignatura = getDatoEntero("Inserte la clave de la asignatura: ");
                     nombreAsignatura = getDatoString("Inserte el nombre de la asignatura: ");
                     licenciatura = getDatoString("Inserte la licenciatura: ");
-
                     controlEscolar.anadirMaestro(claveAsignatura, nombreAsignatura, licenciatura);
                     break;
                 case 9:
                     claveMaestro = getDatoEntero("Inserte la clave del maestro: ");
                     claveAsignatura = getDatoEntero("Inserte la clave de la asignatura: ");
-
                     controlEscolar.relacionarMaestroConCurso(claveMaestro, claveAsignatura);
                     break;
-
                 case 10:
                     claveMaestro = getDatoEntero("Inserte la clave del maestro: ");
                     claveAsignatura = getDatoEntero("Inserte la clave de la asignatura: ");
                     matricula = getDatoEntero("Inserte la matrícula del alumno: ");
-
                     controlEscolar.relacionarAlumnoConCurso(claveMaestro, claveAsignatura, matricula);
                     break;
                 case 11:
                     claveMaestro = getDatoEntero("Inserte la clave del maestro: ");
                     claveAsignatura = getDatoEntero("Inserte la clave de la asignatura: ");
-
                     controlEscolar.quitarRelacionDeMaestroConCurso(claveAsignatura, claveMaestro);
                     break;
                 case 12:
                     claveMaestro = getDatoEntero("Inserte la clave del maestro: ");
                     claveAsignatura = getDatoEntero("Inserte la clave de la asignatura: ");
                     matricula = getDatoEntero("Inserte la matrícula del alumno: ");
-
                     controlEscolar.darBajaAlumnoDeCurso(claveMaestro, claveAsignatura, matricula);
                     break;
                 case 13:
@@ -150,9 +134,7 @@ public class Menu
                     break;
                 default:
                     System.out.println("La opción no es correcta.");
-
             }
-
         in.nextLine();
     }
 
@@ -170,5 +152,4 @@ public class Menu
         String dato = in.nextLine();
         return dato;
     }
-
 }

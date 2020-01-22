@@ -1,12 +1,10 @@
 package model;
 
 /**
- *
  * @author HikingCarrot7
  */
 public class Alumno extends Persona
 {
-
     private int matricula;
 
     public Alumno(int matricula, String nombre, String apellido)
@@ -38,15 +36,11 @@ public class Alumno extends Persona
     {
         if (this == obj)
             return true;
-
         if (obj == null)
             return false;
-
         if (getClass() != obj.getClass())
             return false;
-
         final Alumno other = (Alumno) obj;
-
         return this.matricula == other.matricula;
     }
 
@@ -55,5 +49,4 @@ public class Alumno extends Persona
     {
         return String.format("%s,%s,%s", getMatricula(), getNombre(), getApellido());
     }
-
 }

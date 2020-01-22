@@ -1,12 +1,10 @@
 package model;
 
 /**
- *
  * @author HikingCarrot7
  */
 public class Relacion
 {
-
     private int claveMaestro;
     private int claveAsignatura;
 
@@ -41,5 +39,4 @@ public class Relacion
     {
         return getClaveMaestro() + "," + getClaveAsignatura();
     }
-
 }
