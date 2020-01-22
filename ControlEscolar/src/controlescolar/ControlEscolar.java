@@ -270,7 +270,8 @@ public class ControlEscolar
                 .stream()
                 .map(Maestro::getCursos)
                 .flatMap(Collection::stream)
-                .filter(curso -> curso.existeAlumnoMatriculado(matricula)).collect(Collectors.toList());
+                .filter(curso -> curso.existeAlumnoMatriculado(matricula))
+                .collect(Collectors.toList());
     }
 
     public boolean chocaCursoConCursosAlumno(Curso nuevoCurso, int matricula)
