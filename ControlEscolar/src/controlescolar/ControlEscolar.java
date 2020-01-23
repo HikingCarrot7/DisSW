@@ -160,6 +160,7 @@ public class ControlEscolar
         {
             alumnos.add(new Alumno(matricula, nombre, apellido));
             guardarAlumnos();
+
         } else
             System.out.println("Ya existe un alumno con esa clave.");
 
@@ -168,8 +169,17 @@ public class ControlEscolar
     public void eliminarAlumno(int matricula)
     {
         if (alumnos.removeIf(alumno -> alumno.getMatricula() == matricula))
+        {
+            relaciones.entrySet().stream()
+                    .map(Entry::getValue)
+                    .flatMap(Collection::stream)
+                    .map(Curso::getAlumnosInscritos)
+                    .forEach(alumnosInscritos -> alumnosInscritos.removeIf(alumno -> alumno.getMatricula() == matricula));
+
             guardarAlumnos();
-        else
+            guardarRegistros();
+
+        } else
             System.out.println("La clave del alumno no existe.");
 
     }
@@ -180,6 +190,7 @@ public class ControlEscolar
         {
             asignaturas.add(new Asignatura(claveAsignatura, nombreAsignatura, licenciatura));
             guardarAsignaturas();
+
         } else
             System.out.println("Ya existe una asignatura con esa clave.");
 
@@ -188,9 +199,17 @@ public class ControlEscolar
     public void eliminarAsignatura(int claveAsignatura)
     {
         if (asignaturas.removeIf(asignatura -> asignatura.getClaveAsignatura() == claveAsignatura))
-            guardarAsignaturas();
+        {
+            relaciones.entrySet()
+                    .stream()
+                    .map(Entry::getValue)
+                    .forEach(cursos -> cursos
+                    .removeIf(curso -> curso.getAsignatura().getClaveAsignatura() == claveAsignatura));
 
-        else
+            guardarAsignaturas();
+            guardarRelacionesDeMaestrosConCursos();
+
+        } else
             System.out.println("La clave de la asignatura no existe.");
 
     }

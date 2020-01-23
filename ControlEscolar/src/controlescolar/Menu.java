@@ -91,7 +91,7 @@ public class Menu
                     claveAsignatura = getDatoEntero("Inserte la clave de la asignatura: ");
                     nombreAsignatura = getDatoString("Inserte el nombre de la asignatura: ");
                     licenciatura = getDatoString("Inserte la licenciatura: ");
-                    controlEscolar.anadirMaestro(claveAsignatura, nombreAsignatura, licenciatura);
+                    controlEscolar.anadirAsignatura(claveAsignatura, nombreAsignatura, licenciatura);
                     break;
                 case 9:
                     claveMaestro = getDatoEntero("Inserte la clave del maestro: ");
