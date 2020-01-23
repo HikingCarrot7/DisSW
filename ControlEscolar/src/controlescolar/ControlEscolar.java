@@ -45,21 +45,15 @@ public class ControlEscolar
         ArrayList<Relacion> relacionesMaestrosConCursos = new DAORelaciones().obtenerItems();
         ArrayList<Registro> registros = new DAORegistros().obtenerItems();
 
-        maestros.forEach((maestro) ->
-        {
+        for (Maestro maestro : maestros)
             relaciones.put(maestro, new ArrayList<>());
-        });
 
-        relacionesMaestrosConCursos.forEach((relacion) ->
-        {
+        for (Relacion relacion : relacionesMaestrosConCursos)
             anadirRelacionMaestroCurso(relacion.getClaveMaestro(), relacion.getClaveAsignatura());
-        });
 
-        registros.forEach((registro) ->
-        {
-            obtenerCursoMaestro(registro.getClaveMaestro(),
-                    registro.getClaveAsignatura()).matricularAlumno(obtenerAlumno(registro.getMatricula()));
-        });
+        for (Registro registro : registros)
+            obtenerCursoMaestro(registro.getClaveMaestro(), registro.getClaveAsignatura())
+                    .matricularAlumno(obtenerAlumno(registro.getMatricula()));
 
         relaciones.entrySet().stream()
                 .map(Entry::getValue)
