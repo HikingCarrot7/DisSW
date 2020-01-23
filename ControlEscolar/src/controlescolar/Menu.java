@@ -96,7 +96,7 @@ public class Menu
                 case 9:
                     claveMaestro = getDatoEntero("Inserte la clave del maestro: ");
                     claveAsignatura = getDatoEntero("Inserte la clave de la asignatura: ");
-                    controlEscolar.relacionarMaestroConCurso(claveMaestro, claveAsignatura);
+                    controlEscolar.relacionarMaestroCurso(claveMaestro, claveAsignatura);
                     break;
                 case 10:
                     claveMaestro = getDatoEntero("Inserte la clave del maestro: ");

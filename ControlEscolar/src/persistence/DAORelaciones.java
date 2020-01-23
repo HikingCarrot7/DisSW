@@ -15,7 +15,7 @@ import model.Relacion;
 /**
  * @author HikingC7
  */
-public class DAORelaciones extends DAO implements DAODatosRelacion
+public class DAORelaciones extends DAO<HashMap<Maestro, ArrayList<Curso>>>
 {
 
     public static final String RUTA_RELACIONES = "datos/Relaciones.csv";

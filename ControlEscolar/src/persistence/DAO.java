@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * @param <E>
  * @author HikingC7
  */
-public abstract class DAO
+public abstract class DAO<E>
 {
 
     protected File file;
@@ -27,6 +27,8 @@ public abstract class DAO
             }
 
     }
+
+    public abstract void guardarItems(E items);
 
     public abstract ArrayList<?> obtenerItems();
 

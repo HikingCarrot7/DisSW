@@ -12,7 +12,7 @@ import model.Asignatura;
 /**
  * @author HikingC7
  */
-public class DAOAsignatura extends DAO implements DAOEntidad<Asignatura>
+public class DAOAsignatura extends DAO<ArrayList<Asignatura>>
 {
 
     public static final String RUTA_ASIGNATURAS = "datos/Asignaturas.csv";
