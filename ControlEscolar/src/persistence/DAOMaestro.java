@@ -12,7 +12,7 @@ import model.Maestro;
 /**
  * @author HikingC7
  */
-public class DAOMaestro extends DAOGeneral<Maestro>
+public class DAOMaestro extends DAO implements DAOEntidad<Maestro>
 {
 
     public static final String RUTA_MAESTROS = "datos/Maestros.csv";
@@ -28,7 +28,7 @@ public class DAOMaestro extends DAOGeneral<Maestro>
         String datosMaestros = "";
         datosMaestros = maestros
                 .stream()
-                .map((maestro) -> maestro + System.getProperty("line.separator"))
+                .map((maestro) -> maestro + SALTO_LINEA)
                 .reduce(datosMaestros, String::concat);
 
         try (Formatter out = new Formatter(new FileWriter(file)))
@@ -52,6 +52,7 @@ public class DAOMaestro extends DAOGeneral<Maestro>
             while (in.hasNext())
             {
                 String[] datos = in.nextLine().split(",");
+
                 int claveMaestro = Integer.parseInt(datos[0]);
                 String nombre = datos[1];
                 String apellido = datos[2];

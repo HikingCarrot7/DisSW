@@ -12,7 +12,7 @@ import model.Alumno;
 /**
  * @author HikingC7
  */
-public class DAOAlumno extends DAOGeneral<Alumno>
+public class DAOAlumno extends DAO implements DAOEntidad<Alumno>
 {
 
     public static final String RUTA_ALUMNOS = "datos/Alumnos.csv";
@@ -26,9 +26,10 @@ public class DAOAlumno extends DAOGeneral<Alumno>
     public void guardarItems(ArrayList<Alumno> alumnos)
     {
         String datosAlumno = "";
+
         datosAlumno = alumnos
                 .stream()
-                .map((alumno) -> alumno + System.getProperty("line.separator"))
+                .map((alumno) -> alumno + SALTO_LINEA)
                 .reduce(datosAlumno, String::concat);
 
         try (Formatter out = new Formatter(new FileWriter(file)))
@@ -46,11 +47,13 @@ public class DAOAlumno extends DAOGeneral<Alumno>
     public ArrayList<Alumno> obtenerItems()
     {
         ArrayList<Alumno> alumnos = new ArrayList<>();
+
         try (Scanner in = new Scanner(new FileReader(file)))
         {
             while (in.hasNext())
             {
                 String[] datos = in.nextLine().split(",");
+
                 int matricula = Integer.parseInt(datos[0]);
                 String nombre = datos[1];
                 String apellido = datos[2];

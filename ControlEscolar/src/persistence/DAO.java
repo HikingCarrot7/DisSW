@@ -8,12 +8,13 @@ import java.util.ArrayList;
  * @param <E>
  * @author HikingC7
  */
-public abstract class DAOGeneral<E>
+public abstract class DAO
 {
 
     protected File file;
+    protected final String SALTO_LINEA = "\r\n";
 
-    public DAOGeneral(String ruta)
+    public DAO(String ruta)
     {
         file = new File(ruta);
         if (!file.exists())
@@ -26,8 +27,6 @@ public abstract class DAOGeneral<E>
             }
 
     }
-
-    public abstract void guardarItems(ArrayList<E> entidades);
 
     public abstract ArrayList<?> obtenerItems();
 
