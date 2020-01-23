@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Formatter;
 import java.util.Scanner;
 import model.Asignatura;
@@ -63,6 +64,8 @@ public class DAOAsignatura extends DAO<ArrayList<Asignatura>>
         {
             System.out.println(ex.getMessage());
         }
+
+        asignaturas.sort(Comparator.comparing(Asignatura::getNombreAsignatura));
 
         return asignaturas;
     }

@@ -62,6 +62,7 @@ public class DAORegistros extends DAO<HashMap<Maestro, ArrayList<Curso>>>
             while (in.hasNext())
             {
                 String[] registro = in.nextLine().split(",");
+
                 int claveMaestro = Integer.parseInt(registro[0]);
                 int claveAsignatura = Integer.parseInt(registro[1]);
                 int maticula = Integer.parseInt(registro[2]);

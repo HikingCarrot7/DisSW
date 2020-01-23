@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Formatter;
 import java.util.Scanner;
 import model.Maestro;
@@ -26,6 +27,7 @@ public class DAOMaestro extends DAO<ArrayList<Maestro>>
     public void guardarItems(ArrayList<Maestro> maestros)
     {
         String datosMaestros = "";
+
         datosMaestros = maestros
                 .stream()
                 .map((maestro) -> maestro + SALTO_LINEA)
@@ -65,6 +67,7 @@ public class DAOMaestro extends DAO<ArrayList<Maestro>>
             System.out.println(ex.getMessage());
         }
 
+        maestros.sort(Comparator.comparing(Maestro::getNombre));
         return maestros;
     }
 }

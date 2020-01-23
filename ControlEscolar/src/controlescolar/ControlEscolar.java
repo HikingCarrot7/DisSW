@@ -2,6 +2,7 @@ package controlescolar;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
@@ -59,6 +60,12 @@ public class ControlEscolar
             obtenerCursoMaestro(registro.getClaveMaestro(),
                     registro.getClaveAsignatura()).matricularAlumno(obtenerAlumno(registro.getMatricula()));
         });
+
+        relaciones.entrySet().stream()
+                .map(Entry::getValue)
+                .forEach(cursos -> cursos
+                .sort(Comparator.comparing(curso -> curso.getAsignatura().getNombreAsignatura())));
+
     }
 
     public void mostrarMaestros()

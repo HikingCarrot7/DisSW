@@ -19,8 +19,6 @@ public class Menu
 
     public void mostrarMenu()
     {
-        controlEscolar.mostrarInformacionAlumno(15001196);
-
         while (true)
         {
             mostrarOpciones();
@@ -137,6 +135,7 @@ public class Menu
                 default:
                     System.out.println("La opción no es correcta.");
             }
+
         in.nextLine();
     }
 
