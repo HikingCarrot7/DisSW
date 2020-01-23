@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
-
 import model.Curso;
 import model.Maestro;
 import model.Registro;
@@ -18,6 +17,7 @@ import model.Registro;
  */
 public class DAORegistro extends DAOGeneral<Maestro>
 {
+
     public static final String RUTA_REGISTROS = "datos/Registros.csv";
 
     public DAORegistro()
@@ -34,9 +34,9 @@ public class DAORegistro extends DAOGeneral<Maestro>
                 registros = curso.getAlumnosInscritos()
                         .stream()
                         .map((alumno) -> maestro.getClaveMaestro() + ","
-                                + curso.getAsignatura().getClaveAsignatura() + ","
-                                + alumno.getMatricula()
-                                + System.getProperty("line.separator"))
+                        + curso.getAsignatura().getClaveAsignatura() + ","
+                        + alumno.getMatricula()
+                        + System.getProperty("line.separator"))
                         .reduce(registros, String::concat);
         try (Formatter out = new Formatter(new FileWriter(file)))
         {

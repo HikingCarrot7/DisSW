@@ -7,6 +7,7 @@ import java.util.Date;
  */
 public class Sesion
 {
+
     private Dia dia;
     private Date inicioClase;
     private Date finalClase;

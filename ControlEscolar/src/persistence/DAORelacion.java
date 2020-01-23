@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.Scanner;
-
 import model.Maestro;
 import model.Relacion;
 
@@ -16,6 +15,7 @@ import model.Relacion;
  */
 public class DAORelacion extends DAOGeneral<Maestro>
 {
+
     public static final String RUTA_RELACIONES = "datos/Relaciones.csv";
 
     public DAORelacion()
@@ -32,9 +32,9 @@ public class DAORelacion extends DAOGeneral<Maestro>
                     .getCursos()
                     .stream()
                     .map((curso) -> maestro.getClaveMaestro() + ","
-                            + curso.getAsignatura().getClaveAsignatura() + ","
-                            + curso.getInicialesCurso()
-                            + System.getProperty("line.separator"))
+                    + curso.getAsignatura().getClaveAsignatura() + ","
+                    + curso.getInicialesCurso()
+                    + System.getProperty("line.separator"))
                     .reduce(relaciones, String::concat);
         try (Formatter out = new Formatter(new FileWriter(file)))
         {

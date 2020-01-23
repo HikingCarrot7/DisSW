@@ -5,6 +5,7 @@ package model;
  */
 public class Alumno extends Persona
 {
+
     private int matricula;
 
     public Alumno(int matricula, String nombre, String apellido)

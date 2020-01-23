@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.Scanner;
-
 import model.Alumno;
 
 /**
@@ -15,6 +14,7 @@ import model.Alumno;
  */
 public class DAOAlumno extends DAOGeneral<Alumno>
 {
+
     public static final String RUTA_ALUMNOS = "datos/Alumnos.csv";
 
     public DAOAlumno()

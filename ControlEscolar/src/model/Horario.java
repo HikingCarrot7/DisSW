@@ -7,6 +7,7 @@ import java.util.ArrayList;
  */
 public class Horario
 {
+
     private ArrayList<Sesion> sesiones;
 
     public Horario()

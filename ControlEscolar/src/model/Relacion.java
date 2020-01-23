@@ -5,6 +5,7 @@ package model;
  */
 public class Relacion
 {
+
     private int claveMaestro;
     private int claveAsignatura;
 

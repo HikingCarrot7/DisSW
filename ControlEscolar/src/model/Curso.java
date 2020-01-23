@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
  */
 public class Curso
 {
+
     private Horario horario;
     private Asignatura asignatura;
     private Maestro maestro;

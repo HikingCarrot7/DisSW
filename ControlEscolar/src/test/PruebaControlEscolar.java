@@ -7,6 +7,7 @@ import controlescolar.Menu;
  */
 public class PruebaControlEscolar
 {
+
     public static void main(String[] args)
     {
         new Menu().mostrarMenu();

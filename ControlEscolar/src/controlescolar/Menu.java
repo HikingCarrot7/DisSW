@@ -7,6 +7,7 @@ import java.util.Scanner;
  */
 public class Menu
 {
+
     private ControlEscolar controlEscolar;
     private Scanner in;
 

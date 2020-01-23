@@ -4,12 +4,10 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
-
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import model.Alumno;
 import model.Curso;
 import model.Maestro;
@@ -19,6 +17,7 @@ import model.Maestro;
  */
 public class GeneradorPdf
 {
+
     public static final String RUTA_REPORTES = "reportes/";
     private final String SATO_LINEA = "\r\n";
 

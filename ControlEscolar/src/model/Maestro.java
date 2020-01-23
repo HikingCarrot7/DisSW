@@ -8,6 +8,7 @@ import java.util.Objects;
  */
 public class Maestro extends Persona
 {
+
     private int claveMaestro;
     private ArrayList<Curso> cursosImpartidos;
 
@@ -18,7 +19,7 @@ public class Maestro extends Persona
         cursosImpartidos = new ArrayList<>();
     }
 
-    public boolean anadeCurso(Asignatura asignatura)
+    public boolean anadirCurso(Asignatura asignatura)
     {
         for (Curso curso : cursosImpartidos)
             if (curso.getAsignatura().getClaveAsignatura() == asignatura.getClaveAsignatura())
@@ -31,7 +32,7 @@ public class Maestro extends Persona
         return true;
     }
 
-    public boolean quitaCurso(int claveAsignatura)
+    public boolean quitarCurso(int claveAsignatura)
     {
         for (Curso curso : cursosImpartidos)
             if (curso.getAsignatura().getClaveAsignatura() == claveAsignatura)
@@ -43,7 +44,7 @@ public class Maestro extends Persona
         return false;
     }
 
-    public Asignatura dameAsignaturaDelCurso(int claveAsignatura)
+    public Asignatura obtenerAsignaturaDelCurso(int claveAsignatura)
     {
         for (Curso curso : cursosImpartidos)
             if (curso.getAsignatura().getClaveAsignatura() == claveAsignatura)
@@ -51,7 +52,7 @@ public class Maestro extends Persona
         return null;
     }
 
-    public Curso dameCurso(int claveAsignatura)
+    public Curso obtenerCurso(int claveAsignatura)
     {
         for (Curso curso : cursosImpartidos)
             if (curso.getAsignatura().getClaveAsignatura() == claveAsignatura)
@@ -59,7 +60,7 @@ public class Maestro extends Persona
         return null;
     }
 
-    public int dameIndiceDelCurso(int claveAsignatura)
+    public int getIndiceDelCurso(int claveAsignatura)
     {
         for (int i = 0; i < cursosImpartidos.size(); i++)
             if (cursosImpartidos.get(i).getAsignatura().getClaveAsignatura() == claveAsignatura)

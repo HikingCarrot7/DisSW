@@ -5,6 +5,7 @@ package model;
  */
 public class Registro
 {
+
     private int claveMaestro;
     private int claveAsignatura;
     private int matricula;

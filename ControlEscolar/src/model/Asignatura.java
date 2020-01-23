@@ -7,6 +7,7 @@ import java.util.Objects;
  */
 public class Asignatura
 {
+
     private int claveAsignatura;
     private String nombreAsignatura;
     private String licenciatura;

@@ -10,6 +10,7 @@ import java.util.ArrayList;
  */
 public abstract class DAOGeneral<E>
 {
+
     protected File file;
 
     public DAOGeneral(String ruta)
