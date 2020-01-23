@@ -222,7 +222,7 @@ public class ControlEscolar
             Asignatura asignatura = obtenerAsignatura(claveAsignatura);
 
             anadirRelacionMaestroCurso(claveMaestro, claveAsignatura);
-            guadarRelacionDeMaestroConCurso(claveMaestro, claveAsignatura);
+            guardarRelacionesDeMaestrosConCursos();
             System.out.printf("El maestro %s ahora imparte el curso %s\n", maestro.getNombreCompleto(), asignatura.getDescripcion());
             return true;
         }
@@ -385,11 +385,6 @@ public class ControlEscolar
     public boolean existeAlumno(int matricula)
     {
         return obtenerAlumno(matricula) != null;
-    }
-
-    private void guadarRelacionDeMaestroConCurso(int claveMaestro, int claveAsignatura)
-    {
-        new DAORelaciones().guadarRelacionDeMaestroConAsignatura(new Relacion(claveMaestro, claveAsignatura));
     }
 
     private void guardarRelacionesDeMaestrosConCursos()

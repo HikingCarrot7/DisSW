@@ -19,6 +19,8 @@ public class Menu
 
     public void mostrarMenu()
     {
+        controlEscolar.mostrarInformacionAlumno(15001196);
+
         while (true)
         {
             mostrarOpciones();

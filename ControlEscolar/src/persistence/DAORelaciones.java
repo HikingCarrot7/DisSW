@@ -74,17 +74,4 @@ public class DAORelaciones extends DAO<HashMap<Maestro, ArrayList<Curso>>>
         return relacionesDeMaestrosConAsignaturas;
     }
 
-    public void guadarRelacionDeMaestroConAsignatura(Relacion relacion)
-    {
-        try (Formatter out = new Formatter(new FileWriter(file, true)))
-        {
-            out.format("%s", relacion + System.getProperty("line.separator"));
-
-        } catch (IOException ex)
-        {
-            System.out.println(ex.getMessage());
-        }
-
-    }
-
 }
