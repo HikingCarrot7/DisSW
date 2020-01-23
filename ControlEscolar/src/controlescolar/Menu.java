@@ -28,7 +28,6 @@ public class Menu
 
     private void mostrarOpciones()
     {
-        controlEscolar.mostrarInformacionAlumno(15001201);
         System.out.println("\n\n1.-Consultar maestros."
                 + "\n2.-Consultar asignaturas."
                 + "\n3.-Consultar alumnos."

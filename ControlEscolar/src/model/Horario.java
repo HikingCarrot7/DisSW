@@ -19,10 +19,12 @@ public class Horario
     {
         Curso cursoMenoresSesiones = curso1.getHorario().getSesiones().size() > curso2.getHorario().getSesiones().size() ? curso2 : curso1;
         Curso cursoMayoresSesiones = cursoMenoresSesiones == curso1 ? curso2 : curso1;
+
         for (int i = 0; i < cursoMenoresSesiones.getHorario().getSesiones().size(); i++)
             if (Sesion.chocanSesiones(cursoMenoresSesiones.getHorario().getSesiones().get(i),
                     cursoMayoresSesiones.getHorario().getSesiones().get(i)))
                 return true;
+
         return false;
     }
 
@@ -35,4 +37,5 @@ public class Horario
     {
         this.sesiones = sesiones;
     }
+
 }

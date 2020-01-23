@@ -30,13 +30,16 @@ public class DAOAlumno extends DAOGeneral<Alumno>
                 .stream()
                 .map((alumno) -> alumno + System.getProperty("line.separator"))
                 .reduce(datosAlumno, String::concat);
+
         try (Formatter out = new Formatter(new FileWriter(file)))
         {
             out.format("%s", datosAlumno);
+
         } catch (IOException ex)
         {
             System.out.println(ex.getMessage());
         }
+
     }
 
     @Override
@@ -51,12 +54,14 @@ public class DAOAlumno extends DAOGeneral<Alumno>
                 int matricula = Integer.parseInt(datos[0]);
                 String nombre = datos[1];
                 String apellido = datos[2];
+
                 alumnos.add(new Alumno(matricula, nombre, apellido));
             }
         } catch (FileNotFoundException ex)
         {
             System.out.println(ex.getMessage());
         }
+
         return alumnos;
     }
 }

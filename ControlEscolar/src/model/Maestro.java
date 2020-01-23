@@ -27,6 +27,7 @@ public class Maestro extends Persona
                 System.out.println("Este curso ya está añadido.");
                 return false;
             }
+
         cursosImpartidos.add(new Curso(this, new Asignatura(asignatura.getClaveAsignatura(), asignatura.getNombreAsignatura(),
                 asignatura.getLicenciatura())));
         return true;
@@ -40,6 +41,7 @@ public class Maestro extends Persona
                 eliminarCurso(curso);
                 return true;
             }
+
         System.out.println("Este maestro no imparte este curso.");
         return false;
     }

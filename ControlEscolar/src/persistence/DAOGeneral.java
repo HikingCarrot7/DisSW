@@ -24,9 +24,11 @@ public abstract class DAOGeneral<E>
             {
                 System.out.println(ex.getMessage());
             }
+
     }
 
     public abstract void guardarItems(ArrayList<E> entidades);
 
     public abstract ArrayList<?> obtenerItems();
+
 }

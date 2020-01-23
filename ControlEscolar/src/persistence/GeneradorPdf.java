@@ -28,6 +28,7 @@ public class GeneradorPdf
         String nombreArchivo = RUTA_REPORTES
                 + maestro.getNombreCompleto().toUpperCase() + "-"
                 + curso.getAsignatura().getNombreAsignatura().toUpperCase() + ".pdf";
+
         try
         {
             try (FileOutputStream file = new FileOutputStream(nombreArchivo))
@@ -35,19 +36,24 @@ public class GeneradorPdf
                 Document doc = new Document();
                 PdfWriter.getInstance(doc, file);
                 doc.open();
+
                 ponerEncabezado(titulo, maestro, curso);
                 ponerAlumnos(alumnos, curso);
+
                 doc.add(titulo);
                 doc.add(alumnos);
                 doc.close();
             }
+
         } catch (FileNotFoundException | DocumentException ex)
         {
             System.out.println(ex.getMessage());
+
         } catch (IOException ex)
         {
             System.out.println(ex.getMessage());
         }
+
     }
 
     private void ponerEncabezado(Paragraph titulo, Maestro maestro, Curso curso)
@@ -63,7 +69,9 @@ public class GeneradorPdf
     {
         listaAlumnos.setAlignment("left");
         listaAlumnos.add(SATO_LINEA);
+
         ArrayList<Alumno> alumnos = curso.obtenerAlumnosOrdenados();
+
         for (int i = 0; i < alumnos.size(); i++)
         {
             Alumno alumno = alumnos.get(i);
@@ -71,4 +79,5 @@ public class GeneradorPdf
             listaAlumnos.add(SATO_LINEA);
         }
     }
+
 }

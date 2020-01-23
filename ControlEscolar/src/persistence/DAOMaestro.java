@@ -30,19 +30,23 @@ public class DAOMaestro extends DAOGeneral<Maestro>
                 .stream()
                 .map((maestro) -> maestro + System.getProperty("line.separator"))
                 .reduce(datosMaestros, String::concat);
+
         try (Formatter out = new Formatter(new FileWriter(file)))
         {
             out.format("%s", datosMaestros);
+
         } catch (IOException ex)
         {
             System.out.println(ex.getMessage());
         }
+
     }
 
     @Override
     public ArrayList<Maestro> obtenerItems()
     {
         ArrayList<Maestro> maestros = new ArrayList<>();
+
         try (Scanner in = new Scanner(new FileReader(file)))
         {
             while (in.hasNext())
@@ -51,12 +55,15 @@ public class DAOMaestro extends DAOGeneral<Maestro>
                 int claveMaestro = Integer.parseInt(datos[0]);
                 String nombre = datos[1];
                 String apellido = datos[2];
+
                 maestros.add(new Maestro(claveMaestro, nombre, apellido));
             }
+
         } catch (FileNotFoundException ex)
         {
             System.out.println(ex.getMessage());
         }
+
         return maestros;
     }
 }

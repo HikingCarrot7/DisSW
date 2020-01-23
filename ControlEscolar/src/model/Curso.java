@@ -31,6 +31,7 @@ public class Curso
             System.out.println("Este alumno ya está matriculado a este curso.");
             return false;
         }
+
         alumnosInscritos.add(alumno);
         return true;
     }
@@ -39,6 +40,7 @@ public class Curso
     {
         if (!existeAlumnoMatriculado(alumno.getMatricula()))
             System.out.println("El alumno no está matriculado con este curso.");
+
         else
             alumnosInscritos.remove(alumno);
     }
@@ -47,15 +49,18 @@ public class Curso
     {
         String[] palabras = asignatura.getNombreAsignatura().split("\\s+");
         String result = "";
+
         for (String palabra : palabras)
             if (palabra.length() > 3)
                 result += palabra.substring(0, 3).toUpperCase();
+
         return result;
     }
 
     public ArrayList<Alumno> obtenerAlumnosOrdenados()
     {
         ArrayList<Alumno> alumnosOrdenados = new ArrayList<>(alumnosInscritos);
+
         return (ArrayList<Alumno>) alumnosOrdenados.stream()
                 .sorted(Comparator.comparing(Alumno::getApellido))
                 .collect(Collectors.toList());
