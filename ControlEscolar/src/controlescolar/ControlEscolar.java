@@ -35,10 +35,6 @@ public class ControlEscolar
         ArrayList<Relacion> relacionesMaestrosConCursos = new DAORelaciones().obtenerItems();
         ArrayList<Registro> registros = new DAORegistros().obtenerItems();
 
-        maestros.sort(Comparator.comparing(Maestro::getNombre));
-        asignaturas.sort(Comparator.comparing(Asignatura::getNombreAsignatura));
-        alumnos.sort(Comparator.comparing(Alumno::getNombre));
-
         for (Maestro maestro : maestros)
             relaciones.put(maestro, new ArrayList<>());
 
@@ -48,6 +44,16 @@ public class ControlEscolar
         for (Registro registro : registros)
             obtenerCursoMaestro(registro.getClaveMaestro(), registro.getClaveAsignatura())
                     .matricularAlumno(obtenerAlumno(registro.getMatricula()));
+
+        ordenarDatos();
+
+    }
+
+    private void ordenarDatos()
+    {
+        maestros.sort(Comparator.comparing(Maestro::getNombre));
+        asignaturas.sort(Comparator.comparing(Asignatura::getNombreAsignatura));
+        alumnos.sort(Comparator.comparing(Alumno::getNombre));
 
         relaciones.entrySet()
                 .stream()
