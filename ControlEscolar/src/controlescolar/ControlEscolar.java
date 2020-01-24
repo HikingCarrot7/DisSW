@@ -302,7 +302,7 @@ public class ControlEscolar
     {
         if (existeMaestro(claveMaestro) && existeAsignatura(claveAsignatura))
             if (maestroDaCurso(claveMaestro, claveAsignatura))
-                new GeneradorPdf().generarPdf(obtenerMaestro(claveMaestro), obtenerCursoMaestro(claveMaestro, claveAsignatura));
+                new GeneradorPdf().generarPdf(obtenerCursoMaestro(claveMaestro, claveAsignatura));
 
             else
                 System.out.println("El maestro no imparte esta asignatura.");

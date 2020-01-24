@@ -21,12 +21,12 @@ public class GeneradorPdf
     public static final String RUTA_REPORTES = "reportes/";
     private final String SATO_LINEA = "\r\n";
 
-    public void generarPdf(Maestro maestro, Curso curso)
+    public void generarPdf(Curso curso)
     {
         Paragraph titulo = new Paragraph();
         Paragraph alumnos = new Paragraph();
         String nombreArchivo = RUTA_REPORTES
-                + maestro.getNombreCompleto().toUpperCase() + "-"
+                + curso.getMaestro().getNombreCompleto().toUpperCase() + "-"
                 + curso.getAsignatura().getNombreAsignatura().toUpperCase() + ".pdf";
 
         try
@@ -37,7 +37,7 @@ public class GeneradorPdf
                 PdfWriter.getInstance(doc, file);
                 doc.open();
 
-                ponerEncabezado(titulo, maestro, curso);
+                ponerEncabezado(titulo, curso.getMaestro(), curso);
                 ponerAlumnos(alumnos, curso);
 
                 doc.add(titulo);
