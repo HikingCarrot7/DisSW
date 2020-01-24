@@ -26,6 +26,11 @@ public class Sesion
                 && sesion1.getFinalClase().after(sesion2.getInicioClase());
     }
 
+    public int getMinutosTotalesSesion()
+    {
+        return (int) (finalClase.getTime() - inicioClase.getTime()) / 60000;
+    }
+
     public Dia getDia()
     {
         return dia;

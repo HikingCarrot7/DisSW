@@ -309,9 +309,10 @@ public class ControlEscolar
      * @return
      * @deprecated
      */
-    public boolean chocaHorarioConCursosAlumno(Curso nuevoCurso, int matricula)
+    public boolean chocanHorarios(int claveMaestro, int claveAsignatura, int matricula)
     {
         ArrayList<Curso> cursos = obtenerCursosMatriculadosConAlumno(matricula);
+        Curso nuevoCurso = obtenerCursoMaestro(claveMaestro, claveAsignatura);
         return cursos.stream().anyMatch(curso -> Horario.chocanHorarios(curso, nuevoCurso));
     }
 
@@ -324,6 +325,64 @@ public class ControlEscolar
                 .flatMap(Collection::stream)
                 .filter(curso -> curso.existeAlumnoMatriculado(matricula))
                 .collect(Collectors.toList());
+    }
+
+    private ArrayList<Horario> obtenerHorariosAlumno(int matricula)
+    {
+        return (ArrayList<Horario>) obtenerCursosMatriculadosConAlumno(matricula)
+                .stream()
+                .map(Curso::getHorario)
+                .collect(Collectors.toList());
+    }
+
+    public ArrayList<Maestro> obtenerMaestrosConMasCursos()
+    {
+        int maxCurso = relaciones.entrySet()
+                .stream()
+                .map(x -> x.getValue().size())
+                .max(Comparator.comparing(x -> x))
+                .get();
+
+        return obtenerMaestrosConNCursos(maxCurso);
+    }
+
+    public ArrayList<Maestro> obtenerMaestrosConMenosCursos()
+    {
+        int minCurso = relaciones.entrySet()
+                .stream()
+                .map(x -> x.getValue().size())
+                .min(Comparator.comparing(x -> x))
+                .get();
+
+        return obtenerMaestrosConNCursos(minCurso);
+    }
+
+    private ArrayList<Maestro> obtenerMaestrosConNCursos(int nCursos)
+    {
+        return (ArrayList<Maestro>) relaciones.entrySet()
+                .stream()
+                .filter(entry -> entry.getValue().size() == nCursos)
+                .map(Entry::getKey)
+                .collect(Collectors.toList());
+    }
+
+    public ArrayList<Maestro> obtenerMaestrosRelacionadosCurso(int claveAsignatura)
+    {
+        return (ArrayList<Maestro>) relaciones.entrySet()
+                .stream()
+                .filter(entry -> entry.getValue().stream().anyMatch(curso -> curso.getAsignatura().getClaveAsignatura() == claveAsignatura))
+                .map(Entry::getKey)
+                .collect(Collectors.toList());
+    }
+
+    public int obtenerNumCursosMaestro(int claveMaestro)
+    {
+        return obtenerCursosMaestro(claveMaestro).size();
+    }
+
+    public int obtenerNumAlumnosInscritosCurso(int claveMaestro, int claveAsignatura)
+    {
+        return obtenerCursoMaestro(claveMaestro, claveAsignatura).getAlumnosInscritos().size();
     }
 
     public Asignatura obtenerAsignatura(int claveAsignatura)

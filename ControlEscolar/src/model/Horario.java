@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.stream.IntStream;
 
 /**
  * @author HikingCarrot7
@@ -26,6 +27,11 @@ public class Horario
                 return true;
 
         return false;
+    }
+
+    public int getMinutosTotalesSemana()
+    {
+        return sesiones.stream().flatMapToInt(sesion -> IntStream.of(sesion.getMinutosTotalesSesion())).sum();
     }
 
     public ArrayList<Sesion> getSesiones()
