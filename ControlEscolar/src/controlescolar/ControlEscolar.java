@@ -4,21 +4,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
-import model.Alumno;
-import model.Asignatura;
-import model.Curso;
-import model.Horario;
-import model.Maestro;
-import model.Registro;
-import model.Relacion;
-import persistence.DAOAlumno;
-import persistence.DAOAsignatura;
-import persistence.DAOMaestro;
-import persistence.DAORegistros;
-import persistence.DAORelaciones;
-import persistence.GeneradorPdf;
+import model.*;
+import persistence.*;
 
 /**
  * @author HikingCarrot7
@@ -59,10 +49,14 @@ public class ControlEscolar
             obtenerCursoMaestro(registro.getClaveMaestro(), registro.getClaveAsignatura())
                     .matricularAlumno(obtenerAlumno(registro.getMatricula()));
 
-        relaciones.entrySet().stream()
+        relaciones.entrySet()
+                .stream()
                 .map(Entry::getValue)
-                .forEach(cursos -> cursos
-                .sort(Comparator.comparing(curso -> curso.getAsignatura().getNombreAsignatura())));
+                .flatMap(cursos -> cursos.stream()
+                .sorted(Comparator.comparing(curso -> curso.getAsignatura().getNombreAsignatura())))
+                .forEach(curso -> curso.getAlumnosInscritos()
+                .sort(Comparator.comparing(Alumno::getNombre)
+                        .thenComparing(Alumno::getApellido)));
 
     }
 
@@ -133,6 +127,15 @@ public class ControlEscolar
         } else
             System.out.println("El alumno no existe.");
 
+    }
+
+    public void mostrarAsignaturasAgrupadasPorLicenciatura()
+    {
+        asignaturasAgrupadasPorLicenciatura().forEach((lic, asigs) ->
+        {
+            System.out.printf("%S\n", lic);
+            asigs.forEach(asig -> System.out.printf("\t%S\n", asig.getNombreAsignatura()));
+        });
     }
 
     public void anadirMaestro(int claveMaestro, String nombre, String apellido)
@@ -304,7 +307,8 @@ public class ControlEscolar
     }
 
     /**
-     * @param nuevoCurso
+     * @param claveMaestro
+     * @param claveAsignatura
      * @param matricula
      * @return
      * @deprecated
@@ -373,6 +377,27 @@ public class ControlEscolar
                 .filter(entry -> entry.getValue().stream().anyMatch(curso -> curso.getAsignatura().getClaveAsignatura() == claveAsignatura))
                 .map(Entry::getKey)
                 .collect(Collectors.toList());
+    }
+
+    public long numAlumnosConElNombre(String nombre)
+    {
+        return alumnos.stream()
+                .filter(alumno -> alumno.getNombre().equals(nombre))
+                .count();
+    }
+
+    public ArrayList<Asignatura> asignaturasDeLicenciatura(String licenciatura)
+    {
+        return (ArrayList<Asignatura>) asignaturas.stream()
+                .filter(asig -> asig.getLicenciatura().equals(licenciatura))
+                .collect(Collectors.toList());
+    }
+
+    private HashMap<String, List<Asignatura>> asignaturasAgrupadasPorLicenciatura()
+    {
+        return asignaturas.stream()
+                .collect(Collectors
+                        .groupingBy(Asignatura::getLicenciatura, HashMap::new, Collectors.toList()));
     }
 
     public int obtenerNumCursosMaestro(int claveMaestro)
