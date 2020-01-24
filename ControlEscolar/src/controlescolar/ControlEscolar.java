@@ -45,6 +45,10 @@ public class ControlEscolar
         ArrayList<Relacion> relacionesMaestrosConCursos = new DAORelaciones().obtenerItems();
         ArrayList<Registro> registros = new DAORegistros().obtenerItems();
 
+        maestros.sort(Comparator.comparing(Maestro::getNombre));
+        asignaturas.sort(Comparator.comparing(Asignatura::getNombreAsignatura));
+        alumnos.sort(Comparator.comparing(Alumno::getNombre));
+
         for (Maestro maestro : maestros)
             relaciones.put(maestro, new ArrayList<>());
 

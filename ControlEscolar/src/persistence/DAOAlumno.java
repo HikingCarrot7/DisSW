@@ -5,7 +5,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Formatter;
 import java.util.Scanner;
 import model.Alumno;
@@ -66,7 +65,6 @@ public class DAOAlumno extends DAO<ArrayList<Alumno>>
             System.out.println(ex.getMessage());
         }
 
-        alumnos.sort(Comparator.comparing(Alumno::getNombre));
         return alumnos;
     }
 }
