@@ -19,6 +19,9 @@ public class Menu
 
     public void mostrarMenu()
     {
+        System.out.println(controlEscolar.licenciaturasRegistradas());
+        controlEscolar.mostrarAsignaturasConRespectivosMaestros();
+
         while (true)
         {
             mostrarOpciones();

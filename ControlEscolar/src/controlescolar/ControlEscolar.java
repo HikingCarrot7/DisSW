@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 import model.*;
 import persistence.*;
@@ -46,7 +47,6 @@ public class ControlEscolar
                     .matricularAlumno(obtenerAlumno(registro.getMatricula()));
 
         ordenarDatos();
-
     }
 
     private void ordenarDatos()
@@ -55,15 +55,12 @@ public class ControlEscolar
         asignaturas.sort(Comparator.comparing(Asignatura::getNombreAsignatura));
         alumnos.sort(Comparator.comparing(Alumno::getNombre));
 
-        relaciones.entrySet()
-                .stream()
+        relaciones.entrySet().stream()
                 .map(Entry::getValue)
                 .flatMap(cursos -> cursos.stream()
                 .sorted(Comparator.comparing(curso -> curso.getAsignatura().getNombreAsignatura())))
                 .forEach(curso -> curso.getAlumnosInscritos()
-                .sort(Comparator.comparing(Alumno::getNombre)
-                        .thenComparing(Alumno::getApellido)));
-
+                .sort(Comparator.comparing(Alumno::getNombre).thenComparing(Alumno::getApellido)));
     }
 
     public void mostrarMaestros()
@@ -137,11 +134,31 @@ public class ControlEscolar
 
     public void mostrarAsignaturasAgrupadasPorLicenciatura()
     {
-        asignaturasAgrupadasPorLicenciatura().forEach((lic, asigs) ->
+        asignaturasAgrupadasPorLicenciatura()
+                .entrySet()
+                .stream()
+                .sorted(Comparator.comparing(Entry::getKey)).forEach(entry ->
         {
-            System.out.printf("%S\n", lic);
-            asigs.forEach(asig -> System.out.printf("\t%S\n", asig.getNombreAsignatura()));
+            System.out.printf("%S\n", entry.getKey());
+            entry.getValue().stream()
+                    .sorted(Comparator.comparing(Asignatura::getNombreAsignatura))
+                    .forEach(asig -> System.out.printf("\t%S\n", asig.getNombreAsignatura()));
         });
+    }
+
+    public void mostrarAsignaturasConRespectivosMaestros()
+    {
+        asignaturas.forEach(asignatura ->
+        {
+            System.out.printf("(%S)%-45S\n", asignatura.getLicenciatura(), asignatura.getNombreAsignatura());
+            obtenerMaestrosRelacionadosCurso(asignatura.getClaveAsignatura())
+                    .forEach(maestro -> System.out.printf("%-45s%s\n", " ", maestro.getNombreCompleto().toUpperCase()));
+        });
+    }
+
+    public void mostrarNumAsignaturasPorLicenciatura()
+    {
+        numAsignaturasPorLicenciatura().forEach((lic, n) -> System.out.printf("%-10S%S\n", lic, n));
     }
 
     public void anadirMaestro(int claveMaestro, String nombre, String apellido)
@@ -313,11 +330,13 @@ public class ControlEscolar
     }
 
     /**
+     * @deprecated
+     *
      * @param claveMaestro
      * @param claveAsignatura
      * @param matricula
+     *
      * @return
-     * @deprecated
      */
     public boolean chocanHorarios(int claveMaestro, int claveAsignatura, int matricula)
     {
@@ -406,6 +425,21 @@ public class ControlEscolar
                         .groupingBy(Asignatura::getLicenciatura, HashMap::new, Collectors.toList()));
     }
 
+    public TreeMap<String, Long> numAsignaturasPorLicenciatura()
+    {
+        return asignaturas.stream()
+                .collect(Collectors
+                        .groupingBy(Asignatura::getLicenciatura, TreeMap::new, Collectors.counting()));
+    }
+
+    public ArrayList<String> licenciaturasRegistradas()
+    {
+        return asignaturas.stream()
+                .map(Asignatura::getLicenciatura)
+                .distinct()
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
+
     public int obtenerNumCursosMaestro(int claveMaestro)
     {
         return obtenerCursosMaestro(claveMaestro).size();
@@ -413,7 +447,8 @@ public class ControlEscolar
 
     public int obtenerNumAlumnosInscritosCurso(int claveMaestro, int claveAsignatura)
     {
-        return obtenerCursoMaestro(claveMaestro, claveAsignatura).getAlumnosInscritos().size();
+        return maestroDaCurso(claveMaestro, claveAsignatura)
+                ? obtenerCursoMaestro(claveMaestro, claveAsignatura).getAlumnosInscritos().size() : -1;
     }
 
     public Asignatura obtenerAsignatura(int claveAsignatura)
