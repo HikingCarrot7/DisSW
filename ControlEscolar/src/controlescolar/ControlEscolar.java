@@ -328,30 +328,30 @@ public class ControlEscolar
 
     private ArrayList<Curso> obtenerCursosMatriculadosConAlumno(int matricula)
     {
-        return (ArrayList<Curso>) relaciones
+        return relaciones
                 .entrySet()
                 .stream()
                 .map(Entry::getValue)
                 .flatMap(Collection::stream)
                 .filter(curso -> curso.existeAlumnoMatriculado(matricula))
-                .collect(Collectors.toList());
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     private ArrayList<Horario> obtenerHorariosAlumno(int matricula)
     {
-        return (ArrayList<Horario>) obtenerCursosMatriculadosConAlumno(matricula)
+        return obtenerCursosMatriculadosConAlumno(matricula)
                 .stream()
                 .map(Curso::getHorario)
-                .collect(Collectors.toList());
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     public ArrayList<Maestro> obtenerMaestrosConMasCursos()
     {
         int maxCurso = relaciones.entrySet()
                 .stream()
-                .map(x -> x.getValue().size())
-                .max(Comparator.comparing(x -> x))
-                .get();
+                .mapToInt(x -> x.getValue().size())
+                .max()
+                .getAsInt();
 
         return obtenerMaestrosConNCursos(maxCurso);
     }
@@ -360,29 +360,29 @@ public class ControlEscolar
     {
         int minCurso = relaciones.entrySet()
                 .stream()
-                .map(x -> x.getValue().size())
-                .min(Comparator.comparing(x -> x))
-                .get();
+                .mapToInt(x -> x.getValue().size())
+                .min()
+                .getAsInt();
 
         return obtenerMaestrosConNCursos(minCurso);
     }
 
     private ArrayList<Maestro> obtenerMaestrosConNCursos(int nCursos)
     {
-        return (ArrayList<Maestro>) relaciones.entrySet()
+        return relaciones.entrySet()
                 .stream()
                 .filter(entry -> entry.getValue().size() == nCursos)
                 .map(Entry::getKey)
-                .collect(Collectors.toList());
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     public ArrayList<Maestro> obtenerMaestrosRelacionadosCurso(int claveAsignatura)
     {
-        return (ArrayList<Maestro>) relaciones.entrySet()
+        return relaciones.entrySet()
                 .stream()
                 .filter(entry -> entry.getValue().stream().anyMatch(curso -> curso.getAsignatura().getClaveAsignatura() == claveAsignatura))
                 .map(Entry::getKey)
-                .collect(Collectors.toList());
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     public long numAlumnosConElNombre(String nombre)
@@ -394,9 +394,9 @@ public class ControlEscolar
 
     public ArrayList<Asignatura> asignaturasDeLicenciatura(String licenciatura)
     {
-        return (ArrayList<Asignatura>) asignaturas.stream()
+        return asignaturas.stream()
                 .filter(asig -> asig.getLicenciatura().equals(licenciatura))
-                .collect(Collectors.toList());
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     private HashMap<String, List<Asignatura>> asignaturasAgrupadasPorLicenciatura()
