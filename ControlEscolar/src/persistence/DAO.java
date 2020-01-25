@@ -11,16 +11,18 @@ import java.util.ArrayList;
 public abstract class DAO<E>
 {
 
-    protected File file;
+    protected final File FILE;
     protected final String SALTO_LINEA = "\r\n";
 
     public DAO(String ruta)
     {
-        file = new File(ruta);
-        if (!file.exists())
+        FILE = new File(ruta);
+
+        if (!FILE.exists())
             try
             {
-                file.createNewFile();
+                FILE.createNewFile();
+
             } catch (IOException ex)
             {
                 System.out.println(ex.getMessage());

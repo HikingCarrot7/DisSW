@@ -1,12 +1,12 @@
 package persistence;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Formatter;
-import java.util.Scanner;
+import java.util.stream.Collectors;
 import model.Alumno;
 
 /**
@@ -32,7 +32,7 @@ public class DAOAlumno extends DAO<ArrayList<Alumno>>
                 .map((alumno) -> alumno + SALTO_LINEA)
                 .reduce(datosAlumno, String::concat);
 
-        try (Formatter out = new Formatter(new FileWriter(file)))
+        try (Formatter out = new Formatter(new FileWriter(FILE)))
         {
             out.format("%s", datosAlumno);
 
@@ -46,25 +46,19 @@ public class DAOAlumno extends DAO<ArrayList<Alumno>>
     @Override
     public ArrayList<Alumno> obtenerItems()
     {
-        ArrayList<Alumno> alumnos = new ArrayList<>();
-
-        try (Scanner in = new Scanner(new FileReader(file)))
+        try
         {
-            while (in.hasNext())
-            {
-                String[] datos = in.nextLine().split(",");
+            return Files.lines(Paths.get(RUTA_ALUMNOS))
+                    .map(line -> line.split(","))
+                    .map(data -> new Alumno(Integer.parseInt(data[0]), data[1], data[2]))
+                    .collect(Collectors.toCollection(ArrayList::new));
 
-                int matricula = Integer.parseInt(datos[0]);
-                String nombre = datos[1];
-                String apellido = datos[2];
-
-                alumnos.add(new Alumno(matricula, nombre, apellido));
-            }
-        } catch (FileNotFoundException ex)
+        } catch (IOException ex)
         {
             System.out.println(ex.getMessage());
         }
 
-        return alumnos;
+        return new ArrayList<>();
     }
+
 }

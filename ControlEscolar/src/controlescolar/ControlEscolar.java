@@ -40,11 +40,14 @@ public class ControlEscolar
             relaciones.put(maestro, new ArrayList<>());
 
         for (Relacion relacion : relacionesMaestrosConCursos)
-            anadirRelacionMaestroCurso(relacion.getClaveMaestro(), relacion.getClaveAsignatura());
+            if (existeMaestro(relacion.getClaveMaestro()) && existeAsignatura(relacion.getClaveAsignatura()))
+                anadirRelacionMaestroCurso(relacion.getClaveMaestro(), relacion.getClaveAsignatura());
 
         for (Registro registro : registros)
-            obtenerCursoMaestro(registro.getClaveMaestro(), registro.getClaveAsignatura())
-                    .matricularAlumno(obtenerAlumno(registro.getMatricula()));
+            if (existeMaestro(registro.getClaveMaestro()) && existeAsignatura(registro.getClaveAsignatura())
+                    && existeAlumno(registro.getMatricula()))
+                obtenerCursoMaestro(registro.getClaveMaestro(), registro.getClaveAsignatura())
+                        .matricularAlumno(obtenerAlumno(registro.getMatricula()));
 
         ordenarDatos();
     }
@@ -338,6 +341,7 @@ public class ControlEscolar
      *
      * @return
      */
+    @Deprecated
     public boolean chocanHorarios(int claveMaestro, int claveAsignatura, int matricula)
     {
         ArrayList<Curso> cursos = obtenerCursosMatriculadosConAlumno(matricula);

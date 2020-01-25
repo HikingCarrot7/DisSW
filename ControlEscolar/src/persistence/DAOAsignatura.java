@@ -1,12 +1,12 @@
 package persistence;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Formatter;
-import java.util.Scanner;
+import java.util.stream.Collectors;
 import model.Asignatura;
 
 /**
@@ -32,7 +32,7 @@ public class DAOAsignatura extends DAO<ArrayList<Asignatura>>
                 .map((asignatura) -> asignatura + SALTO_LINEA)
                 .reduce(datosAsignaturas, String::concat);
 
-        try (Formatter out = new Formatter(new FileWriter(file)))
+        try (Formatter out = new Formatter(new FileWriter(FILE)))
         {
             out.format("%s", datosAsignaturas);
 
@@ -45,25 +45,18 @@ public class DAOAsignatura extends DAO<ArrayList<Asignatura>>
     @Override
     public ArrayList<Asignatura> obtenerItems()
     {
-        ArrayList<Asignatura> asignaturas = new ArrayList<>();
-        try (Scanner in = new Scanner(new FileReader(file)))
+        try
         {
-            while (in.hasNext())
-            {
-                String[] datos = in.nextLine().split(",");
+            return Files.lines(Paths.get(RUTA_ASIGNATURAS))
+                    .map(line -> line.split(","))
+                    .map(data -> new Asignatura(Integer.parseInt(data[0]), data[1], data[2]))
+                    .collect(Collectors.toCollection(ArrayList::new));
 
-                int clave = Integer.parseInt(datos[0]);
-                String nombreAsignatura = datos[1];
-                String licenciatura = datos[2];
-
-                asignaturas.add(new Asignatura(clave, nombreAsignatura, licenciatura));
-            }
-
-        } catch (FileNotFoundException ex)
+        } catch (IOException ex)
         {
             System.out.println(ex.getMessage());
         }
 
-        return asignaturas;
+        return new ArrayList<>();
     }
 }

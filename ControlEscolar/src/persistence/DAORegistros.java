@@ -1,14 +1,13 @@
 package persistence;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.HashMap;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
+import java.util.stream.Collectors;
 import model.Curso;
 import model.Maestro;
 import model.Registro;
@@ -41,7 +40,7 @@ public class DAORegistros extends DAO<HashMap<Maestro, ArrayList<Curso>>>
                         + SALTO_LINEA)
                         .reduce(registros, String::concat);
 
-        try (Formatter out = new Formatter(new FileWriter(file)))
+        try (Formatter out = new Formatter(new FileWriter(FILE)))
         {
             out.format("%s", registros);
 
@@ -55,26 +54,19 @@ public class DAORegistros extends DAO<HashMap<Maestro, ArrayList<Curso>>>
     @Override
     public ArrayList<Registro> obtenerItems()
     {
-        ArrayList<Registro> registros = new ArrayList<>();
-
-        try (Scanner in = new Scanner(new FileReader(file)))
+        try
         {
-            while (in.hasNext())
-            {
-                String[] registro = in.nextLine().split(",");
+            return Files.lines(Paths.get(RUTA_REGISTROS))
+                    .map(line -> line.split(","))
+                    .map(data -> new Registro(Integer.parseInt(data[0]), Integer.parseInt(data[1]), Integer.parseInt(data[2])))
+                    .collect(Collectors.toCollection(ArrayList::new));
 
-                int claveMaestro = Integer.parseInt(registro[0]);
-                int claveAsignatura = Integer.parseInt(registro[1]);
-                int maticula = Integer.parseInt(registro[2]);
-
-                registros.add(new Registro(claveMaestro, claveAsignatura, maticula));
-            }
-
-        } catch (FileNotFoundException | NoSuchElementException ex)
+        } catch (IOException ex)
         {
+            System.out.println(ex.getMessage());
         }
 
-        return registros;
+        return new ArrayList<>();
     }
 
 }

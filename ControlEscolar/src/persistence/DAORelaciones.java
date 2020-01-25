@@ -1,13 +1,13 @@
 package persistence;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.HashMap;
-import java.util.Scanner;
+import java.util.stream.Collectors;
 import model.Curso;
 import model.Maestro;
 import model.Relacion;
@@ -39,7 +39,7 @@ public class DAORelaciones extends DAO<HashMap<Maestro, ArrayList<Curso>>>
                     + SALTO_LINEA)
                     .reduce(relaciones, String::concat);
 
-        try (Formatter out = new Formatter(new FileWriter(file)))
+        try (Formatter out = new Formatter(new FileWriter(FILE)))
         {
             out.format("%s", relaciones);
 
@@ -52,26 +52,19 @@ public class DAORelaciones extends DAO<HashMap<Maestro, ArrayList<Curso>>>
     @Override
     public ArrayList<Relacion> obtenerItems()
     {
-        ArrayList<Relacion> relacionesDeMaestrosConAsignaturas = new ArrayList<>();
-
-        try (Scanner in = new Scanner(new FileReader(file)))
+        try
         {
-            while (in.hasNext())
-            {
-                String[] relacion = in.nextLine().split(",");
+            return Files.lines(Paths.get(RUTA_RELACIONES))
+                    .map(line -> line.split(","))
+                    .map(data -> new Relacion(Integer.parseInt(data[0]), Integer.parseInt(data[1])))
+                    .collect(Collectors.toCollection(ArrayList::new));
 
-                int claveMaestro = Integer.parseInt(relacion[0]);
-                int claveAsignatura = Integer.parseInt(relacion[1]);
-
-                relacionesDeMaestrosConAsignaturas.add(new Relacion(claveMaestro, claveAsignatura));
-            }
-
-        } catch (FileNotFoundException ex)
+        } catch (IOException ex)
         {
             System.out.println(ex.getMessage());
         }
 
-        return relacionesDeMaestrosConAsignaturas;
+        return new ArrayList<>();
     }
 
 }
