@@ -44,8 +44,10 @@ public class ControlEscolar
                 anadirRelacionMaestroCurso(relacion.getClaveMaestro(), relacion.getClaveAsignatura());
 
         for (Registro registro : registros)
-            if (existeMaestro(registro.getClaveMaestro()) && existeAsignatura(registro.getClaveAsignatura())
-                    && existeAlumno(registro.getMatricula()))
+            if (existeMaestro(registro.getClaveMaestro())
+                    && existeAsignatura(registro.getClaveAsignatura())
+                    && existeAlumno(registro.getMatricula())
+                    && maestroDaCurso(registro.getClaveMaestro(), registro.getClaveAsignatura()))
                 obtenerCursoMaestro(registro.getClaveMaestro(), registro.getClaveAsignatura())
                         .matricularAlumno(obtenerAlumno(registro.getMatricula()));
 
@@ -242,6 +244,7 @@ public class ControlEscolar
 
             guardarAsignaturas();
             guardarRelacionesDeMaestrosConCursos();
+            guardarRegistros();
 
         } else
             System.out.println("La clave de la asignatura no existe.");
@@ -268,13 +271,7 @@ public class ControlEscolar
     private void anadirRelacionMaestroCurso(int claveMaestro, int claveAsignatura)
     {
         Maestro maestro = obtenerMaestro(claveMaestro);
-        Asignatura asignatura = obtenerAsignatura(claveAsignatura);
-
-        relaciones.get(maestro).add(new Curso(maestro,
-                new Asignatura(
-                        asignatura.getClaveAsignatura(),
-                        asignatura.getNombreAsignatura(),
-                        asignatura.getLicenciatura())));
+        relaciones.get(maestro).add(new Curso(maestro, obtenerAsignatura(claveAsignatura)));
     }
 
     public boolean quitarRelacionDeMaestroConCurso(int claveMaestro, int claveAsignatura)
