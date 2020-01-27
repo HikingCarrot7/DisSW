@@ -319,9 +319,15 @@ public class ControlEscolar
     {
         if (existeMaestro(claveMaestro) && existeAsignatura(claveAsignatura))
             if (maestroDaCurso(claveMaestro, claveAsignatura))
-                new GeneradorPdf().generarPdf(obtenerCursoMaestro(claveMaestro, claveAsignatura));
+            {
+                Curso curso = obtenerCursoMaestro(claveMaestro, claveAsignatura);
+                new GeneradorPdf().generarPdf(curso);
 
-            else
+                System.out.printf("\n\nReporte generado para la asignatura %S del maestro %S\n\n",
+                        curso.getAsignatura().getNombreAsignatura(),
+                        curso.getMaestro().getNombreCompleto());
+
+            } else
                 System.out.println("El maestro no imparte esta asignatura.");
 
         else
