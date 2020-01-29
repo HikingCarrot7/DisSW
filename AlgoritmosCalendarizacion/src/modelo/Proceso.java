@@ -4,18 +4,16 @@ package modelo;
  *
  * @author HikingC7
  */
-public class Proceso
+public abstract class Proceso
 {
 
     private String identificador;
-    private long tiempoLlegada;
-    private long tiempoRafaga; // ticks en milisegundos.
+    private final PCB PCB;
 
-    public Proceso(String identificador, long tiempoRafaga, long tiempoLlegada)
+    public Proceso(Estado estadoProceso, String identificador, int numProceso, long tiempoRafaga)
     {
         this.identificador = identificador;
-        this.tiempoRafaga = tiempoRafaga;
-        this.tiempoLlegada = tiempoLlegada;
+        PCB = new PCB(estadoProceso, numProceso, tiempoRafaga);
     }
 
     public String getIdentificador()
@@ -28,24 +26,14 @@ public class Proceso
         this.identificador = identificador;
     }
 
-    public long getTiempoRafaga()
+    public PCB PCB()
     {
-        return tiempoRafaga;
+        return PCB;
     }
 
-    public void setTiempoRafaga(long tiempoRafaga)
+    public boolean procesoTerminado()
     {
-        this.tiempoRafaga = tiempoRafaga;
-    }
-
-    public long getTiempoLlegada()
-    {
-        return tiempoLlegada;
-    }
-
-    public void setTiempoLlegada(long tiempoLlegada)
-    {
-        this.tiempoLlegada = tiempoLlegada;
+        return PCB.getEstadoProceso().equals(Estado.TERMINADO);
     }
 
 }

@@ -1,37 +1,22 @@
 package modelo;
 
 import java.util.ArrayDeque;
-import java.util.Comparator;
-import java.util.Queue;
-import java.util.stream.Collectors;
 
 /**
  *
  * @author HikingC7
  */
-public class Despachador implements Runnable
+public abstract class Despachador implements Runnable
 {
 
-    private CPU cpu;
-    private volatile Queue<Proceso> procesos;
+    protected CPU cpu;
+    protected volatile ArrayDeque<Proceso> procesos;
 
     public Despachador(CPU cpu)
     {
         this.cpu = cpu;
         this.procesos = new ArrayDeque<>();
         despachar();
-    }
-
-    public void recibirProceso(Proceso proceso)
-    {
-        System.out.println("El despachador ha recibido el proceso: " + proceso.getIdentificador());
-        procesos.add(proceso);
-        procesos = procesos.stream()
-                .sorted(Comparator.comparing(Proceso::getTiempoRafaga))
-                .collect(Collectors.toCollection(ArrayDeque::new));
-
-        if (!cpu.isOcupado())
-            cambiarContexto(procesos.remove());
     }
 
     private void despachar()
@@ -41,16 +26,15 @@ public class Despachador implements Runnable
 
     public void cambiarContexto(Proceso proceso)
     {
+        proceso.PCB().setEstadoProceso(Estado.EJECUTANDOSE);
+        System.out.println("El CPU ha recibido el proceso: " + proceso.getIdentificador());
         cpu.ejecutarProceso(proceso);
     }
 
+    public abstract void aceptarProceso(Proceso proceso);
+
     @Override
-    public void run()
-    {
-        while (true)
-            if (!cpu.isOcupado() && hayProcesosEsperando())
-                cambiarContexto(procesos.remove());
-    }
+    public abstract void run();
 
     public boolean hayProcesosEsperando()
     {

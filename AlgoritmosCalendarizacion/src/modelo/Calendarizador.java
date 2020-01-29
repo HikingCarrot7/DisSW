@@ -6,15 +6,15 @@ import java.util.stream.Collectors;
 
 /**
  *
- * @author HikingC7
+ * @author HikingCarrot7
  */
 public class Calendarizador implements Runnable
 {
 
-    private ArrayList<Proceso> procesos;
+    private ArrayList<ProcesoSRTF> procesos;
     private Despachador despachador;
 
-    public Calendarizador(ArrayList<Proceso> procesos, Despachador despachador)
+    public Calendarizador(ArrayList<ProcesoSRTF> procesos, Despachador despachador)
     {
         this.procesos = procesos;
         this.despachador = despachador;
@@ -25,7 +25,7 @@ public class Calendarizador implements Runnable
     private void ordenarProcesosTiempoLlegada()
     {
         procesos = procesos.stream()
-                .sorted(Comparator.comparing(Proceso::getTiempoLlegada))
+                .sorted(Comparator.comparing(ProcesoSRTF::getTiempoLlegada))
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
@@ -41,8 +41,8 @@ public class Calendarizador implements Runnable
         {
             try
             {
-                Thread.sleep(proceso.getTiempoLlegada());
-                despachador.recibirProceso(proceso);
+                Thread.sleep(proceso.PCB().getTiempoRafaga());
+                despachador.aceptarProceso(proceso);
                 System.out.println("Se ha entregado al despachador el proceso " + proceso.getIdentificador());
 
             } catch (InterruptedException ex)

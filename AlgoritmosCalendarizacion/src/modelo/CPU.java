@@ -8,13 +8,14 @@ public class CPU implements Runnable
 {
 
     private boolean ocupado;
+    private volatile boolean procesoInterrumpido;
     private Proceso procesoActual;
 
     public void ejecutarProceso(Proceso proceso)
     {
-        System.out.println("El CPU ha recibido el proceso: " + proceso.getIdentificador());
         procesoActual = proceso;
         ocupado = true;
+        procesoInterrumpido = false;
         new Thread(this).start();
     }
 
@@ -23,9 +24,15 @@ public class CPU implements Runnable
     {
         try
         {
-            Thread.sleep(procesoActual.getTiempoRafaga());
+            long tiempoEjecutado = procesoActual.PCB().getTiempoEjecutado();
+
+            for (int i = 0; (i < procesoActual.PCB().getTiempoRafaga() - tiempoEjecutado) && !procesoInterrumpido; i++)
+            {
+                Thread.sleep(1);
+                procesoActual.PCB().aumentarTiempoEjecutado();
+            }
+
             ocupado = false;
-            System.out.println("El CPU ha terminado de ejecutuar el proceso: " + procesoActual.getIdentificador());
 
         } catch (InterruptedException ex)
         {
@@ -52,6 +59,11 @@ public class CPU implements Runnable
     public void setProcesoActual(Proceso procesoActual)
     {
         this.procesoActual = procesoActual;
+    }
+
+    public void interrumpirProceso()
+    {
+        procesoInterrumpido = true;
     }
 
 }
