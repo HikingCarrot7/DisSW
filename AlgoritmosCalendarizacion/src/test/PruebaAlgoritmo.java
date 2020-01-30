@@ -1,14 +1,5 @@
 package test;
 
-import controlador.ControladorVistaPrincipal;
-import java.awt.EventQueue;
-import java.util.ArrayList;
-import modelo.CPU;
-import modelo.DespachadorRR;
-import modelo.Estado;
-import modelo.ProcesoRR;
-import vista.VistaPrincipal;
-
 /**
  *
  * @author HikingC7
@@ -41,17 +32,7 @@ public class PruebaAlgoritmo
         pcs.add(new ProcesoRR(Estado.NUEVO, "P5", 4, 5));
         pcs.add(new ProcesoRR(Estado.NUEVO, "P6", 5, 110));
 
-        DespachadorRR d = new DespachadorRR(cpu, pcs, 100);
-
-        EventQueue.invokeLater(() ->
-        {
-            VistaPrincipal vista = new VistaPrincipal();
-            vista.setVisible(true);
-            vista.setLocation(0, 650);
-            ControladorVistaPrincipal controlador = new ControladorVistaPrincipal(vista);
-            d.addObserver(controlador);
-        });
-
+        DespachadorRR d = new DespachadorRR(cpu, pcs, 100);*/
     }
 
 }
