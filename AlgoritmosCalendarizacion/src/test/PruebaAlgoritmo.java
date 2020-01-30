@@ -1,10 +1,8 @@
 package test;
 
-import java.util.ArrayList;
-import modelo.CPU;
-import modelo.DespachadorRR;
-import modelo.Estado;
-import modelo.ProcesoRR;
+import controlador.ControladorVistaPrincipal;
+import java.awt.EventQueue;
+import vista.VistaPrincipal;
 
 /**
  *
@@ -27,7 +25,7 @@ public class PruebaAlgoritmo
 
         new Calendarizador(procesos, despachador);*/
 
-        CPU cpu = new CPU();
+ /*CPU cpu = new CPU();
         ArrayList<ProcesoRR> pcs = new ArrayList<>();
 
         pcs.add(new ProcesoRR(Estado.NUEVO, "P1", 0, 100));
@@ -37,7 +35,14 @@ public class PruebaAlgoritmo
         pcs.add(new ProcesoRR(Estado.NUEVO, "P5", 4, 5));
         pcs.add(new ProcesoRR(Estado.NUEVO, "P6", 5, 110));
 
-        DespachadorRR d = new DespachadorRR(cpu, pcs, 5);
+        DespachadorRR d = new DespachadorRR(cpu, pcs, 100);*/
+        EventQueue.invokeLater(() ->
+        {
+            VistaPrincipal vista = new VistaPrincipal();
+            vista.setVisible(true);
+            vista.setLocationRelativeTo(null);
+            new ControladorVistaPrincipal(vista);
+        });
 
     }
 

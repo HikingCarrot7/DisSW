@@ -35,7 +35,7 @@ public class DespachadorRR extends Despachador
     {
         System.out.println("El despachador ha recibido el proceso: " + proceso.getIdentificador());
         procesos.add(proceso);
-        proceso.PCB().setEstadoProceso(Estado.LISTO);
+        proceso.PCB.setEstadoProceso(Estado.LISTO);
     }
 
     @Override
@@ -77,12 +77,12 @@ public class DespachadorRR extends Despachador
 
     private void revisarEstadoProceso(Proceso proceso)
     {
-        proceso.PCB().setEstadoProceso(tiempoRestanteProceso(proceso) <= 0 ? Estado.TERMINADO : Estado.ESPERA);
+        proceso.PCB.setEstadoProceso(tiempoRestanteProceso(proceso) <= 0 ? Estado.TERMINADO : Estado.ESPERA);
     }
 
     private long tiempoRestanteProceso(Proceso proceso)
     {
-        return proceso.PCB().getTiempoRafaga() - proceso.PCB().getTiempoEjecutado();
+        return proceso.PCB.getTiempoRafaga() - proceso.PCB.getTiempoEjecutado();
     }
 
 }

@@ -26,7 +26,7 @@ public abstract class Despachador implements Runnable
     public Proceso cambiarContexto(Proceso proceso)
     {
         cpu.ejecutarProceso(proceso);
-        proceso.PCB().setEstadoProceso(Estado.EJECUCION);
+        proceso.PCB.setEstadoProceso(Estado.EJECUCION);
         System.out.println("El CPU ha recibido el proceso: " + proceso.getIdentificador());
         return proceso;
     }
@@ -34,7 +34,7 @@ public abstract class Despachador implements Runnable
     public Proceso cambiarContexto(Proceso proceso, long tiempoUsoCPU)
     {
         cpu.ejecutarProceso(proceso, tiempoUsoCPU);
-        proceso.PCB().setEstadoProceso(Estado.EJECUCION);
+        proceso.PCB.setEstadoProceso(Estado.EJECUCION);
         System.out.println("El CPU ha recibido el proceso: " + proceso.getIdentificador());
         return proceso;
     }

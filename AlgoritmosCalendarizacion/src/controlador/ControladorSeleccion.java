@@ -33,7 +33,9 @@ public class ControladorSeleccion implements ActionListener
 
             default:
                 throw new AssertionError();
+
         }
+
     }
 
 }

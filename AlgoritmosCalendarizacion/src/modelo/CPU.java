@@ -15,7 +15,7 @@ public class CPU implements Runnable
     public void ejecutarProceso(Proceso proceso)
     {
         procesoActual = proceso;
-        tiempoUsoCPU = proceso.PCB().getTiempoRafaga();
+        tiempoUsoCPU = proceso.PCB.getTiempoRafaga();
         iniciarEjecucion();
     }
 
@@ -38,15 +38,15 @@ public class CPU implements Runnable
     {
         try
         {
-            System.out.printf("El proceso %s tiene un tiempo ejecutado de: %s\n", procesoActual.getIdentificador(), procesoActual.PCB().getTiempoEjecutado());
+            System.out.printf("El proceso %s tiene un tiempo ejecutado de: %s\n", procesoActual.getIdentificador(), procesoActual.PCB.getTiempoEjecutado());
 
             for (int i = 0; i < tiempoUsoCPU; i++)
             {
                 Thread.sleep(1);
-                procesoActual.PCB().aumentarTiempoEjecutado(1);
+                procesoActual.PCB.aumentarTiempoEjecutado(1);
             }
 
-            System.out.printf("El proceso %s lleva un tiempo ejecutado de: %s\n", procesoActual.getIdentificador(), procesoActual.PCB().getTiempoEjecutado());
+            System.out.printf("El proceso %s lleva un tiempo ejecutado de: %s\n", procesoActual.getIdentificador(), procesoActual.PCB.getTiempoEjecutado());
 
             ocupado = false;
 

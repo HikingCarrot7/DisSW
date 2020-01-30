@@ -8,7 +8,7 @@ public abstract class Proceso
 {
 
     private String identificador;
-    private final PCB PCB;
+    public final PCB PCB;
 
     public Proceso(Estado estadoProceso, String identificador, int numProceso, long tiempoRafaga)
     {
@@ -24,11 +24,6 @@ public abstract class Proceso
     public void setIdentificador(String identificador)
     {
         this.identificador = identificador;
-    }
-
-    public PCB PCB()
-    {
-        return PCB;
     }
 
     public boolean procesoTerminado()

@@ -22,8 +22,8 @@ public class DespachadorSRTF extends Despachador
         System.out.println("El despachador ha recibido el proceso: " + proceso.getIdentificador());
         procesos.add(proceso);
         procesos = procesos.stream()
-                .sorted((p1, p2) -> p1.PCB().compareTo(p2.PCB()))
-                .peek(p -> p.PCB().setEstadoProceso(Estado.LISTO))
+                .sorted((p1, p2) -> p1.PCB.compareTo(p2.PCB))
+                .peek(p -> p.PCB.setEstadoProceso(Estado.LISTO))
                 .collect(Collectors.toCollection(ArrayDeque::new));
 
         if (!cpu.isOcupado())
