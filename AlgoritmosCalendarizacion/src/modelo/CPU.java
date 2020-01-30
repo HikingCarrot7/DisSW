@@ -7,13 +7,27 @@ package modelo;
 public class CPU implements Runnable
 {
 
-    private boolean ocupado;
+    private volatile boolean ocupado;
     private volatile boolean procesoInterrumpido;
     private Proceso procesoActual;
+    private long tiempoUsoCPU;
 
     public void ejecutarProceso(Proceso proceso)
     {
         procesoActual = proceso;
+        tiempoUsoCPU = proceso.PCB().getTiempoRafaga();
+        iniciarEjecucion();
+    }
+
+    public void ejecutarProceso(Proceso proceso, long tiempoUsoCPU)
+    {
+        procesoActual = proceso;
+        this.tiempoUsoCPU = tiempoUsoCPU;
+        iniciarEjecucion();
+    }
+
+    private void iniciarEjecucion()
+    {
         ocupado = true;
         procesoInterrumpido = false;
         new Thread(this).start();
@@ -24,13 +38,15 @@ public class CPU implements Runnable
     {
         try
         {
-            long tiempoEjecutado = procesoActual.PCB().getTiempoEjecutado();
+            System.out.printf("El proceso %s tiene un tiempo ejecutado de: %s\n", procesoActual.getIdentificador(), procesoActual.PCB().getTiempoEjecutado());
 
-            for (int i = 0; (i < procesoActual.PCB().getTiempoRafaga() - tiempoEjecutado) && !procesoInterrumpido; i++)
+            for (int i = 0; i < tiempoUsoCPU; i++)
             {
                 Thread.sleep(1);
-                procesoActual.PCB().aumentarTiempoEjecutado();
+                procesoActual.PCB().aumentarTiempoEjecutado(1);
             }
+
+            System.out.printf("El proceso %s lleva un tiempo ejecutado de: %s\n", procesoActual.getIdentificador(), procesoActual.PCB().getTiempoEjecutado());
 
             ocupado = false;
 

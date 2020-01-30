@@ -16,19 +16,27 @@ public abstract class Despachador implements Runnable
     {
         this.cpu = cpu;
         this.procesos = new ArrayDeque<>();
-        despachar();
     }
 
-    private void despachar()
+    protected void despacharProcesos()
     {
         new Thread(this).start();
     }
 
-    public void cambiarContexto(Proceso proceso)
+    public Proceso cambiarContexto(Proceso proceso)
     {
-        proceso.PCB().setEstadoProceso(Estado.EJECUTANDOSE);
-        System.out.println("El CPU ha recibido el proceso: " + proceso.getIdentificador());
         cpu.ejecutarProceso(proceso);
+        proceso.PCB().setEstadoProceso(Estado.EJECUCION);
+        System.out.println("El CPU ha recibido el proceso: " + proceso.getIdentificador());
+        return proceso;
+    }
+
+    public Proceso cambiarContexto(Proceso proceso, long tiempoUsoCPU)
+    {
+        cpu.ejecutarProceso(proceso, tiempoUsoCPU);
+        proceso.PCB().setEstadoProceso(Estado.EJECUCION);
+        System.out.println("El CPU ha recibido el proceso: " + proceso.getIdentificador());
+        return proceso;
     }
 
     public abstract void aceptarProceso(Proceso proceso);

@@ -31,13 +31,13 @@ public class PruebaAlgoritmo
         ArrayList<ProcesoRR> pcs = new ArrayList<>();
 
         pcs.add(new ProcesoRR(Estado.NUEVO, "P1", 0, 100));
-        pcs.add(new ProcesoRR(Estado.NUEVO, "P2", 1, 50));
-        pcs.add(new ProcesoRR(Estado.NUEVO, "P3", 2, 200));
-        pcs.add(new ProcesoRR(Estado.NUEVO, "P4", 3, 20));
-        pcs.add(new ProcesoRR(Estado.NUEVO, "P5", 4, 0));
-        pcs.add(new ProcesoRR(Estado.NUEVO, "P6", 5, 900));
+        pcs.add(new ProcesoRR(Estado.NUEVO, "P2", 1, 500));
+        pcs.add(new ProcesoRR(Estado.NUEVO, "P3", 2, 5000));
+        pcs.add(new ProcesoRR(Estado.NUEVO, "P4", 3, 90));
+        pcs.add(new ProcesoRR(Estado.NUEVO, "P5", 4, 5));
+        pcs.add(new ProcesoRR(Estado.NUEVO, "P6", 5, 110));
 
-        DespachadorRR d = new DespachadorRR(cpu, pcs, 80);
+        DespachadorRR d = new DespachadorRR(cpu, pcs, 5);
 
     }
 

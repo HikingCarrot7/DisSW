@@ -26,28 +26,16 @@ public class DespachadorRR extends Despachador
         {
             aceptarProceso(proceso);
         });
+
+        despacharProcesos();
     }
 
     @Override
     public void aceptarProceso(Proceso proceso)
     {
         System.out.println("El despachador ha recibido el proceso: " + proceso.getIdentificador());
-        proceso.PCB().setEstadoProceso(Estado.LISTO);
         procesos.add(proceso);
-
-        if (!cpu.isOcupado())
-            cambiarContexto(procesos.remove());
-    }
-
-    private void revisarEstadoProceso(Proceso proceso)
-    {
-        if (proceso.PCB().getTiempoRafaga() - proceso.PCB().getTiempoEjecutado() <= 0)
-        {
-            proceso.PCB().setEstadoProceso(Estado.TERMINADO);
-            System.out.println("El CPU ha terminado de ejecutar el proceso: " + proceso.getIdentificador());
-            procesosTerminados.add(proceso);
-        }
-
+        proceso.PCB().setEstadoProceso(Estado.LISTO);
     }
 
     @Override
@@ -55,26 +43,46 @@ public class DespachadorRR extends Despachador
     {
         while (true)
             if (hayProcesosEsperando())
-                try
+            {
+                Proceso proceso = procesos.remove();
+
+                cambiarContexto(proceso, obtenerTiempoUsoCPU(proceso));
+
+                esperar();
+                revisarEstadoProceso(proceso);
+
+                if (proceso.procesoTerminado())
                 {
+                    System.out.println("El CPU ha terminado de ejecutar el proceso: " + proceso.getIdentificador());
+                    procesosTerminados.add(proceso);
 
-                    Thread.sleep(QUANTUM);
-                    Proceso proceso = cpu.getProcesoActual();
-                    cpu.interrumpirProceso();
-                    proceso.PCB().setEstadoProceso(Estado.ESPERA);
+                } else
+                    procesos.addLast(proceso);
 
-                    revisarEstadoProceso(proceso);
+            }
 
-                    if (!proceso.procesoTerminado())
-                        procesos.addLast(proceso);
+    }
 
-                    cambiarContexto(procesos.remove());
+    private void esperar()
+    {
+        while (cpu.isOcupado())
+        {
+        }
+    }
 
-                } catch (InterruptedException ex)
-                {
-                    System.out.println(ex.getMessage());
-                }
+    private long obtenerTiempoUsoCPU(Proceso proceso)
+    {
+        return tiempoRestanteProceso(proceso) >= QUANTUM ? QUANTUM : tiempoRestanteProceso(proceso);
+    }
 
+    private void revisarEstadoProceso(Proceso proceso)
+    {
+        proceso.PCB().setEstadoProceso(tiempoRestanteProceso(proceso) <= 0 ? Estado.TERMINADO : Estado.ESPERA);
+    }
+
+    private long tiempoRestanteProceso(Proceso proceso)
+    {
+        return proceso.PCB().getTiempoRafaga() - proceso.PCB().getTiempoEjecutado();
     }
 
 }

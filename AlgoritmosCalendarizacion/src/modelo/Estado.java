@@ -8,7 +8,7 @@ public enum Estado
 {
     NUEVO,
     LISTO,
-    EJECUTANDOSE,
+    EJECUCION,
     ESPERA,
     TERMINADO
 }

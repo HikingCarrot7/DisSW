@@ -59,9 +59,9 @@ public class PCB implements Comparable<PCB>
         this.tiempoEjecutado = tiempoEjecutado;
     }
 
-    public void aumentarTiempoEjecutado()
+    public void aumentarTiempoEjecutado(long tiempo)
     {
-        tiempoEjecutado++;
+        tiempoEjecutado += tiempo;
     }
 
     @Override

@@ -13,6 +13,7 @@ public class DespachadorSRTF extends Despachador
     public DespachadorSRTF(CPU cpu)
     {
         super(cpu);
+        despacharProcesos();
     }
 
     @Override
