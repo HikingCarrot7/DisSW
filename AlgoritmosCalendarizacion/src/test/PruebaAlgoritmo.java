@@ -1,9 +1,5 @@
 package test;
 
-import controlador.ControladorVistaPrincipal;
-import java.awt.EventQueue;
-import vista.VistaPrincipal;
-
 /**
  *
  * @author HikingC7
@@ -36,14 +32,6 @@ public class PruebaAlgoritmo
         pcs.add(new ProcesoRR(Estado.NUEVO, "P6", 5, 110));
 
         DespachadorRR d = new DespachadorRR(cpu, pcs, 100);*/
-        EventQueue.invokeLater(() ->
-        {
-            VistaPrincipal vista = new VistaPrincipal();
-            vista.setVisible(true);
-            vista.setLocationRelativeTo(null);
-            new ControladorVistaPrincipal(vista);
-        });
-
     }
 
 }
