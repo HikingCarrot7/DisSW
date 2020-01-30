@@ -1,8 +1,7 @@
 package vista;
 
+import java.awt.Canvas;
 import javax.swing.JButton;
-import javax.swing.JDesktopPane;
-import javax.swing.JInternalFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
@@ -13,9 +12,6 @@ import javax.swing.JTable;
 public class VistaPrincipal extends javax.swing.JFrame
 {
 
-    /**
-     * Creates new form VistaPrincipal
-     */
     public VistaPrincipal()
     {
         initComponents();
@@ -31,16 +27,13 @@ public class VistaPrincipal extends javax.swing.JFrame
 
         panelResumen = new javax.swing.JScrollPane();
         tablaResumen = new javax.swing.JTable();
-        soporteEsquema = new javax.swing.JDesktopPane();
-        esquema = new javax.swing.JInternalFrame();
         panelLlegada = new javax.swing.JScrollPane();
         tablaLlegada = new javax.swing.JTable();
         simulacion = new javax.swing.JButton();
+        esquema = new java.awt.Canvas();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(1000, 600));
         setMinimumSize(new java.awt.Dimension(1000, 600));
-        setPreferredSize(new java.awt.Dimension(1000, 600));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -68,34 +61,6 @@ public class VistaPrincipal extends javax.swing.JFrame
         panelResumen.setViewportView(tablaResumen);
 
         getContentPane().add(panelResumen, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 35, -1, -1));
-
-        esquema.setVisible(true);
-
-        javax.swing.GroupLayout esquemaLayout = new javax.swing.GroupLayout(esquema.getContentPane());
-        esquema.getContentPane().setLayout(esquemaLayout);
-        esquemaLayout.setHorizontalGroup(
-            esquemaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 564, Short.MAX_VALUE)
-        );
-        esquemaLayout.setVerticalGroup(
-            esquemaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 496, Short.MAX_VALUE)
-        );
-
-        soporteEsquema.setLayer(esquema, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-        javax.swing.GroupLayout soporteEsquemaLayout = new javax.swing.GroupLayout(soporteEsquema);
-        soporteEsquema.setLayout(soporteEsquemaLayout);
-        soporteEsquemaLayout.setHorizontalGroup(
-            soporteEsquemaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(esquema)
-        );
-        soporteEsquemaLayout.setVerticalGroup(
-            soporteEsquemaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(esquema)
-        );
-
-        getContentPane().add(soporteEsquema, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 35, 580, 525));
 
         panelLlegada.setMaximumSize(new java.awt.Dimension(155, 525));
         panelLlegada.setMinimumSize(new java.awt.Dimension(155, 525));
@@ -127,27 +92,17 @@ public class VistaPrincipal extends javax.swing.JFrame
         simulacion.setPreferredSize(new java.awt.Dimension(155, 25));
         getContentPane().add(simulacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 5, -1, -1));
 
+        esquema.setMaximumSize(new java.awt.Dimension(580, 525));
+        esquema.setMinimumSize(new java.awt.Dimension(580, 525));
+        esquema.setPreferredSize(new java.awt.Dimension(580, 525));
+        getContentPane().add(esquema, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 35, -1, -1));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     public JScrollPane getPanelResumen()
     {
         return panelResumen;
-    }
-
-    public JDesktopPane getSoporteEsquema()
-    {
-        return soporteEsquema;
-    }
-
-    public JInternalFrame getEsquema()
-    {
-        return esquema;
-    }
-
-    public void setEsquema(JInternalFrame esquema)
-    {
-        this.esquema = esquema;
     }
 
     public JScrollPane getPanelLlegada()
@@ -170,12 +125,16 @@ public class VistaPrincipal extends javax.swing.JFrame
         return tablaResumen;
     }
 
+    public Canvas getEsquema()
+    {
+        return esquema;
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JInternalFrame esquema;
+    private java.awt.Canvas esquema;
     private javax.swing.JScrollPane panelLlegada;
     private javax.swing.JScrollPane panelResumen;
     private javax.swing.JButton simulacion;
-    private javax.swing.JDesktopPane soporteEsquema;
     private javax.swing.JTable tablaLlegada;
     private javax.swing.JTable tablaResumen;
     // End of variables declaration//GEN-END:variables

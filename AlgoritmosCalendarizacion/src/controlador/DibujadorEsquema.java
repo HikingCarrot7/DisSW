@@ -1,18 +1,22 @@
 package controlador;
 
+import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.FontMetrics;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.GeneralPath;
-import javax.swing.JPanel;
+import java.awt.image.BufferStrategy;
+import modelo.Proceso;
 
 /**
  *
  * @author HikingCarrot7
  */
-public final class Esquema extends JPanel
+public final class DibujadorEsquema
 {
+
+    private Canvas esquema;
 
     private final int HEIGHT = 525;
     private final int WIDTH = 580;
@@ -26,21 +30,36 @@ public final class Esquema extends JPanel
     private final int TINY_TRIANGLE = 5;
     private final int MAX_PROCESOS_LINEA = (WIDTH - OFFSET_X * 2) / PROCESO_RECT_WIDTH - 1;
 
-    private Rectangle cpu;
+    private final Rectangle CPU;
+    private Proceso procesoActual;
+    private long tiempoUsoCPUActual;
 
-    public Esquema()
+    public DibujadorEsquema(Canvas esquema)
     {
-        cpu = new Rectangle(MIDDLE - CPU_WIDTH / 2, 10, CPU_WIDTH, CPU_HEIGHT);
-        repaint();
+        CPU = new Rectangle(MIDDLE - CPU_WIDTH / 2, 10, CPU_WIDTH, CPU_HEIGHT);
+        this.esquema = esquema;
     }
 
-    @Override
-    public void paint(Graphics g)
+    public void init()
     {
-        super.paint(g);
-        Graphics2D g2d = (Graphics2D) g;
-        dibujarProcesador(g2d);
-        dibujarTiemposEsperaProcesos(g2d);
+        esquema.createBufferStrategy(3);
+    }
+
+    public void render()
+    {
+        BufferStrategy bs = esquema.getBufferStrategy();
+        Graphics2D g = (Graphics2D) bs.getDrawGraphics();
+
+        g.setColor(Color.WHITE);
+        g.fillRect(0, 0, WIDTH, HEIGHT);
+        g.setColor(Color.BLACK);
+
+        dibujarProcesador(g);
+        dibujarTiemposEsperaProcesos(g);
+        dibujarProcesoActual(g);
+
+        bs.show();
+        g.dispose();
     }
 
     private void dibujarTiemposEsperaProcesos(Graphics2D g)
@@ -57,42 +76,50 @@ public final class Esquema extends JPanel
             dibujarStringPunto(g, "P999", x + PROCESO_RECT_WIDTH / 2, y + 3);
         }
 
-        drawLargeLine(g, OFFSET_X + MAX_PROCESOS_LINEA * PROCESO_RECT_WIDTH, 230 + PROCESO_RECT_HEIGHT / 2);
-
+        //drawLargeLine(g, OFFSET_X + MAX_PROCESOS_LINEA * PROCESO_RECT_WIDTH, 230 + PROCESO_RECT_HEIGHT / 2);
     }
 
     private void dibujarProcesador(Graphics2D g)
     {
         final int LINE_LENGTH = 8;
 
-        dibujarRectanguloCentrado(g, cpu);
-        dibujarTextoCentradoRect(g, "Core i9 999999 xe", 20, cpu);
+        dibujarRectanguloCentrado(g, CPU);
+        dibujarTextoCentradoRect(g, "Intel(R) Core(TM) i9-9990XE", 20, CPU);
 
-        for (int i = 0; i <= cpu.width; i += 5)
+        for (int i = 0; i <= CPU.width; i += 5)
         {
-            g.drawLine(cpu.x + i, cpu.y, cpu.x + i, cpu.y - LINE_LENGTH);
-            g.drawLine(cpu.x + i, cpu.y + cpu.height, cpu.x + i, cpu.y + cpu.height + LINE_LENGTH);
+            g.drawLine(CPU.x + i, CPU.y, CPU.x + i, CPU.y - LINE_LENGTH);
+            g.drawLine(CPU.x + i, CPU.y + CPU.height, CPU.x + i, CPU.y + CPU.height + LINE_LENGTH);
         }
 
-        for (int i = 0; i <= cpu.height; i += 5)
+        for (int i = 0; i <= CPU.height; i += 5)
         {
-            g.drawLine(cpu.x, cpu.y + i, cpu.x - LINE_LENGTH, cpu.y + i);
-            g.drawLine(cpu.x + cpu.width, cpu.y + i, cpu.x + cpu.width + LINE_LENGTH, cpu.y + i);
+            g.drawLine(CPU.x, CPU.y + i, CPU.x - LINE_LENGTH, CPU.y + i);
+            g.drawLine(CPU.x + CPU.width, CPU.y + i, CPU.x + CPU.width + LINE_LENGTH, CPU.y + i);
         }
 
     }
 
-    public void actualizarEsquema(String mensaje)
+    public void dibujarProcesoActual(Proceso proceso, long tiempoUsoCpu)
     {
-        Graphics2D g = (Graphics2D) getGraphics();
-        //super.paint(g);
-        //paint(g);
+        procesoActual = proceso;
+    }
 
-        g.drawString("Hola", 10, 10);
-        Rectangle r = g.getFontMetrics().getStringBounds(mensaje, g).getBounds();
-        repaint();
-        // Actualizas los datos
-        //g.dispose();
+    private void dibujarProcesoActual(Graphics2D g)
+    {
+        final int BOX_WIDTH = 150;
+        final int BOX_HEIGHT = 10;
+
+        if (procesoActual != null)
+        {
+            dibujarTextoCentradoRect(g, "Proceso actual", 80, CPU);
+            dibujarTextoCentradoRect(g, procesoActual.getIdentificador(), 95, CPU);
+            g.drawRect(CPU.x + CPU.width / 2 - BOX_WIDTH / 2, 175, BOX_WIDTH, BOX_HEIGHT);
+            g.fillRect(CPU.x + CPU.width / 2 - BOX_WIDTH / 2, 175, BOX_WIDTH / 2, BOX_HEIGHT);
+
+        } else
+            dibujarTextoCentradoRect(g, "No hay procesos esperando", 80, CPU);
+
     }
 
     private void dibujarRectanguloCentrado(Graphics2D g, int y, int width, int height)

@@ -1,13 +1,10 @@
 package controlador;
 
-import java.awt.BorderLayout;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Observable;
 import java.util.Observer;
-import javax.swing.JInternalFrame;
-import javax.swing.JLayeredPane;
+import modelo.Notificacion;
 import vista.VistaPrincipal;
 
 /**
@@ -18,13 +15,18 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
 {
 
     private VistaPrincipal vista;
-    private Esquema esquema;
+    private DibujadorEsquema dibujadorEsquema;
 
     public ControladorVistaPrincipal(VistaPrincipal vista)
     {
         this.vista = vista;
-        esquema = new Esquema();
-        repintarEsquema();
+        dibujadorEsquema = new DibujadorEsquema(vista.getEsquema());
+        initEsquema();
+    }
+
+    private void initEsquema()
+    {
+        new Ticker(dibujadorEsquema);
     }
 
     @Override
@@ -33,23 +35,29 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
 
     }
 
-    private void repintarEsquema()
-    {
-        Rectangle tamanio = vista.getEsquema().getBounds();
-        System.out.println(tamanio.width);
-        vista.getSoporteEsquema().removeAll();
-        vista.setEsquema(new JInternalFrame("Representación de los procesos.", true));
-        vista.getSoporteEsquema().add(vista.getEsquema(), JLayeredPane.DEFAULT_LAYER);
-        vista.getEsquema().setBounds(tamanio);
-        vista.getEsquema().setVisible(true);
-        vista.getEsquema().setEnabled(false);
-        vista.getEsquema().add(esquema, BorderLayout.CENTER);
-    }
-
     @Override
     public void update(Observable o, Object arg)
     {
-        esquema.actualizarEsquema((String) arg);
+        if (arg instanceof Notificacion)
+        {
+            Notificacion notificacion = (Notificacion) arg;
+
+            switch (notificacion.getIdentificador())
+            {
+                case PROCESO_ENTRO_CPU:
+                    dibujadorEsquema.dibujarProcesoActual(notificacion.getProceso(),
+                            notificacion.getTiempoUsoCpu());
+                    break;
+
+                case PROCESO_DEJO_CPU:
+                    dibujadorEsquema.dibujarProcesoActual(null, 0);
+                    break;
+
+                default:
+                    throw new AssertionError();
+            }
+        }
+
     }
 
 }

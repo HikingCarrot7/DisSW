@@ -1,5 +1,14 @@
 package test;
 
+import controlador.ControladorVistaPrincipal;
+import java.awt.EventQueue;
+import java.util.ArrayList;
+import modelo.CPU;
+import modelo.DespachadorRR;
+import modelo.Estado;
+import modelo.ProcesoRR;
+import vista.VistaPrincipal;
+
 /**
  *
  * @author HikingC7
@@ -25,14 +34,24 @@ public class PruebaAlgoritmo
         CPU cpu = new CPU();
         ArrayList<ProcesoRR> pcs = new ArrayList<>();
 
-        pcs.add(new ProcesoRR(Estado.NUEVO, "P1", 0, 100));
-        pcs.add(new ProcesoRR(Estado.NUEVO, "P2", 1, 500));
-        pcs.add(new ProcesoRR(Estado.NUEVO, "P3", 2, 5000));
-        pcs.add(new ProcesoRR(Estado.NUEVO, "P4", 3, 90));
-        pcs.add(new ProcesoRR(Estado.NUEVO, "P5", 4, 5));
-        pcs.add(new ProcesoRR(Estado.NUEVO, "P6", 5, 110));
+        pcs.add(new ProcesoRR(Estado.NUEVO, "P1", 0, 10000));
+        pcs.add(new ProcesoRR(Estado.NUEVO, "P2", 1, 5000));
+        pcs.add(new ProcesoRR(Estado.NUEVO, "P3", 2, 7000));
+        pcs.add(new ProcesoRR(Estado.NUEVO, "P4", 3, 4000));
+        pcs.add(new ProcesoRR(Estado.NUEVO, "P5", 4, 500));
+        pcs.add(new ProcesoRR(Estado.NUEVO, "P6", 5, 11000));
 
-        DespachadorRR d = new DespachadorRR(cpu, pcs, 100);*/
+        DespachadorRR d = new DespachadorRR(cpu, pcs, 10000);
+
+        EventQueue.invokeLater(() ->
+        {
+            VistaPrincipal vista = new VistaPrincipal();
+            vista.setVisible(true);
+            vista.setLocationRelativeTo(null);
+            ControladorVistaPrincipal control = new ControladorVistaPrincipal(vista);
+            d.addObserver(control);
+        });
+
     }
 
 }

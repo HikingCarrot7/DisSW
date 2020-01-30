@@ -20,7 +20,7 @@ public class DespachadorSRTF extends Despachador
     public void aceptarProceso(Proceso proceso)
     {
         System.out.println("El despachador ha recibido el proceso: " + proceso.getIdentificador());
-        notificar("El despachador ha recibido el proceso: " + proceso.getIdentificador());
+        //notificar("El despachador ha recibido el proceso: " + proceso.getIdentificador());
         procesos.add(proceso);
         procesos = procesos.stream()
                 .sorted((p1, p2) -> p1.PCB.compareTo(p2.PCB))

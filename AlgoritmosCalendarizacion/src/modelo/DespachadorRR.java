@@ -34,7 +34,7 @@ public class DespachadorRR extends Despachador
     public void aceptarProceso(Proceso proceso)
     {
         System.out.println("El despachador ha recibido el proceso: " + proceso.getIdentificador());
-        notificar("El despachador ha recibido el proceso: " + proceso.getIdentificador());
+        //notificar("El despachador ha recibido el proceso: " + proceso.getIdentificador());
         procesos.add(proceso);
         proceso.PCB.setEstadoProceso(Estado.LISTO);
     }
@@ -55,7 +55,7 @@ public class DespachadorRR extends Despachador
                 if (proceso.procesoTerminado())
                 {
                     System.out.println("El CPU ha terminado de ejecutar el proceso: " + proceso.getIdentificador());
-                    notificar("El CPU ha terminado de ejecutar el proceso: " + proceso.getIdentificador());
+                    notificar(new Notificacion(Identificador.PROCESO_DEJO_CPU, proceso, 0));
                     procesosTerminados.add(proceso);
 
                 } else

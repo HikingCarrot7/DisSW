@@ -26,19 +26,19 @@ public abstract class Despachador extends Observable implements Runnable
 
     public Proceso cambiarContexto(Proceso proceso)
     {
+        notificar(new Notificacion(Identificador.PROCESO_ENTRO_CPU, proceso, proceso.PCB.getTiempoRafaga()));
         cpu.ejecutarProceso(proceso);
         proceso.PCB.setEstadoProceso(Estado.EJECUCION);
         System.out.println("El CPU ha recibido el proceso: " + proceso.getIdentificador());
-        notificar("El CPU ha recibido el proceso: " + proceso.getIdentificador());
         return proceso;
     }
 
     public Proceso cambiarContexto(Proceso proceso, long tiempoUsoCPU)
     {
+        notificar(new Notificacion(Identificador.PROCESO_ENTRO_CPU, proceso, tiempoUsoCPU));
         cpu.ejecutarProceso(proceso, tiempoUsoCPU);
         proceso.PCB.setEstadoProceso(Estado.EJECUCION);
         System.out.println("El CPU ha recibido el proceso: " + proceso.getIdentificador());
-        notificar("El CPU ha recibido el proceso: " + proceso.getIdentificador());
         return proceso;
     }
 
@@ -47,11 +47,10 @@ public abstract class Despachador extends Observable implements Runnable
     @Override
     public abstract void run();
 
-    public void notificar(String mensaje)
+    public void notificar(Notificacion notificacion)
     {
         setChanged();
-        notifyObservers(mensaje);
-        clearChanged();
+        notifyObservers(notificacion);
     }
 
     public boolean hayProcesosEsperando()
