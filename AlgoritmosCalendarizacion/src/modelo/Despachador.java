@@ -1,12 +1,13 @@
 package modelo;
 
 import java.util.ArrayDeque;
+import java.util.Observable;
 
 /**
  *
  * @author HikingC7
  */
-public abstract class Despachador implements Runnable
+public abstract class Despachador extends Observable implements Runnable
 {
 
     protected CPU cpu;
@@ -28,6 +29,7 @@ public abstract class Despachador implements Runnable
         cpu.ejecutarProceso(proceso);
         proceso.PCB.setEstadoProceso(Estado.EJECUCION);
         System.out.println("El CPU ha recibido el proceso: " + proceso.getIdentificador());
+        notificar("El CPU ha recibido el proceso: " + proceso.getIdentificador());
         return proceso;
     }
 
@@ -36,6 +38,7 @@ public abstract class Despachador implements Runnable
         cpu.ejecutarProceso(proceso, tiempoUsoCPU);
         proceso.PCB.setEstadoProceso(Estado.EJECUCION);
         System.out.println("El CPU ha recibido el proceso: " + proceso.getIdentificador());
+        notificar("El CPU ha recibido el proceso: " + proceso.getIdentificador());
         return proceso;
     }
 
@@ -43,6 +46,13 @@ public abstract class Despachador implements Runnable
 
     @Override
     public abstract void run();
+
+    public void notificar(String mensaje)
+    {
+        setChanged();
+        notifyObservers(mensaje);
+        clearChanged();
+    }
 
     public boolean hayProcesosEsperando()
     {

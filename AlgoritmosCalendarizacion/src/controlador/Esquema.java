@@ -82,6 +82,19 @@ public final class Esquema extends JPanel
 
     }
 
+    public void actualizarEsquema(String mensaje)
+    {
+        Graphics2D g = (Graphics2D) getGraphics();
+        //super.paint(g);
+        //paint(g);
+
+        g.drawString("Hola", 10, 10);
+        Rectangle r = g.getFontMetrics().getStringBounds(mensaje, g).getBounds();
+        repaint();
+        // Actualizas los datos
+        //g.dispose();
+    }
+
     private void dibujarRectanguloCentrado(Graphics2D g, int y, int width, int height)
     {
         g.drawRect(MIDDLE - width / 2, y, width, height);
