@@ -67,13 +67,6 @@ public class DespachadorRR extends Despachador
 
     }
 
-    private void esperar()
-    {
-        while (cpu.isOcupado())
-        {
-        }
-    }
-
     private long obtenerTiempoUsoCPU(Proceso proceso)
     {
         return tiempoRestanteProceso(proceso) >= QUANTUM ? QUANTUM : tiempoRestanteProceso(proceso);

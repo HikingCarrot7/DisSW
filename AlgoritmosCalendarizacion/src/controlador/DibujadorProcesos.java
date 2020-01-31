@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import modelo.Proceso;
 import modelo.ProcesoRR;
+import modelo.ProcesoSRTF;
 
 /**
  *
@@ -39,6 +40,18 @@ public class DibujadorProcesos
                     proceso.getIdentificador(),
                     proceso.PCB.getNumProceso(),
                     proceso.PCB.getTiempoRafaga());
+
+            p.PCB.setTiempoEjecutado(tiempoTranscurrido);
+            PROCESOS_PROCESADOS.add(p);
+
+        } else
+        {
+            ProcesoSRTF p = new ProcesoSRTF(
+                    proceso.PCB.getEstadoProceso(),
+                    proceso.getIdentificador(),
+                    proceso.PCB.getNumProceso(),
+                    proceso.PCB.getTiempoRafaga(),
+                    ((ProcesoSRTF) proceso).getTiempoLlegada());
 
             p.PCB.setTiempoEjecutado(tiempoTranscurrido);
             PROCESOS_PROCESADOS.add(p);

@@ -53,6 +53,13 @@ public abstract class Despachador extends Observable implements Runnable
         notifyObservers(notificacion);
     }
 
+    protected void esperar()
+    {
+        while (cpu.isOcupado())
+        {
+        }
+    }
+
     public boolean hayProcesosEsperando()
     {
         return !procesos.isEmpty();

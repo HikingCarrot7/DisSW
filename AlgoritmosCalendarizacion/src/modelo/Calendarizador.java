@@ -37,6 +37,7 @@ public class Calendarizador implements Runnable
     @Override
     public void run()
     {
+        despachador.despacharProcesos();
         procesos.forEach((proceso) ->
         {
             try

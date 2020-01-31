@@ -46,6 +46,7 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
             {
                 case Notificacion.PROCESO_DEJO_CPU:
                 case Notificacion.PROCESO_HA_FINALIZADO:
+                case Notificacion.PROCESO_ENTRO_CPU:
                     DIBUJADOR_ESQUEMA.dibujarProcesoActual(notificacion.getProceso(),
                             notificacion.getTiempoUsoCpu(), notificacion.getTiempoTranscurrido());
                     break;
