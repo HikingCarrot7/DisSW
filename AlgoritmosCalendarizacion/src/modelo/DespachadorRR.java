@@ -19,7 +19,7 @@ public class DespachadorRR extends Despachador
         procesosTerminados = new ArrayList<>();
     }
 
-    public void entregarProcesos(ArrayList<ProcesoRR> procesos)
+    /*public void entregarProcesos(ArrayList<ProcesoRR> procesos)
     {
         procesos.forEach((proceso) ->
         {
@@ -27,15 +27,12 @@ public class DespachadorRR extends Despachador
         });
 
         despacharProcesos();
-    }
-
+    }*/
     @Override
     public void aceptarProceso(Proceso proceso)
     {
         System.out.println("El despachador ha recibido el proceso: " + proceso.getIdentificador());
-        //notificar("El despachador ha recibido el proceso: " + proceso.getIdentificador());
-        procesos.add(proceso);
-        proceso.PCB.setEstadoProceso(Estado.LISTO);
+        super.aceptarProceso(proceso);
     }
 
     @Override

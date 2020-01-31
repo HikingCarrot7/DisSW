@@ -9,7 +9,7 @@ public class ProcesoRR extends Proceso
 
     public ProcesoRR(Estado estadoProceso, String identificador, int numProceso, long tiempoRafaga)
     {
-        super(estadoProceso, identificador, numProceso, tiempoRafaga);
+        super(estadoProceso, identificador, 0, numProceso, tiempoRafaga);
     }
 
 }

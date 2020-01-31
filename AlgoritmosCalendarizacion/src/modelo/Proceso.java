@@ -8,11 +8,13 @@ public abstract class Proceso
 {
 
     private String identificador;
+    private long tiempoLlegada;
     public final PCB PCB;
 
-    public Proceso(Estado estadoProceso, String identificador, int numProceso, long tiempoRafaga)
+    public Proceso(Estado estadoProceso, String identificador, long tiempoLlegada, int numProceso, long tiempoRafaga)
     {
         this.identificador = identificador;
+        this.tiempoLlegada = tiempoLlegada;
         PCB = new PCB(estadoProceso, numProceso, tiempoRafaga);
     }
 
@@ -24,6 +26,16 @@ public abstract class Proceso
     public void setIdentificador(String identificador)
     {
         this.identificador = identificador;
+    }
+
+    public long getTiempoLlegada()
+    {
+        return tiempoLlegada;
+    }
+
+    public void setTiempoLlegada(long tiempoLlegada)
+    {
+        this.tiempoLlegada = tiempoLlegada;
     }
 
     public boolean esProcesoTerminado()

@@ -25,24 +25,24 @@ public abstract class Despachador extends Observable implements Runnable
         new Thread(this).start();
     }
 
-    public Proceso cambiarContexto(Proceso proceso)
+    public void cambiarContexto(Proceso proceso)
     {
-        notificar(new Notificacion(Notificacion.PROCESO_ENTRO_CPU, proceso, proceso.PCB.getTiempoRafaga()));
-        cpu.ejecutarProceso(proceso);
-        proceso.PCB.setEstadoProceso(Estado.EJECUCION);
-        System.out.println("El CPU ha recibido el proceso: " + proceso.getIdentificador());
-        return proceso;
+        cambiarContexto(proceso, proceso.PCB.getTiempoRafaga());
     }
 
-    public Proceso cambiarContexto(Proceso proceso, long tiempoUsoCPU)
+    public void cambiarContexto(Proceso proceso, long tiempoUsoCPU)
     {
+        notificar(new Notificacion(Notificacion.PROCESO_ENTRO_CPU, proceso, tiempoUsoCPU));
         cpu.ejecutarProceso(proceso, tiempoUsoCPU);
         proceso.PCB.setEstadoProceso(Estado.EJECUCION);
         System.out.println("El CPU ha recibido el proceso: " + proceso.getIdentificador());
-        return proceso;
     }
 
-    public abstract void aceptarProceso(Proceso proceso);
+    public void aceptarProceso(Proceso proceso)
+    {
+        procesos.add(proceso);
+        proceso.PCB.setEstadoProceso(Estado.LISTO);
+    }
 
     @Override
     public abstract void run();

@@ -11,25 +11,25 @@ import java.util.stream.Collectors;
 public class Calendarizador implements Runnable
 {
 
-    private ArrayList<ProcesoSRTF> procesos;
+    private ArrayList<Proceso> procesosAEntregar;
     private Despachador despachador;
 
-    public Calendarizador(ArrayList<ProcesoSRTF> procesos, Despachador despachador)
+    public Calendarizador(ArrayList<Proceso> procesosAEntregar, Despachador despachador)
     {
-        this.procesos = procesos;
+        this.procesosAEntregar = procesosAEntregar;
         this.despachador = despachador;
         ordenarProcesosTiempoLlegada();
-        entregarProcesos();
+        entregarProcesosADespachador();
     }
 
     private void ordenarProcesosTiempoLlegada()
     {
-        procesos = procesos.stream()
-                .sorted(Comparator.comparing(ProcesoSRTF::getTiempoLlegada))
+        procesosAEntregar = procesosAEntregar.stream()
+                .sorted(Comparator.comparing(Proceso::getTiempoLlegada))
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
-    private void entregarProcesos()
+    private void entregarProcesosADespachador()
     {
         new Thread(this).start();
     }
@@ -38,7 +38,8 @@ public class Calendarizador implements Runnable
     public void run()
     {
         despachador.despacharProcesos();
-        procesos.forEach((proceso) ->
+
+        procesosAEntregar.forEach((proceso) ->
         {
             try
             {

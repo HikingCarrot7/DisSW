@@ -1,14 +1,12 @@
 package test;
 
-import controlador.ControladorVistaPrincipal;
-import java.awt.EventQueue;
 import java.util.ArrayList;
 import modelo.CPU;
 import modelo.Calendarizador;
 import modelo.DespachadorSRTF;
 import modelo.Estado;
+import modelo.Proceso;
 import modelo.ProcesoSRTF;
-import vista.VistaPrincipal;
 
 /**
  *
@@ -20,8 +18,8 @@ public class PruebaAlgoritmo
     public static void main(String[] args)
     {
         CPU cpu = new CPU();
-
-        ArrayList<ProcesoSRTF> procesos = new ArrayList<>();
+        DespachadorSRTF d = new DespachadorSRTF(cpu);
+        ArrayList<Proceso> procesos = new ArrayList<>();
 
         procesos.add(new ProcesoSRTF(Estado.NUEVO, "P1", 0, 400, 30));
         procesos.add(new ProcesoSRTF(Estado.NUEVO, "P2", 1, 400, 0));
@@ -29,15 +27,15 @@ public class PruebaAlgoritmo
         procesos.add(new ProcesoSRTF(Estado.NUEVO, "P4", 3, 1000, 30));
         procesos.add(new ProcesoSRTF(Estado.NUEVO, "P5", 4, 800, 10));
 
-        EventQueue.invokeLater(() ->
+        new Calendarizador(procesos, d);
+
+        /*EventQueue.invokeLater(() ->
         {
             VistaPrincipal vista = new VistaPrincipal();
             vista.setVisible(true);
             vista.setLocationRelativeTo(null);
             ControladorVistaPrincipal control = new ControladorVistaPrincipal(vista);
-            DespachadorSRTF d = new DespachadorSRTF(cpu);
             d.addObserver(control);
-            new Calendarizador(procesos, d);
         });
 
         /*CPU cpu = new CPU();
