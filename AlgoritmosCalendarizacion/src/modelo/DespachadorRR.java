@@ -12,15 +12,14 @@ public class DespachadorRR extends Despachador
     private final long QUANTUM;
     private ArrayList<Proceso> procesosTerminados;
 
-    public DespachadorRR(CPU cpu, ArrayList<ProcesoRR> procesos, long QUANTUM)
+    public DespachadorRR(CPU cpu, final long QUANTUM)
     {
         super(cpu);
         this.QUANTUM = QUANTUM;
         procesosTerminados = new ArrayList<>();
-        entregarProcesos(procesos);
     }
 
-    private void entregarProcesos(ArrayList<ProcesoRR> procesos)
+    public void entregarProcesos(ArrayList<ProcesoRR> procesos)
     {
         procesos.forEach((proceso) ->
         {
@@ -52,10 +51,10 @@ public class DespachadorRR extends Despachador
                 esperar();
                 revisarEstadoProceso(proceso);
 
-                if (proceso.procesoTerminado())
+                if (proceso.esProcesoTerminado())
                 {
                     System.out.println("El CPU ha terminado de ejecutar el proceso: " + proceso.getIdentificador());
-                    notificar(new Notificacion(Identificador.PROCESO_DEJO_CPU, proceso, 0));
+                    notificar(new Notificacion(Notificacion.PROCESO_DEJO_CPU, proceso, 0, tiempoTranscurrido));
                     procesosTerminados.add(proceso);
 
                 } else

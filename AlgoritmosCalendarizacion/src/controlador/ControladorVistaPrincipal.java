@@ -15,18 +15,18 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
 {
 
     private VistaPrincipal vista;
-    private DibujadorEsquema dibujadorEsquema;
+    private final DibujadorEsquema DIBUJADOR_ESQUEMA;
 
     public ControladorVistaPrincipal(VistaPrincipal vista)
     {
         this.vista = vista;
-        dibujadorEsquema = new DibujadorEsquema(vista.getEsquema());
+        DIBUJADOR_ESQUEMA = new DibujadorEsquema(vista.getEsquema());
         initEsquema();
     }
 
     private void initEsquema()
     {
-        new Ticker(dibujadorEsquema);
+        new Ticker(DIBUJADOR_ESQUEMA);
     }
 
     @Override
@@ -44,13 +44,10 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
 
             switch (notificacion.getIdentificador())
             {
-                case PROCESO_ENTRO_CPU:
-                    dibujadorEsquema.dibujarProcesoActual(notificacion.getProceso(),
-                            notificacion.getTiempoUsoCpu());
-                    break;
-
-                case PROCESO_DEJO_CPU:
-                    dibujadorEsquema.dibujarProcesoActual(null, 0);
+                case Notificacion.PROCESO_DEJO_CPU:
+                case Notificacion.PROCESO_ENTRO_CPU:
+                    DIBUJADOR_ESQUEMA.dibujarProcesoActual(notificacion.getProceso(),
+                            notificacion.getTiempoUsoCpu(), notificacion.getTiempoTranscurrido());
                     break;
 
                 default:

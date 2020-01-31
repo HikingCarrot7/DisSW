@@ -34,14 +34,14 @@ public class PruebaAlgoritmo
         CPU cpu = new CPU();
         ArrayList<ProcesoRR> pcs = new ArrayList<>();
 
-        pcs.add(new ProcesoRR(Estado.NUEVO, "P1", 0, 10000));
-        pcs.add(new ProcesoRR(Estado.NUEVO, "P2", 1, 5000));
-        pcs.add(new ProcesoRR(Estado.NUEVO, "P3", 2, 7000));
-        pcs.add(new ProcesoRR(Estado.NUEVO, "P4", 3, 4000));
+        pcs.add(new ProcesoRR(Estado.NUEVO, "P1", 0, 100));
+        pcs.add(new ProcesoRR(Estado.NUEVO, "P2", 1, 500));
+        pcs.add(new ProcesoRR(Estado.NUEVO, "P3", 2, 700));
+        pcs.add(new ProcesoRR(Estado.NUEVO, "P4", 3, 400));
         pcs.add(new ProcesoRR(Estado.NUEVO, "P5", 4, 500));
-        pcs.add(new ProcesoRR(Estado.NUEVO, "P6", 5, 11000));
+        pcs.add(new ProcesoRR(Estado.NUEVO, "P6", 5, 110));
 
-        DespachadorRR d = new DespachadorRR(cpu, pcs, 10000);
+        DespachadorRR d = new DespachadorRR(cpu, 50);
 
         EventQueue.invokeLater(() ->
         {
@@ -50,6 +50,7 @@ public class PruebaAlgoritmo
             vista.setLocationRelativeTo(null);
             ControladorVistaPrincipal control = new ControladorVistaPrincipal(vista);
             d.addObserver(control);
+            d.entregarProcesos(pcs);
         });
 
     }

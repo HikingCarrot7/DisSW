@@ -26,7 +26,7 @@ public abstract class Proceso
         this.identificador = identificador;
     }
 
-    public boolean procesoTerminado()
+    public boolean esProcesoTerminado()
     {
         return PCB.getEstadoProceso().equals(Estado.TERMINADO);
     }
