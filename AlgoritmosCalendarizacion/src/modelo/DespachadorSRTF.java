@@ -10,8 +10,6 @@ import java.util.stream.Collectors;
 public class DespachadorSRTF extends Despachador
 {
 
-    private Proceso procesoActual;
-
     public DespachadorSRTF(CPU cpu)
     {
         super(cpu);
@@ -20,18 +18,11 @@ public class DespachadorSRTF extends Despachador
     @Override
     public void aceptarProceso(Proceso proceso)
     {
-        System.out.println("El despachador ha recibido el proceso: " + proceso.getIdentificador());
-        procesoActual = proceso;
-
         super.aceptarProceso(proceso);
 
-        procesos.add(proceso);
         procesos = procesos.stream()
                 .sorted((p1, p2) -> p1.PCB.compareTo(p2.PCB))
                 .collect(Collectors.toCollection(ArrayDeque::new));
-
-        if (!cpu.isOcupado())
-            cambiarContexto(procesos.remove());
     }
 
     @Override
@@ -40,12 +31,13 @@ public class DespachadorSRTF extends Despachador
         while (true)
             if (!cpu.isOcupado() && hayProcesosEsperando())
             {
-                procesoActual = procesos.remove();
+                Proceso procesoActual = procesos.remove();
                 cambiarContexto(procesoActual);
 
                 esperar();
 
                 procesoActual.PCB.setEstadoProceso(Estado.TERMINADO);
+                System.out.println("El CPU ha terminado de ejecutar el proceso: " + procesoActual.getIdentificador());
                 notificar(new Notificacion(Notificacion.PROCESO_HA_FINALIZADO,
                         procesoActual,
                         procesoActual.PCB.getTiempoRafaga(),

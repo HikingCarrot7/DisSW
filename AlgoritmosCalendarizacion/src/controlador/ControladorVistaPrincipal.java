@@ -26,7 +26,7 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
 
     private void initEsquema()
     {
-        new Ticker(DIBUJADOR_ESQUEMA);
+        new Loop(DIBUJADOR_ESQUEMA);
     }
 
     @Override
@@ -38,22 +38,25 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
     @Override
     public void update(Observable o, Object arg)
     {
-        if (arg instanceof Notificacion)
+        Notificacion notificacion = (Notificacion) arg;
+
+        switch (notificacion.getIdentificador())
         {
-            Notificacion notificacion = (Notificacion) arg;
+            case Notificacion.PROCESO_HA_FINALIZADO:
+            case Notificacion.PROCESO_ENTRO_CPU:
+                DIBUJADOR_ESQUEMA.mostrarEnProcesadorProcesoActual(
+                        notificacion.getProceso().obtenerCopiaProceso(),
+                        notificacion.getTiempoUsoCpu());
+                break;
 
-            switch (notificacion.getIdentificador())
-            {
-                case Notificacion.PROCESO_DEJO_CPU:
-                case Notificacion.PROCESO_HA_FINALIZADO:
-                case Notificacion.PROCESO_ENTRO_CPU:
-                    DIBUJADOR_ESQUEMA.dibujarProcesoActual(notificacion.getProceso(),
-                            notificacion.getTiempoUsoCpu(), notificacion.getTiempoTranscurrido());
-                    break;
+            case Notificacion.PROCESO_DEJO_CPU:
+                DIBUJADOR_ESQUEMA.actualizarDiagramaGantt(
+                        notificacion.getProceso().obtenerCopiaProceso(),
+                        notificacion.getTiempoTranscurrido());
+                break;
 
-                default:
-                    break;
-            }
+            default:
+                break;
         }
 
     }

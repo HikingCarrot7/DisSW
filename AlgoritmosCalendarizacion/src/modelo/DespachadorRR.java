@@ -1,7 +1,5 @@
 package modelo;
 
-import java.util.ArrayList;
-
 /**
  *
  * @author HikingCarrot7
@@ -10,29 +8,11 @@ public class DespachadorRR extends Despachador
 {
 
     private final long QUANTUM;
-    private ArrayList<Proceso> procesosTerminados;
 
     public DespachadorRR(CPU cpu, final long QUANTUM)
     {
         super(cpu);
         this.QUANTUM = QUANTUM;
-        procesosTerminados = new ArrayList<>();
-    }
-
-    /*public void entregarProcesos(ArrayList<ProcesoRR> procesos)
-    {
-        procesos.forEach((proceso) ->
-        {
-            aceptarProceso(proceso);
-        });
-
-        despacharProcesos();
-    }*/
-    @Override
-    public void aceptarProceso(Proceso proceso)
-    {
-        System.out.println("El despachador ha recibido el proceso: " + proceso.getIdentificador());
-        super.aceptarProceso(proceso);
     }
 
     @Override
@@ -48,18 +28,18 @@ public class DespachadorRR extends Despachador
                 esperar(); // Esperamos al proceso.
 
                 revisarEstadoProceso(proceso);
+
                 notificar(new Notificacion(proceso.esProcesoTerminado()
                         ? Notificacion.PROCESO_HA_FINALIZADO : Notificacion.PROCESO_DEJO_CPU, proceso, tiempoUsoCPU, tiempoTranscurrido));
-                tiempoTranscurrido += tiempoUsoCPU;
 
                 if (proceso.esProcesoTerminado())
-                {
                     System.out.println("El CPU ha terminado de ejecutar el proceso: " + proceso.getIdentificador());
-                    procesosTerminados.add(proceso);
 
-                } else
+                // procesosTerminados.add(proceso);
+                else
                     procesos.addLast(proceso);
 
+                tiempoTranscurrido += tiempoUsoCPU;
             }
 
     }

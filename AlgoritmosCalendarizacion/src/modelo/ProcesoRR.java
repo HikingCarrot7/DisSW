@@ -12,4 +12,14 @@ public class ProcesoRR extends Proceso
         super(estadoProceso, identificador, 0, numProceso, tiempoRafaga);
     }
 
+    @Override
+    public Proceso obtenerCopiaProceso()
+    {
+        return new ProcesoRR(
+                PCB.getEstadoProceso(),
+                getIdentificador(),
+                PCB.getNumProceso(),
+                PCB.getTiempoRafaga());
+    }
+
 }

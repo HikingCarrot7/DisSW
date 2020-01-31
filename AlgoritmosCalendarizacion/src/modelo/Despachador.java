@@ -40,6 +40,7 @@ public abstract class Despachador extends Observable implements Runnable
 
     public void aceptarProceso(Proceso proceso)
     {
+        System.out.println("El despachador ha recibido el proceso: " + proceso.getIdentificador());
         procesos.add(proceso);
         proceso.PCB.setEstadoProceso(Estado.LISTO);
     }

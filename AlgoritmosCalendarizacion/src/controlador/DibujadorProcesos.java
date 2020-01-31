@@ -5,8 +5,6 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import modelo.Proceso;
-import modelo.ProcesoRR;
-import modelo.ProcesoSRTF;
 
 /**
  *
@@ -31,32 +29,10 @@ public class DibujadorProcesos
         PROCESOS_PROCESADOS = new ArrayList<>();
     }
 
-    public void anadirProcesoProcesado(Proceso proceso, long tiempoTranscurrido)
+    public void anadirProcesoFinalizadoAlDiagramaGantt(Proceso proceso, long tiempoTranscurrido)
     {
-        if (proceso instanceof ProcesoRR)
-        {
-            ProcesoRR p = new ProcesoRR(
-                    proceso.PCB.getEstadoProceso(),
-                    proceso.getIdentificador(),
-                    proceso.PCB.getNumProceso(),
-                    proceso.PCB.getTiempoRafaga());
-
-            p.PCB.setTiempoEjecutado(tiempoTranscurrido);
-            PROCESOS_PROCESADOS.add(p);
-
-        } else
-        {
-            ProcesoSRTF p = new ProcesoSRTF(
-                    proceso.PCB.getEstadoProceso(),
-                    proceso.getIdentificador(),
-                    proceso.PCB.getNumProceso(),
-                    proceso.PCB.getTiempoRafaga(),
-                    ((ProcesoSRTF) proceso).getTiempoLlegada());
-
-            p.PCB.setTiempoEjecutado(tiempoTranscurrido);
-            PROCESOS_PROCESADOS.add(p);
-        }
-
+        proceso.PCB.setTiempoEjecutado(tiempoTranscurrido);
+        PROCESOS_PROCESADOS.add(proceso);
     }
 
     public void dibujarTiemposEsperaProcesos(Graphics2D g)

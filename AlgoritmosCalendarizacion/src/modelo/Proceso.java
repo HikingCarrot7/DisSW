@@ -43,4 +43,6 @@ public abstract class Proceso
         return PCB.getEstadoProceso().equals(Estado.TERMINADO);
     }
 
+    public abstract Proceso obtenerCopiaProceso();
+
 }

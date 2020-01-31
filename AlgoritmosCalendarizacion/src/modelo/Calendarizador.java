@@ -12,12 +12,14 @@ public class Calendarizador implements Runnable
 {
 
     private ArrayList<Proceso> procesosAEntregar;
+    private ArrayList<Proceso> procesosTerminados;
     private Despachador despachador;
 
     public Calendarizador(ArrayList<Proceso> procesosAEntregar, Despachador despachador)
     {
         this.procesosAEntregar = procesosAEntregar;
         this.despachador = despachador;
+        procesosTerminados = new ArrayList<>();
         ordenarProcesosTiempoLlegada();
         entregarProcesosADespachador();
     }

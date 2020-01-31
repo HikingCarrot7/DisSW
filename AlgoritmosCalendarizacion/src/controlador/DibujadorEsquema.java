@@ -54,19 +54,15 @@ public class DibujadorEsquema
         g.dispose();
     }
 
-    public void dibujarProcesoActual(Proceso proceso, long tiempoUsoCpu, long tiempoTranscurrido)
+    public void mostrarEnProcesadorProcesoActual(Proceso proceso, long tiempoUsoCpu)
     {
-        if (proceso.esProcesoTerminado())
-        {
-            DIBUJADOR_PROCESADOR.setProcesoActual(null);
-            DIBUJADOR_PROCESOS.anadirProcesoProcesado(proceso, tiempoTranscurrido);
-            return;
-        }
-
         DIBUJADOR_PROCESADOR.setProcesoActual(proceso);
         DIBUJADOR_PROCESADOR.setTiempoUsoCPUActual(tiempoUsoCpu);
-        DIBUJADOR_PROCESOS.anadirProcesoProcesado(proceso, tiempoTranscurrido);
-        //DIBUJADOR_PROCESADOR.updateProcesoActual();
+    }
+
+    public void actualizarDiagramaGantt(Proceso proceso, long tiempoTranscurrido)
+    {
+        DIBUJADOR_PROCESOS.anadirProcesoFinalizadoAlDiagramaGantt(proceso, tiempoTranscurrido);
     }
 
     public void dibujarRectanguloCentrado(Graphics2D g, int y, int width, int height)

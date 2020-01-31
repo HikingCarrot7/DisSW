@@ -12,4 +12,15 @@ public class ProcesoSRTF extends Proceso
         super(estadoProceso, identificador, tiempoLlegada, numProceso, tiempoRafaga);
     }
 
+    @Override
+    public Proceso obtenerCopiaProceso()
+    {
+        return new ProcesoSRTF(
+                PCB.getEstadoProceso(),
+                getIdentificador(),
+                PCB.getNumProceso(),
+                PCB.getTiempoRafaga(),
+                getTiempoLlegada());
+    }
+
 }

@@ -4,12 +4,12 @@ package controlador;
  *
  * @author HikingCarrot7
  */
-public class Ticker implements Runnable
+public class Loop implements Runnable
 {
 
     private final DibujadorEsquema esquema;
 
-    public Ticker(DibujadorEsquema esquema)
+    public Loop(DibujadorEsquema esquema)
     {
         this.esquema = esquema;
         new Thread(this).start();
