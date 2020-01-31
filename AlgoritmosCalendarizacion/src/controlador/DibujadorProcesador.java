@@ -63,7 +63,7 @@ public class DibujadorProcesador
 
     public void dibujarProcesoActual(Graphics2D g)
     {
-        if (!procesoActual.esProcesoTerminado())
+        if (procesoActual != null && !procesoActual.esProcesoTerminado())
         {
             DIBUJADOR_ESQUEMA.dibujarTextoCentradoRect(g, "Proceso actual", 80, CPU);
             DIBUJADOR_ESQUEMA.dibujarTextoCentradoRect(g, procesoActual.getIdentificador(), 95, CPU);
