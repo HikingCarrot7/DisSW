@@ -61,7 +61,6 @@ public class PruebaAlgoritmo
             d.addObserver(control);
             new Calendarizador(procesos, d);
         });
-
     }
 
 }

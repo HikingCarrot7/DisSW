@@ -10,13 +10,13 @@ import java.util.Observable;
 public abstract class Despachador extends Observable implements Runnable
 {
 
-    protected CPU cpu;
+    protected final CPU CPU;
     protected volatile ArrayDeque<Proceso> procesos;
     protected long tiempoTranscurrido;
 
-    public Despachador(CPU cpu)
+    public Despachador(final CPU CPU)
     {
-        this.cpu = cpu;
+        this.CPU = CPU;
         this.procesos = new ArrayDeque<>();
     }
 
@@ -33,16 +33,16 @@ public abstract class Despachador extends Observable implements Runnable
     public void cambiarContexto(Proceso proceso, long tiempoUsoCPU)
     {
         notificar(new Notificacion(Notificacion.PROCESO_ENTRO_CPU, proceso, tiempoUsoCPU));
-        cpu.ejecutarProceso(proceso, tiempoUsoCPU);
+        CPU.ejecutarProceso(proceso, tiempoUsoCPU);
         proceso.PCB.setEstadoProceso(Estado.EJECUCION);
         System.out.println("El CPU ha recibido el proceso: " + proceso.getIdentificador());
     }
 
     public void aceptarProceso(Proceso proceso)
     {
-        System.out.println("El despachador ha recibido el proceso: " + proceso.getIdentificador());
         procesos.add(proceso);
         proceso.PCB.setEstadoProceso(Estado.LISTO);
+        System.out.println("El despachador ha recibido el proceso: " + proceso.getIdentificador());
     }
 
     @Override
@@ -56,7 +56,7 @@ public abstract class Despachador extends Observable implements Runnable
 
     protected void esperar()
     {
-        while (cpu.isOcupado())
+        while (CPU.isOcupado())
         {
         }
     }

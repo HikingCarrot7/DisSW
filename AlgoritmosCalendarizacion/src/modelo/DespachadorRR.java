@@ -38,7 +38,7 @@ public class DespachadorRR extends Despachador
                 if (proceso.esProcesoTerminado())
                     System.out.println("El CPU ha terminado de ejecutar el proceso: " + proceso.getIdentificador());
 
-                // procesosTerminados.add(proceso);
+                // procesosTerminados.add(proceso); -> calendarizador
                 else
                     procesos.addLast(proceso);
 

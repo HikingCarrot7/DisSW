@@ -29,7 +29,7 @@ public class DespachadorSRTF extends Despachador
     public void run()
     {
         while (true)
-            if (!cpu.isOcupado() && hayProcesosEsperando())
+            if (!CPU.isOcupado() && hayProcesosEsperando())
             {
                 Proceso procesoActual = procesos.remove();
                 cambiarContexto(procesoActual);
@@ -38,6 +38,7 @@ public class DespachadorSRTF extends Despachador
 
                 procesoActual.PCB.setEstadoProceso(Estado.TERMINADO);
                 System.out.println("El CPU ha terminado de ejecutar el proceso: " + procesoActual.getIdentificador());
+
                 notificar(new Notificacion(Notificacion.PROCESO_HA_FINALIZADO,
                         procesoActual,
                         procesoActual.PCB.getTiempoRafaga(),

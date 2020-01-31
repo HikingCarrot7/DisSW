@@ -38,25 +38,13 @@ public class DibujadorProcesos
     public void dibujarTiemposEsperaProcesos(Graphics2D g)
     {
         int y = 230;
-        final int LINE_LENGTH = 5;
 
         for (int i = 0, x = OFFSET_X; i < PROCESOS_FINALIZADOS.size(); i++, x += PROCESO_RECT_WIDTH)
         {
             Proceso proceso = PROCESOS_FINALIZADOS.get(i);
 
-            if (proceso.esProcesoTerminado())
-            {
-                g.setColor(Color.RED);
-                g.fillRect(x, y, PROCESO_RECT_WIDTH, PROCESO_RECT_HEIGHT);
-                g.setColor(Color.BLACK);
-
-            } else
-                g.drawRect(x, y, PROCESO_RECT_WIDTH, PROCESO_RECT_HEIGHT);
-
-            g.drawLine(x, y + PROCESO_RECT_HEIGHT, x, y + PROCESO_RECT_HEIGHT + LINE_LENGTH);
-            DIBUJADOR_ESQUEMA.drawInvertedTriangle(g, x, y + PROCESO_RECT_HEIGHT, TINY_TRIANGLE);
-            DIBUJADOR_ESQUEMA.dibujarStringPunto(g, String.valueOf(proceso.PCB.getTiempoEjecutado()), x, y + PROCESO_RECT_HEIGHT + LINE_LENGTH);
-            DIBUJADOR_ESQUEMA.dibujarStringPunto(g, proceso.getIdentificador(), x + PROCESO_RECT_WIDTH / 2, y + 3);
+            dibujarRectanguloProceso(g, proceso, x, y);
+            dibujarInfoProceso(g, proceso, x, y);
 
             if ((i + 1) % MAX_PROCESOS_LINEA == 0 && PROCESOS_FINALIZADOS.size() - (i + 1) > 0)
             {
@@ -67,6 +55,29 @@ public class DibujadorProcesos
 
         }
 
+    }
+
+    private void dibujarRectanguloProceso(Graphics2D g, Proceso proceso, int x, int y)
+    {
+        if (proceso.esProcesoTerminado())
+        {
+            g.setColor(Color.RED);
+            g.fillRect(x, y, PROCESO_RECT_WIDTH, PROCESO_RECT_HEIGHT);
+            g.setColor(Color.BLACK);
+
+        }
+
+        g.drawRect(x, y, PROCESO_RECT_WIDTH, PROCESO_RECT_HEIGHT);
+    }
+
+    private void dibujarInfoProceso(Graphics2D g, Proceso proceso, int x, int y)
+    {
+        final int LINE_LENGTH = 5;
+
+        g.drawLine(x, y + PROCESO_RECT_HEIGHT, x, y + PROCESO_RECT_HEIGHT + LINE_LENGTH);
+        DIBUJADOR_ESQUEMA.drawInvertedTriangle(g, x, y + PROCESO_RECT_HEIGHT, TINY_TRIANGLE);
+        DIBUJADOR_ESQUEMA.dibujarStringPunto(g, String.valueOf(proceso.PCB.getTiempoEjecutado()), x, y + PROCESO_RECT_HEIGHT + LINE_LENGTH);
+        DIBUJADOR_ESQUEMA.dibujarStringPunto(g, proceso.getIdentificador(), x + PROCESO_RECT_WIDTH / 2, y + 3);
     }
 
     public void drawLargeLine(Graphics2D g, int x, int y)
