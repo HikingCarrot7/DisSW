@@ -45,13 +45,13 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
             switch (notificacion.getIdentificador())
             {
                 case Notificacion.PROCESO_DEJO_CPU:
-                case Notificacion.PROCESO_ENTRO_CPU:
+                case Notificacion.PROCESO_HA_FINALIZADO:
                     DIBUJADOR_ESQUEMA.dibujarProcesoActual(notificacion.getProceso(),
                             notificacion.getTiempoUsoCpu(), notificacion.getTiempoTranscurrido());
                     break;
 
                 default:
-                    throw new AssertionError();
+                    break;
             }
         }
 

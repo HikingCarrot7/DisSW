@@ -36,8 +36,6 @@ public abstract class Despachador extends Observable implements Runnable
 
     public Proceso cambiarContexto(Proceso proceso, long tiempoUsoCPU)
     {
-        notificar(new Notificacion(Notificacion.PROCESO_ENTRO_CPU, proceso, tiempoUsoCPU, tiempoTranscurrido));
-        tiempoTranscurrido += tiempoUsoCPU;
         cpu.ejecutarProceso(proceso, tiempoUsoCPU);
         proceso.PCB.setEstadoProceso(Estado.EJECUCION);
         System.out.println("El CPU ha recibido el proceso: " + proceso.getIdentificador());

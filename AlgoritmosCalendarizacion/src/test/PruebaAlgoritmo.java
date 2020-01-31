@@ -34,12 +34,12 @@ public class PruebaAlgoritmo
         CPU cpu = new CPU();
         ArrayList<ProcesoRR> pcs = new ArrayList<>();
 
-        pcs.add(new ProcesoRR(Estado.NUEVO, "P1", 0, 100));
-        pcs.add(new ProcesoRR(Estado.NUEVO, "P2", 1, 500));
-        pcs.add(new ProcesoRR(Estado.NUEVO, "P3", 2, 700));
-        pcs.add(new ProcesoRR(Estado.NUEVO, "P4", 3, 400));
-        pcs.add(new ProcesoRR(Estado.NUEVO, "P5", 4, 500));
-        pcs.add(new ProcesoRR(Estado.NUEVO, "P6", 5, 110));
+        pcs.add(new ProcesoRR(Estado.NUEVO, "P1", 0, 101));
+        pcs.add(new ProcesoRR(Estado.NUEVO, "P2", 1, 505));
+        pcs.add(new ProcesoRR(Estado.NUEVO, "P3", 2, 732));
+        pcs.add(new ProcesoRR(Estado.NUEVO, "P4", 3, 420));
+        pcs.add(new ProcesoRR(Estado.NUEVO, "P5", 4, 516));
+        pcs.add(new ProcesoRR(Estado.NUEVO, "P6", 5, 115));
 
         DespachadorRR d = new DespachadorRR(cpu, 50);
 

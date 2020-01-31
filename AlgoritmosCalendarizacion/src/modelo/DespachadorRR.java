@@ -45,16 +45,19 @@ public class DespachadorRR extends Despachador
             if (hayProcesosEsperando())
             {
                 Proceso proceso = procesos.remove();
-
+                long tiempoUsoCPU = obtenerTiempoUsoCPU(proceso);
                 cambiarContexto(proceso, obtenerTiempoUsoCPU(proceso));
 
-                esperar();
+                esperar(); // Esperamos al proceso.
+
                 revisarEstadoProceso(proceso);
+                notificar(new Notificacion(proceso.esProcesoTerminado()
+                        ? Notificacion.PROCESO_HA_FINALIZADO : Notificacion.PROCESO_DEJO_CPU, proceso, tiempoUsoCPU, tiempoTranscurrido));
+                tiempoTranscurrido += tiempoUsoCPU;
 
                 if (proceso.esProcesoTerminado())
                 {
                     System.out.println("El CPU ha terminado de ejecutar el proceso: " + proceso.getIdentificador());
-                    notificar(new Notificacion(Notificacion.PROCESO_DEJO_CPU, proceso, 0, tiempoTranscurrido));
                     procesosTerminados.add(proceso);
 
                 } else

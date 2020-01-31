@@ -23,7 +23,6 @@ public class DibujadorProcesos
 
     private final DibujadorEsquema DIBUJADOR_ESQUEMA;
     private final ArrayList<Proceso> PROCESOS_PROCESADOS;
-    private long tiempoTranscurrido;
 
     public DibujadorProcesos(DibujadorEsquema dibujadorEsquema)
     {
@@ -40,8 +39,6 @@ public class DibujadorProcesos
                     proceso.getIdentificador(),
                     proceso.PCB.getNumProceso(),
                     proceso.PCB.getTiempoRafaga());
-
-            System.out.println(((ProcesoRR) proceso).PCB.getEstadoProceso());
 
             p.PCB.setTiempoEjecutado(tiempoTranscurrido);
             PROCESOS_PROCESADOS.add(p);
@@ -72,7 +69,7 @@ public class DibujadorProcesos
             DIBUJADOR_ESQUEMA.dibujarStringPunto(g, String.valueOf(proceso.PCB.getTiempoEjecutado()), x, y + PROCESO_RECT_HEIGHT + LINE_LENGTH);
             DIBUJADOR_ESQUEMA.dibujarStringPunto(g, proceso.getIdentificador(), x + PROCESO_RECT_WIDTH / 2, y + 3);
 
-            if ((i + 1) % MAX_PROCESOS_LINEA == 0)
+            if ((i + 1) % MAX_PROCESOS_LINEA == 0 && PROCESOS_PROCESADOS.size() - (i + 1) > 0)
             {
                 drawLargeLine(g, OFFSET_X + MAX_PROCESOS_LINEA * PROCESO_RECT_WIDTH, y + PROCESO_RECT_HEIGHT / 2);
                 x = OFFSET_X - PROCESO_RECT_WIDTH;
