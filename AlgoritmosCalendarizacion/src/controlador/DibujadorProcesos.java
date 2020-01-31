@@ -21,18 +21,18 @@ public class DibujadorProcesos
     public static final int MAX_PROCESOS_LINEA = (WIDTH - OFFSET_X * 2) / PROCESO_RECT_WIDTH;
 
     private final DibujadorEsquema DIBUJADOR_ESQUEMA;
-    private final ArrayList<Proceso> PROCESOS_PROCESADOS;
+    private final ArrayList<Proceso> PROCESOS_FINALIZADOS;
 
     public DibujadorProcesos(DibujadorEsquema dibujadorEsquema)
     {
         this.DIBUJADOR_ESQUEMA = dibujadorEsquema;
-        PROCESOS_PROCESADOS = new ArrayList<>();
+        PROCESOS_FINALIZADOS = new ArrayList<>();
     }
 
     public void anadirProcesoFinalizadoAlDiagramaGantt(Proceso proceso, long tiempoTranscurrido)
     {
         proceso.PCB.setTiempoEjecutado(tiempoTranscurrido);
-        PROCESOS_PROCESADOS.add(proceso);
+        PROCESOS_FINALIZADOS.add(proceso);
     }
 
     public void dibujarTiemposEsperaProcesos(Graphics2D g)
@@ -40,9 +40,9 @@ public class DibujadorProcesos
         int y = 230;
         final int LINE_LENGTH = 5;
 
-        for (int i = 0, x = OFFSET_X; i < PROCESOS_PROCESADOS.size(); i++, x += PROCESO_RECT_WIDTH)
+        for (int i = 0, x = OFFSET_X; i < PROCESOS_FINALIZADOS.size(); i++, x += PROCESO_RECT_WIDTH)
         {
-            Proceso proceso = PROCESOS_PROCESADOS.get(i);
+            Proceso proceso = PROCESOS_FINALIZADOS.get(i);
 
             if (proceso.esProcesoTerminado())
             {
@@ -58,7 +58,7 @@ public class DibujadorProcesos
             DIBUJADOR_ESQUEMA.dibujarStringPunto(g, String.valueOf(proceso.PCB.getTiempoEjecutado()), x, y + PROCESO_RECT_HEIGHT + LINE_LENGTH);
             DIBUJADOR_ESQUEMA.dibujarStringPunto(g, proceso.getIdentificador(), x + PROCESO_RECT_WIDTH / 2, y + 3);
 
-            if ((i + 1) % MAX_PROCESOS_LINEA == 0 && PROCESOS_PROCESADOS.size() - (i + 1) > 0)
+            if ((i + 1) % MAX_PROCESOS_LINEA == 0 && PROCESOS_FINALIZADOS.size() - (i + 1) > 0)
             {
                 drawLargeLine(g, OFFSET_X + MAX_PROCESOS_LINEA * PROCESO_RECT_WIDTH, y + PROCESO_RECT_HEIGHT / 2);
                 x = OFFSET_X - PROCESO_RECT_WIDTH;
