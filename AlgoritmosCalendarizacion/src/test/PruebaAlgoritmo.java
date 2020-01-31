@@ -5,10 +5,10 @@ import java.awt.EventQueue;
 import java.util.ArrayList;
 import modelo.CPU;
 import modelo.Calendarizador;
-import modelo.DespachadorSRTF;
+import modelo.DespachadorRR;
 import modelo.Estado;
 import modelo.Proceso;
-import modelo.ProcesoSRTF;
+import modelo.ProcesoRR;
 import vista.VistaPrincipal;
 
 /**
@@ -20,7 +20,7 @@ public class PruebaAlgoritmo
 
     public static void main(String[] args)
     {
-        CPU cpu = new CPU();
+        /*CPU cpu = new CPU();
         ArrayList<Proceso> procesos = new ArrayList<>();
 
         procesos.add(new ProcesoSRTF(Estado.NUEVO, "P1", 0, 400, 30));
@@ -38,18 +38,30 @@ public class PruebaAlgoritmo
             DespachadorSRTF d = new DespachadorSRTF(cpu);
             d.addObserver(control);
             new Calendarizador(procesos, d);
+        });*/
+
+        //------------------------------------------------------
+        CPU cpu = new CPU();
+        ArrayList<Proceso> procesos = new ArrayList<>();
+
+        procesos.add(new ProcesoRR(Estado.NUEVO, "P1", 0, 101));
+        procesos.add(new ProcesoRR(Estado.NUEVO, "P2", 1, 505));
+        procesos.add(new ProcesoRR(Estado.NUEVO, "P3", 2, 732));
+        procesos.add(new ProcesoRR(Estado.NUEVO, "P4", 3, 420));
+        procesos.add(new ProcesoRR(Estado.NUEVO, "P5", 4, 516));
+        procesos.add(new ProcesoRR(Estado.NUEVO, "P6", 5, 115));
+
+        EventQueue.invokeLater(() ->
+        {
+            VistaPrincipal vista = new VistaPrincipal();
+            vista.setVisible(true);
+            vista.setLocationRelativeTo(null);
+            ControladorVistaPrincipal control = new ControladorVistaPrincipal(vista);
+            DespachadorRR d = new DespachadorRR(cpu, 50);
+            d.addObserver(control);
+            new Calendarizador(procesos, d);
         });
 
-        /*CPU cpu = new CPU();
-        ArrayList<ProcesoRR> pcs = new ArrayList<>();
-
-        pcs.add(new ProcesoRR(Estado.NUEVO, "P1", 0, 101));
-        pcs.add(new ProcesoRR(Estado.NUEVO, "P2", 1, 505));
-        pcs.add(new ProcesoRR(Estado.NUEVO, "P3", 2, 732));
-        pcs.add(new ProcesoRR(Estado.NUEVO, "P4", 3, 420));
-        pcs.add(new ProcesoRR(Estado.NUEVO, "P5", 4, 516));
-        pcs.add(new ProcesoRR(Estado.NUEVO, "P6", 5, 115));*/
-        //DespachadorRR d = new DespachadorRR(cpu, 50);
     }
 
 }

@@ -29,8 +29,11 @@ public class DespachadorRR extends Despachador
 
                 revisarEstadoProceso(proceso);
 
-                notificar(new Notificacion(proceso.esProcesoTerminado()
-                        ? Notificacion.PROCESO_HA_FINALIZADO : Notificacion.PROCESO_DEJO_CPU, proceso, tiempoUsoCPU, tiempoTranscurrido));
+                notificar(new Notificacion(
+                        proceso.esProcesoTerminado() ? Notificacion.PROCESO_HA_FINALIZADO : Notificacion.PROCESO_DEJO_CPU,
+                        proceso,
+                        tiempoUsoCPU,
+                        tiempoTranscurrido));
 
                 if (proceso.esProcesoTerminado())
                     System.out.println("El CPU ha terminado de ejecutar el proceso: " + proceso.getIdentificador());

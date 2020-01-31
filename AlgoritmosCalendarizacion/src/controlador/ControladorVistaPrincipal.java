@@ -43,6 +43,15 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
         switch (notificacion.getIdentificador())
         {
             case Notificacion.PROCESO_HA_FINALIZADO:
+                DIBUJADOR_ESQUEMA.mostrarEnProcesadorProcesoActual(
+                        notificacion.getProceso().obtenerCopiaProceso(),
+                        notificacion.getTiempoUsoCpu());
+
+                DIBUJADOR_ESQUEMA.actualizarDiagramaGantt(
+                        notificacion.getProceso().obtenerCopiaProceso(),
+                        notificacion.getTiempoTranscurrido());
+                break;
+
             case Notificacion.PROCESO_ENTRO_CPU:
                 DIBUJADOR_ESQUEMA.mostrarEnProcesadorProcesoActual(
                         notificacion.getProceso().obtenerCopiaProceso(),
