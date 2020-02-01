@@ -1,10 +1,15 @@
 package com.sw.controller;
 
-import com.sw.exceptions.NombreNoValido;
-import com.sw.exceptions.ValorNoValido;
+import com.sw.exceptions.NombreNoValidoException;
+import com.sw.exceptions.ValorNoValidoException;
+import com.sw.view.VistaPrincipal;
 import com.sw.view.VistaRecogeDatos;
+import com.sw.view.VistaSeleccion;
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.security.SecureRandom;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
 /**
@@ -14,8 +19,6 @@ import javax.swing.JTable;
 public class ControladorRecogeDatos implements ActionListener
 {
 
-    public static final int CLAVE_ALGORITMO_SRTF = 0;
-    public static final int CLAVE_ALGORITMO_RR = 1;
     private final int CLAVE_ALGORITMO_ACTUAL;
 
     private final VistaRecogeDatos VISTA_RECOGE_DATOS;
@@ -42,10 +45,12 @@ public class ControladorRecogeDatos implements ActionListener
     private void initMyComponents()
     {
         VISTA_RECOGE_DATOS.getAceptarNProcesos().addActionListener(this);
-        VISTA_RECOGE_DATOS.getAumentarFila().addActionListener(this);
-        VISTA_RECOGE_DATOS.getEliminaFila().addActionListener(this);
+        VISTA_RECOGE_DATOS.getContinuar().addActionListener(this);
+        VISTA_RECOGE_DATOS.getAleatorio().addActionListener(this);
+        VISTA_RECOGE_DATOS.getRegresar().addActionListener(this);
+        VISTA_RECOGE_DATOS.getTablaRecogeDatos().setValueAt("P1", 0, 0);
 
-        if (CLAVE_ALGORITMO_ACTUAL == CLAVE_ALGORITMO_RR)
+        if (CLAVE_ALGORITMO_ACTUAL == ControladorSeleccion.CLAVE_ALGORITMO_RR)
             TABLE_MANAGER.eliminarUltimaColumna(VISTA_RECOGE_DATOS.getTablaRecogeDatos());
     }
 
@@ -59,19 +64,46 @@ public class ControladorRecogeDatos implements ActionListener
                 break;
 
             case "continuar":
-                procesarDatos();
-                break;
+                if (todosDatosValidos())
+                    EventQueue.invokeLater(() ->
+                    {
+                        VistaPrincipal vistaPrincipal = new VistaPrincipal();
+                        vistaPrincipal.setVisible(true);
+                        vistaPrincipal.setLocationRelativeTo(null);
+                        ControladorVistaPrincipal cvp = new ControladorVistaPrincipal(vistaPrincipal, CLAVE_ALGORITMO_ACTUAL);
 
-            case "anadirFila":
-                anadirFila();
-                break;
+                        if (CLAVE_ALGORITMO_ACTUAL == ControladorSeleccion.CLAVE_ALGORITMO_SRTF)
+                            cvp.establecerDatosDefecto(VISTA_RECOGE_DATOS.getTablaRecogeDatos());
 
-            case "eliminarFila":
-                eliminarFila();
+                        else
+                            cvp.establecerDatosDefecto(
+                                    VISTA_RECOGE_DATOS.getTablaRecogeDatos(),
+                                    (int) VISTA_RECOGE_DATOS.getEntradaNQuantum().getValue());
+
+                        VISTA_RECOGE_DATOS.dispose();
+                    });
+
                 break;
 
             case "regresar":
+                if (confirmar("Confirmar acción", "Todos los datos insertados actualmente serán eliminados, ¿Continuar?"))
+                    EventQueue.invokeLater(() ->
+                    {
+                        VistaSeleccion vistaSeleccion = new VistaSeleccion();
+                        vistaSeleccion.setVisible(true);
+                        vistaSeleccion.setLocationRelativeTo(null);
+                        new ControladorSeleccion(vistaSeleccion);
+                        VISTA_RECOGE_DATOS.dispose();
+                    });
 
+                break;
+
+            case "aleatorios":
+                if (confirmar("Confirmar acción", "Todos los datos insertados actualmente serán eliminados, ¿Continuar?"))
+                {
+                    arreglarNombresProcesos();
+                    generarValoresTiempoAleatorios();
+                }
                 break;
 
             default:
@@ -80,44 +112,92 @@ public class ControladorRecogeDatos implements ActionListener
 
     }
 
-    private void procesarDatos()
+    private boolean todosDatosValidos()
     {
+        JTable tabla = VISTA_RECOGE_DATOS.getTablaRecogeDatos();
+
+        if (tabla.isEditing())
+            return false;
+
+        tabla.clearSelection();
+
         try
         {
+            if (TABLE_MANAGER.existeTabla(tabla))
+            {
+                nombresProcesosValidos();
+                tiemposProcesosValidos();
+                return true;
 
-            todosDatosValidos();
+            } else
+                mostrarError("Aún no hay datos", "Aún no existe una tabla", JOptionPane.ERROR_MESSAGE);
 
-        } catch (NombreNoValido ex)
+        } catch (NombreNoValidoException ex)
         {
+            if (confirmar(
+                    String.format("Error en la fila %s y columna %s", ex.getRow() + 1, ex.getCol() + 1),
+                    ex.getMessage()))
+            {
+                arreglarNombresProcesos();
+                return todosDatosValidos();
+            }
 
-        } catch (ValorNoValido ex)
+        } catch (ValorNoValidoException ex)
         {
-
+            mostrarError("Error en la entrada de los datos", ex.getMessage(), JOptionPane.ERROR_MESSAGE);
         }
 
+        return false;
     }
 
-    private boolean todosDatosValidos()
+    private boolean nombresProcesosValidos()
     {
         Object[][] data = recogerDatos();
 
         for (int i = 0; i < data.length; i++)
-            for (int j = 1; j < data[0].length; j++)
+        {
+            String nombre = data[i][COL_NOMBRE_PROCESO].toString().trim();
+
+            if (nombre.equals("") || nombre.equals(" "))
+                throw new NombreNoValidoException(i, COL_NOMBRE_PROCESO);
+        }
+
+        return true;
+    }
+
+    private void arreglarNombresProcesos()
+    {
+        Object[][] data = recogerDatos();
+
+        for (Object[] row : data)
+        {
+            String nombre = row[COL_NOMBRE_PROCESO].toString().trim();
+
+            if (nombre.equals("") || nombre.equals(" "))
+                row[COL_NOMBRE_PROCESO] = row[COL_NOMBRE_PROCESO - 1];
+        }
+
+        TABLE_MANAGER.rellenarTabla(VISTA_RECOGE_DATOS.getTablaRecogeDatos(), data);
+    }
+
+    private boolean tiemposProcesosValidos()
+    {
+        Object[][] data = recogerDatos();
+
+        for (int i = 0; i < data.length; i++)
+            for (int j = COL_TIEMPO_RAFAGA; j < data[i].length; j++)
                 switch (j)
                 {
-                    case COL_NOMBRE_PROCESO:
-                        String nombre = data[i][j].toString().trim();
-                        if (nombre.equals("") || nombre.equals(" "))
-                            throw new NombreNoValido(i, j);
-                        break;
                     case COL_TIEMPO_RAFAGA:
                         if (!esEntradaValida(data[i][j].toString(), REGEX_ENTERO_POSITIVO_VALIDO))
-                            throw new ValorNoValido(String.format("El tiempo ráfaga en la fila %s y columna %s no es válido", i, j), i, j);
+                            throw new ValorNoValidoException(
+                                    String.format("El tiempo ráfaga en la fila %s y columna %s no es válido", i + 1, j + 1), i, j);
                         break;
 
                     case COL_TIEMPO_LLEGADA:
                         if (!esEntradaValida(data[i][j].toString(), REGEX_ENTERO_POSITIVO_VALIDO))
-                            throw new ValorNoValido(String.format("El tiempo de llegada en la fila %s y columna %s no es válido", i, j), i, j);
+                            throw new ValorNoValidoException(
+                                    String.format("El tiempo de llegada en la fila %s y columna %s no es válido", i + 1, j + 1), i, j);
                         break;
 
                     default:
@@ -129,20 +209,14 @@ public class ControladorRecogeDatos implements ActionListener
 
     private void prepararTabla()
     {
-
         JTable tabla = VISTA_RECOGE_DATOS.getTablaRecogeDatos();
 
         if (TABLE_MANAGER.existeTabla(tabla))
             salvarTabla();
 
-        String entradaNProcesos = VISTA_RECOGE_DATOS.getEntradaNProcesos().getText();
-
-        if (esEntradaValida(entradaNProcesos, REGEX_ENTERO_POSITIVO_VALIDO))
-        {
-            TABLE_MANAGER.limpiarTabla(tabla);
-            rellenarTabla(Integer.parseInt(entradaNProcesos));
-        }
-
+        TABLE_MANAGER.limpiarTabla(tabla);
+        rellenarTabla(Integer.parseInt(
+                String.valueOf(VISTA_RECOGE_DATOS.getEntradaNProcesos().getValue())));
     }
 
     private void rellenarTabla(int rows)
@@ -164,13 +238,40 @@ public class ControladorRecogeDatos implements ActionListener
         itemsSalvadosTabla = null;
     }
 
+    private void generarValoresTiempoAleatorios()
+    {
+        final int MIN_VALUE_RAFAGA = 10;
+        final int MAX_VALUE_RAFAGA = 8000;
+
+        final int MIN_VALUE_LLEGADA = 5;
+        final int MAX_VALUE_LLEGADA = 1000;
+
+        SecureRandom rand = new SecureRandom();
+        JTable table = VISTA_RECOGE_DATOS.getTablaRecogeDatos();
+        Object[][] data = TABLE_MANAGER.obtenerDatosTabla(table);
+
+        for (Object[] row : data)
+        {
+            int number = rand.nextInt(MAX_VALUE_RAFAGA - MIN_VALUE_RAFAGA) + MIN_VALUE_RAFAGA;
+            row[COL_TIEMPO_RAFAGA] = number;
+
+            if (CLAVE_ALGORITMO_ACTUAL == ControladorSeleccion.CLAVE_ALGORITMO_SRTF)
+            {
+                number = rand.nextInt(MAX_VALUE_LLEGADA - MIN_VALUE_LLEGADA) + MIN_VALUE_LLEGADA;
+                row[COL_TIEMPO_LLEGADA] = number;
+            }
+        }
+
+        TABLE_MANAGER.rellenarTabla(table, data);
+    }
+
     private void anadirFila()
     {
         JTable tabla = VISTA_RECOGE_DATOS.getTablaRecogeDatos();
         Object[] newRow = TABLE_MANAGER.getEmptyRowData(obtenerColsTablaActual());
 
         newRow[0] = "P" + (tabla.getRowCount() + 1);
-        VISTA_RECOGE_DATOS.getEntradaNProcesos().setText(String.valueOf(tabla.getRowCount() + 1));
+        VISTA_RECOGE_DATOS.getEntradaNProcesos().setValue(String.valueOf(tabla.getRowCount() + 1));
         TABLE_MANAGER.addRow(tabla, newRow);
     }
 
@@ -181,8 +282,8 @@ public class ControladorRecogeDatos implements ActionListener
         if (TABLE_MANAGER.existeTabla(tabla))
         {
             TABLE_MANAGER.eliminarUltimaFila(tabla);
-            VISTA_RECOGE_DATOS.getEntradaNProcesos().setText(
-                    String.valueOf(tabla.getRowCount() == 0 ? "" : tabla.getRowCount()));
+            VISTA_RECOGE_DATOS.getEntradaNProcesos().setValue(
+                    String.valueOf(tabla.getRowCount()));
         }
     }
 
@@ -193,7 +294,7 @@ public class ControladorRecogeDatos implements ActionListener
 
     private int obtenerColsTablaActual()
     {
-        return CLAVE_ALGORITMO_ACTUAL == CLAVE_ALGORITMO_SRTF ? COLS_ALGORITMO_SRTF : COLS_ALGORITMO_RR;
+        return CLAVE_ALGORITMO_ACTUAL == ControladorSeleccion.CLAVE_ALGORITMO_SRTF ? COLS_ALGORITMO_SRTF : COLS_ALGORITMO_RR;
     }
 
     private Object[][] recogerDatos()
@@ -204,6 +305,16 @@ public class ControladorRecogeDatos implements ActionListener
     private boolean existenItemsGuardados()
     {
         return itemsSalvadosTabla != null;
+    }
+
+    private void mostrarError(String titulo, String text, int tipo)
+    {
+        JOptionPane.showMessageDialog(VISTA_RECOGE_DATOS, text, titulo, tipo);
+    }
+
+    private boolean confirmar(String titulo, String text)
+    {
+        return JOptionPane.showConfirmDialog(VISTA_RECOGE_DATOS, text, titulo, JOptionPane.YES_NO_OPTION) == 0;
     }
 
     private boolean esEntradaValida(String text, String regex)

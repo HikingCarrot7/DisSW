@@ -51,7 +51,7 @@ public class VistaPrincipal extends javax.swing.JFrame
             },
             new String []
             {
-                "ID", "Nombre", "Tiem. lleg.", "Tiem. ráf."
+                "ID", "Nombre", "Tiem. ráf.", "Tiem. lleg."
             }
         )
         {
@@ -74,9 +74,6 @@ public class VistaPrincipal extends javax.swing.JFrame
                 return canEdit [columnIndex];
             }
         });
-        tablaResumen.setMaximumSize(new java.awt.Dimension(220, 525));
-        tablaResumen.setMinimumSize(new java.awt.Dimension(220, 525));
-        tablaResumen.setPreferredSize(new java.awt.Dimension(220, 525));
         tablaResumen.getTableHeader().setReorderingAllowed(false);
         panelResumen.setViewportView(tablaResumen);
         if (tablaResumen.getColumnModel().getColumnCount() > 0)
@@ -127,9 +124,6 @@ public class VistaPrincipal extends javax.swing.JFrame
                 return canEdit [columnIndex];
             }
         });
-        tablaLlegada.setMaximumSize(new java.awt.Dimension(155, 525));
-        tablaLlegada.setMinimumSize(new java.awt.Dimension(155, 525));
-        tablaLlegada.setPreferredSize(new java.awt.Dimension(155, 525));
         tablaLlegada.getTableHeader().setReorderingAllowed(false);
         panelLlegada.setViewportView(tablaLlegada);
         if (tablaLlegada.getColumnModel().getColumnCount() > 0)
@@ -150,7 +144,7 @@ public class VistaPrincipal extends javax.swing.JFrame
         esquema.setMinimumSize(new java.awt.Dimension(580, 525));
         esquema.setName(""); // NOI18N
         esquema.setPreferredSize(new java.awt.Dimension(580, 525));
-        getContentPane().add(esquema, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 35, -1, -1));
+        getContentPane().add(esquema, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 35, 580, 525));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

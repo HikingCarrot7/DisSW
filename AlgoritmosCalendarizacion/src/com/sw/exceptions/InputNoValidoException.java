@@ -4,13 +4,13 @@ package com.sw.exceptions;
  *
  * @author HikingCarrot7
  */
-public abstract class InputNoValido extends RuntimeException
+public abstract class InputNoValidoException extends RuntimeException
 {
 
     private int row;
     private int col;
 
-    public InputNoValido(String mensaje, int row, int col)
+    public InputNoValidoException(String mensaje, int row, int col)
     {
         super(mensaje);
         this.row = row;

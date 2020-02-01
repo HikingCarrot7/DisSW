@@ -13,6 +13,9 @@ import java.awt.event.ActionListener;
 public class ControladorSeleccion implements ActionListener
 {
 
+    public static final int CLAVE_ALGORITMO_SRTF = 0;
+    public static final int CLAVE_ALGORITMO_RR = 1;
+
     private final VistaSeleccion VISTA_SELECCION;
 
     public ControladorSeleccion(VistaSeleccion vistaSeleccion)
@@ -43,10 +46,10 @@ public class ControladorSeleccion implements ActionListener
                     vistaRecogeDatos.setVisible(true);
                     vistaRecogeDatos.setLocationRelativeTo(null);
                     vistaRecogeDatos.setTitle("Preparando datos para simular el algoritmo SRTF");
-                    vistaRecogeDatos.getEntradaQuantums().setVisible(false);
+                    vistaRecogeDatos.getEntradaNQuantum().setVisible(false);
                     vistaRecogeDatos.getEntradaValidaLabel().setVisible(false);
                     vistaRecogeDatos.getLabelQuantum().setVisible(false);
-                    new ControladorRecogeDatos(vistaRecogeDatos, ControladorRecogeDatos.CLAVE_ALGORITMO_SRTF);
+                    new ControladorRecogeDatos(vistaRecogeDatos, CLAVE_ALGORITMO_SRTF);
                 });
 
                 /*procesos.add(new ProcesoSRTF(Estado.NUEVO, "P1", 0, 400, 30));
@@ -75,7 +78,7 @@ public class ControladorSeleccion implements ActionListener
                     vistaRecogeDatos.setVisible(true);
                     vistaRecogeDatos.setLocationRelativeTo(null);
                     vistaRecogeDatos.setTitle("Preparando datos para simular el algoritmo Round Robin");
-                    new ControladorRecogeDatos(vistaRecogeDatos, ControladorRecogeDatos.CLAVE_ALGORITMO_RR);
+                    new ControladorRecogeDatos(vistaRecogeDatos, CLAVE_ALGORITMO_RR);
                 });
 
                 /*procesos.add(new ProcesoRR(Estado.NUEVO, "P1", 0, 101));

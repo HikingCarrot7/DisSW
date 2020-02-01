@@ -1,12 +1,13 @@
 package com.sw.controller;
 
+import com.sw.model.Notificacion;
 import com.sw.view.DibujadorEsquema;
+import com.sw.view.VistaPrincipal;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Observable;
 import java.util.Observer;
-import com.sw.model.Notificacion;
-import com.sw.view.VistaPrincipal;
+import javax.swing.JTable;
 
 /**
  *
@@ -15,14 +16,29 @@ import com.sw.view.VistaPrincipal;
 public class ControladorVistaPrincipal implements ActionListener, Observer
 {
 
-    private VistaPrincipal vista;
+    private final VistaPrincipal VISTA_PRINCIPAL;
     private final DibujadorEsquema DIBUJADOR_ESQUEMA;
+    private final TableManager TABLE_MANAGER;
 
-    public ControladorVistaPrincipal(VistaPrincipal vista)
+    private final int CLAVE_ALGORITMO_ACTUAL;
+
+    public ControladorVistaPrincipal(final VistaPrincipal VISTA_PRINCIPAL, final int CLAVE_ALGORITMO_ACTUAL)
     {
-        this.vista = vista;
-        DIBUJADOR_ESQUEMA = new DibujadorEsquema(vista.getEsquema());
+        this.VISTA_PRINCIPAL = VISTA_PRINCIPAL;
+        this.CLAVE_ALGORITMO_ACTUAL = CLAVE_ALGORITMO_ACTUAL;
+        DIBUJADOR_ESQUEMA = new DibujadorEsquema(VISTA_PRINCIPAL.getEsquema());
+        TABLE_MANAGER = new TableManager();
         initEsquema();
+    }
+
+    public void establecerDatosDefecto(JTable table)
+    {
+
+    }
+
+    public void establecerDatosDefecto(JTable table, final long QUANTUMS)
+    {
+        TABLE_MANAGER.eliminarUltimaColumna(VISTA_PRINCIPAL.getTablaResumen());
     }
 
     private void initEsquema()

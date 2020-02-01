@@ -63,6 +63,13 @@ public class TableManager
         return data;
     }
 
+    public void rellenarTabla(JTable table, Object[][] data)
+    {
+        for (int i = 0; i < data.length; i++)
+            for (int j = 0; j < data[i].length; j++)
+                table.setValueAt(data[i][j], i, j);
+    }
+
     public int obtenerNFilasTabla(JTable table)
     {
         return table.getRowCount();
@@ -75,7 +82,12 @@ public class TableManager
 
     public Object[] getEmptyRowData(int cols)
     {
-        return new Object[cols];
+        Object[] data = new Object[cols];
+
+        for (int i = 0; i < data.length; i++)
+            data[i] = "";
+
+        return data;
     }
 
     public boolean existeTabla(JTable table)
