@@ -148,6 +148,8 @@ public class VistaPrincipal extends javax.swing.JFrame
 
         esquema.setMaximumSize(new java.awt.Dimension(580, 525));
         esquema.setMinimumSize(new java.awt.Dimension(580, 525));
+        esquema.setName(""); // NOI18N
+        esquema.setPreferredSize(new java.awt.Dimension(580, 525));
         getContentPane().add(esquema, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 35, -1, -1));
 
         pack();

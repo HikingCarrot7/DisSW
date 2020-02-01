@@ -26,7 +26,6 @@ public class DibujadorEsquema
 
     public DibujadorEsquema(Canvas esquema)
     {
-
         this.ESQUEMA = esquema;
         DIBUJADOR_PROCESADOR = new DibujadorProcesador(this);
         DIBUJADOR_PROCESOS = new DiagramaGantt(this);
