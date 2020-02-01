@@ -1,4 +1,4 @@
-package vista;
+package com.sw.view;
 
 import java.awt.Canvas;
 import javax.swing.JButton;
@@ -51,14 +51,42 @@ public class VistaPrincipal extends javax.swing.JFrame
             },
             new String []
             {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID", "Nombre", "Tiem. lleg.", "Tiem. ráf."
             }
-        ));
+        )
+        {
+            Class[] types = new Class []
+            {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean []
+            {
+                false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex)
+            {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex)
+            {
+                return canEdit [columnIndex];
+            }
+        });
         tablaResumen.setMaximumSize(new java.awt.Dimension(220, 525));
         tablaResumen.setMinimumSize(new java.awt.Dimension(220, 525));
         tablaResumen.setPreferredSize(new java.awt.Dimension(220, 525));
         tablaResumen.getTableHeader().setReorderingAllowed(false);
         panelResumen.setViewportView(tablaResumen);
+        if (tablaResumen.getColumnModel().getColumnCount() > 0)
+        {
+            tablaResumen.getColumnModel().getColumn(0).setResizable(false);
+            tablaResumen.getColumnModel().getColumn(0).setPreferredWidth(30);
+            tablaResumen.getColumnModel().getColumn(1).setResizable(false);
+            tablaResumen.getColumnModel().getColumn(2).setResizable(false);
+            tablaResumen.getColumnModel().getColumn(3).setResizable(false);
+        }
 
         getContentPane().add(panelResumen, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 35, -1, -1));
 
@@ -76,13 +104,39 @@ public class VistaPrincipal extends javax.swing.JFrame
             },
             new String []
             {
-                "Title 1", "Title 2"
+                "Proceso", "Ejec. a los.."
             }
-        ));
+        )
+        {
+            Class[] types = new Class []
+            {
+                java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean []
+            {
+                false, false
+            };
+
+            public Class getColumnClass(int columnIndex)
+            {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex)
+            {
+                return canEdit [columnIndex];
+            }
+        });
         tablaLlegada.setMaximumSize(new java.awt.Dimension(155, 525));
         tablaLlegada.setMinimumSize(new java.awt.Dimension(155, 525));
         tablaLlegada.setPreferredSize(new java.awt.Dimension(155, 525));
+        tablaLlegada.getTableHeader().setReorderingAllowed(false);
         panelLlegada.setViewportView(tablaLlegada);
+        if (tablaLlegada.getColumnModel().getColumnCount() > 0)
+        {
+            tablaLlegada.getColumnModel().getColumn(0).setResizable(false);
+            tablaLlegada.getColumnModel().getColumn(1).setResizable(false);
+        }
 
         getContentPane().add(panelLlegada, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 35, -1, -1));
 
@@ -94,7 +148,6 @@ public class VistaPrincipal extends javax.swing.JFrame
 
         esquema.setMaximumSize(new java.awt.Dimension(580, 525));
         esquema.setMinimumSize(new java.awt.Dimension(580, 525));
-        esquema.setPreferredSize(new java.awt.Dimension(580, 525));
         getContentPane().add(esquema, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 35, -1, -1));
 
         pack();

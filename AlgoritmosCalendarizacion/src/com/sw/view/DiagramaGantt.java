@@ -1,21 +1,22 @@
-package controlador;
+package com.sw.view;
 
-import static controlador.DibujadorEsquema.WIDTH;
+import static com.sw.view.DibujadorEsquema.WIDTH;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
-import modelo.Proceso;
+import com.sw.model.Proceso;
 
 /**
  *
  * @author HikingCarrot7
  */
-public class DibujadorProcesos
+public class DiagramaGantt
 {
 
     public static final int PROCESO_RECT_WIDTH = 40;
     public static final int PROCESO_RECT_HEIGHT = 20;
     public static final int OFFSET_X = 20;
+    public static final int OFFSET_Y = 240;
     public static final int SEPARACION_POR_LINEA = 30;
     public static final int TINY_TRIANGLE = 5;
     public static final int MAX_PROCESOS_LINEA = (WIDTH - OFFSET_X * 2) / PROCESO_RECT_WIDTH;
@@ -23,7 +24,7 @@ public class DibujadorProcesos
     private final DibujadorEsquema DIBUJADOR_ESQUEMA;
     private final ArrayList<Proceso> PROCESOS_FINALIZADOS;
 
-    public DibujadorProcesos(DibujadorEsquema dibujadorEsquema)
+    public DiagramaGantt(DibujadorEsquema dibujadorEsquema)
     {
         this.DIBUJADOR_ESQUEMA = dibujadorEsquema;
         PROCESOS_FINALIZADOS = new ArrayList<>();
@@ -37,7 +38,9 @@ public class DibujadorProcesos
 
     public void dibujarTiemposEsperaProcesos(Graphics2D g)
     {
-        int y = 230;
+        int y = OFFSET_Y;
+
+        g.drawString("Diagrama de Gantt", OFFSET_X, OFFSET_Y - 5);
 
         for (int i = 0, x = OFFSET_X; i < PROCESOS_FINALIZADOS.size(); i++, x += PROCESO_RECT_WIDTH)
         {

@@ -1,4 +1,4 @@
-package modelo;
+package com.sw.model;
 
 import java.util.ArrayDeque;
 import java.util.stream.Collectors;
@@ -42,7 +42,7 @@ public class DespachadorSRTF extends Despachador
                 notificar(new Notificacion(Notificacion.PROCESO_HA_FINALIZADO,
                         procesoActual,
                         procesoActual.PCB.getTiempoRafaga(),
-                        tiempoTranscurrido));
+                        tiempoTranscurrido - procesoActual.getTiempoLlegada()));
 
                 tiempoTranscurrido += procesoActual.PCB.getTiempoRafaga();
             }

@@ -1,5 +1,6 @@
-package controlador;
+package com.sw.view;
 
+import com.sw.model.Proceso;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.FontMetrics;
@@ -7,7 +8,6 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.GeneralPath;
 import java.awt.image.BufferStrategy;
-import modelo.Proceso;
 
 /**
  *
@@ -18,7 +18,7 @@ public class DibujadorEsquema
 
     private final Canvas ESQUEMA;
     private final DibujadorProcesador DIBUJADOR_PROCESADOR;
-    private final DibujadorProcesos DIBUJADOR_PROCESOS;
+    private final DiagramaGantt DIBUJADOR_PROCESOS;
 
     public static final int HEIGHT = 525;
     public static final int WIDTH = 580;
@@ -29,7 +29,12 @@ public class DibujadorEsquema
 
         this.ESQUEMA = esquema;
         DIBUJADOR_PROCESADOR = new DibujadorProcesador(this);
-        DIBUJADOR_PROCESOS = new DibujadorProcesos(this);
+        DIBUJADOR_PROCESOS = new DiagramaGantt(this);
+    }
+
+    public void crearRenderer()
+    {
+        new Renderer(this);
     }
 
     public void init()
@@ -139,6 +144,49 @@ public class DibujadorEsquema
 
         triangle.closePath();
         g.fill(triangle);
+    }
+
+    private class Renderer implements Runnable
+    {
+
+        private final DibujadorEsquema ESQUEMA;
+
+        public Renderer(final DibujadorEsquema ESQUEMA)
+        {
+            this.ESQUEMA = ESQUEMA;
+            new Thread(this).start();
+        }
+
+        @Override
+        public void run()
+        {
+            ESQUEMA.init();
+
+            long lastTime = System.nanoTime();
+            final double amountOfThicks = 60.0;
+            double ns = 1000000000 / amountOfThicks;
+            double delta = 0;
+
+            Long timer = System.currentTimeMillis();
+
+            while (true)
+            {
+                long now = System.nanoTime();
+                delta += (now - lastTime) / ns;
+                lastTime = now;
+
+                if (delta >= 1)
+                {
+                    ESQUEMA.render();
+                    delta--;
+                }
+
+                if (System.currentTimeMillis() - timer > 1000)
+                    timer += 1000;
+            }
+
+        }
+
     }
 
 }

@@ -1,4 +1,4 @@
-package modelo;
+package com.sw.model;
 
 import java.util.ArrayDeque;
 import java.util.Observable;

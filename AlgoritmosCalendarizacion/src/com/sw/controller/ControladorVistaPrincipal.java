@@ -1,11 +1,12 @@
-package controlador;
+package com.sw.controller;
 
+import com.sw.view.DibujadorEsquema;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Observable;
 import java.util.Observer;
-import modelo.Notificacion;
-import vista.VistaPrincipal;
+import com.sw.model.Notificacion;
+import com.sw.view.VistaPrincipal;
 
 /**
  *
@@ -26,7 +27,7 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
 
     private void initEsquema()
     {
-        new Loop(DIBUJADOR_ESQUEMA);
+        DIBUJADOR_ESQUEMA.crearRenderer();
     }
 
     @Override

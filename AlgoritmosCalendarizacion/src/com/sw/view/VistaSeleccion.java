@@ -1,4 +1,4 @@
-package vista;
+package com.sw.view;
 
 import javax.swing.JButton;
 
@@ -24,9 +24,7 @@ public class VistaSeleccion extends javax.swing.JFrame
         srtf = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(320, 270));
         setMinimumSize(new java.awt.Dimension(320, 270));
-        setPreferredSize(new java.awt.Dimension(320, 270));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         titile.setFont(new java.awt.Font("Consolas", 0, 18)); // NOI18N

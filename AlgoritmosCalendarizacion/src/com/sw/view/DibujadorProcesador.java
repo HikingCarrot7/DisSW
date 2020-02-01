@@ -1,8 +1,8 @@
-package controlador;
+package com.sw.view;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import modelo.Proceso;
+import com.sw.model.Proceso;
 
 /**
  *
@@ -11,23 +11,26 @@ import modelo.Proceso;
 public class DibujadorProcesador
 {
 
-    public final int CPU_WIDTH = 200;
-    public final int CPU_HEIGHT = 200;
+    public static final int CPU_WIDTH = 200;
+    public static final int CPU_HEIGHT = 200;
+    public static final Rectangle CPU;
 
     private final int BOX_WIDTH = 150;
     private final int BOX_HEIGHT = 10;
 
-    private final Rectangle CPU;
+    static
+    {
+        CPU = new Rectangle(DibujadorEsquema.MIDDLE - CPU_WIDTH / 2, 10, CPU_WIDTH, CPU_HEIGHT);
+    }
 
     private Proceso procesoActual;
     private final DibujadorEsquema DIBUJADOR_ESQUEMA;
     private long tiempoUsoCPUActual;
-    private int pixels_per_tick;
+    private double pixels_per_tick;
     private int charge_box_length = 0;
 
     public DibujadorProcesador(DibujadorEsquema dibujadorEsquema)
     {
-        CPU = new Rectangle(DibujadorEsquema.MIDDLE - CPU_WIDTH / 2, 10, CPU_WIDTH, CPU_HEIGHT);
         this.DIBUJADOR_ESQUEMA = dibujadorEsquema;
     }
 
@@ -52,15 +55,6 @@ public class DibujadorProcesador
 
     }
 
-    /**
-     * @deprecated
-     */
-    public void updateProcesoActual()
-    {
-        charge_box_length = 0;
-        pixels_per_tick = (int) (150 / (getTiempoUsoCPUActual() * 60 / 1000));
-    }
-
     public void dibujarProcesoActual(Graphics2D g)
     {
         if (procesoActual != null && !procesoActual.esProcesoTerminado())
@@ -68,7 +62,7 @@ public class DibujadorProcesador
             DIBUJADOR_ESQUEMA.dibujarTextoCentradoRect(g, "Proceso actual", 80, CPU);
             DIBUJADOR_ESQUEMA.dibujarTextoCentradoRect(g, procesoActual.getIdentificador(), 95, CPU);
             g.drawRect(CPU.x + CPU.width / 2 - BOX_WIDTH / 2, 175, BOX_WIDTH, BOX_HEIGHT);
-            g.fillRect(CPU.x + CPU.width / 2 - BOX_WIDTH / 2, 175, charge_box_length += pixels_per_tick, BOX_HEIGHT);
+            g.fillRect(CPU.x + CPU.width / 2 - BOX_WIDTH / 2, 175, clamp(charge_box_length += pixels_per_tick), BOX_HEIGHT);
 
         } else
             DIBUJADOR_ESQUEMA.dibujarTextoCentradoRect(g, "No hay procesos esperando", 80, CPU);
@@ -93,6 +87,19 @@ public class DibujadorProcesador
     public void setTiempoUsoCPUActual(long tiempoUsoCPUActual)
     {
         this.tiempoUsoCPUActual = tiempoUsoCPUActual;
+
+        if (tiempoUsoCPUActual >= 0)
+        {
+            charge_box_length = 0;
+            double milisecondsPerTick = 1000 / 60;
+            pixels_per_tick = tiempoUsoCPUActual < milisecondsPerTick
+                    ? 150 : (double) ((double) BOX_WIDTH * milisecondsPerTick / (double) tiempoUsoCPUActual);
+        }
+    }
+
+    private int clamp(int x)
+    {
+        return x >= BOX_WIDTH ? BOX_WIDTH : x;
     }
 
 }
