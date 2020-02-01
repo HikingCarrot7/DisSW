@@ -89,9 +89,6 @@ public class DibujadorEsquema
     public void dibujarStringPunto(Graphics2D g, String text, int x, int y)
     {
         Rectangle rect = g.getFontMetrics().getStringBounds(text, g).getBounds();
-
-        /* if (text.length() >= 4 && text.matches("^[0-9]+$"))
-            g.drawRect(x - rect.width / 2, y, rect.width, rect.height - 4);*/
         g.drawString(text, x - rect.width / 2, y + rect.height / 2 + 4);
     }
 

@@ -9,9 +9,9 @@ public class DespachadorRR extends Despachador
 
     private final long QUANTUM;
 
-    public DespachadorRR(CPU cpu, final long QUANTUM)
+    public DespachadorRR(final CPU CPU, final long QUANTUM)
     {
-        super(cpu);
+        super(CPU);
         this.QUANTUM = QUANTUM;
     }
 

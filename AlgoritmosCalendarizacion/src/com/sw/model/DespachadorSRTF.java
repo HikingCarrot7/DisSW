@@ -10,9 +10,9 @@ import java.util.stream.Collectors;
 public class DespachadorSRTF extends Despachador
 {
 
-    public DespachadorSRTF(CPU cpu)
+    public DespachadorSRTF(final CPU CPU)
     {
-        super(cpu);
+        super(CPU);
     }
 
     @Override
@@ -37,6 +37,7 @@ public class DespachadorSRTF extends Despachador
                 esperar();
 
                 procesoActual.PCB.setEstadoProceso(Estado.TERMINADO);
+
                 System.out.println("El CPU ha terminado de ejecutar el proceso: " + procesoActual.getIdentificador());
 
                 notificar(new Notificacion(Notificacion.PROCESO_HA_FINALIZADO,
