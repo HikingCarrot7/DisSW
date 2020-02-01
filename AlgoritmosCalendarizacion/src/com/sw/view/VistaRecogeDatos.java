@@ -36,6 +36,10 @@ public class VistaRecogeDatos extends javax.swing.JFrame
         soporteScrollTabla = new javax.swing.JScrollPane();
         tablaRecogeDatos = new javax.swing.JTable();
         continuar = new javax.swing.JButton();
+        nota = new javax.swing.JLabel();
+        regresar = new javax.swing.JButton();
+        aumentarFila = new javax.swing.JButton();
+        eliminaFila = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(800, 600));
@@ -153,6 +157,35 @@ public class VistaRecogeDatos extends javax.swing.JFrame
         continuar.setPreferredSize(new java.awt.Dimension(100, 30));
         getContentPane().add(continuar, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 520, -1, -1));
 
+        nota.setFont(new java.awt.Font("Consolas", 0, 10)); // NOI18N
+        nota.setText("NOTA: Las unidades de tiempo se toman en milisegundos.");
+        nota.setMaximumSize(new java.awt.Dimension(160, 30));
+        nota.setMinimumSize(new java.awt.Dimension(160, 30));
+        nota.setPreferredSize(new java.awt.Dimension(160, 30));
+        getContentPane().add(nota, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 520, 330, -1));
+
+        regresar.setFont(new java.awt.Font("Consolas", 0, 11)); // NOI18N
+        regresar.setText("<- Regresar");
+        regresar.setMaximumSize(new java.awt.Dimension(100, 30));
+        regresar.setMinimumSize(new java.awt.Dimension(100, 30));
+        regresar.setPreferredSize(new java.awt.Dimension(100, 30));
+        getContentPane().add(regresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
+
+        aumentarFila.setFont(new java.awt.Font("Consolas", 0, 8)); // NOI18N
+        aumentarFila.setToolTipText("Añade una fila a la tabla");
+        aumentarFila.setActionCommand("anadirFila");
+        aumentarFila.setMaximumSize(new java.awt.Dimension(20, 35));
+        aumentarFila.setMinimumSize(new java.awt.Dimension(20, 35));
+        aumentarFila.setPreferredSize(new java.awt.Dimension(20, 35));
+        getContentPane().add(aumentarFila, new org.netbeans.lib.awtextra.AbsoluteConstraints(762, 155, -1, -1));
+
+        eliminaFila.setToolTipText("Elimina una fila a la tabla");
+        eliminaFila.setActionCommand("eliminarFila");
+        eliminaFila.setMaximumSize(new java.awt.Dimension(20, 35));
+        eliminaFila.setMinimumSize(new java.awt.Dimension(20, 35));
+        eliminaFila.setPreferredSize(new java.awt.Dimension(20, 35));
+        getContentPane().add(eliminaFila, new org.netbeans.lib.awtextra.AbsoluteConstraints(762, 200, -1, -1));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -186,14 +219,28 @@ public class VistaRecogeDatos extends javax.swing.JFrame
         return tablaRecogeDatos;
     }
 
+    public JButton getAumentarFila()
+    {
+        return aumentarFila;
+    }
+
+    public JButton getEliminaFila()
+    {
+        return eliminaFila;
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton aceptarNProcesos;
+    private javax.swing.JButton aumentarFila;
     private javax.swing.JButton continuar;
+    private javax.swing.JButton eliminaFila;
     private javax.swing.JTextField entradaNProcesos;
     private javax.swing.JTextField entradaQuantums;
     private javax.swing.JLabel entradaValidaLabel;
     private javax.swing.JLabel labelNProcesos;
     private javax.swing.JLabel labelQuantum;
+    private javax.swing.JLabel nota;
+    private javax.swing.JButton regresar;
     private javax.swing.JScrollPane soporteScrollTabla;
     private javax.swing.JTabbedPane soporteTabla;
     private javax.swing.JTable tablaRecogeDatos;

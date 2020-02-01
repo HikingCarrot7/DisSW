@@ -45,6 +45,13 @@ public class TableManager
         tabla.getParent().revalidate();
     }
 
+    public void eliminarUltimaFila(JTable tabla)
+    {
+        DefaultTableModel tableModel = (DefaultTableModel) tabla.getModel();
+        tableModel.removeRow(tableModel.getRowCount() - 1);
+        tabla.getParent().revalidate();
+    }
+
     public Object[][] obtenerDatosTabla(JTable table)
     {
         Object[][] data = new Object[obtenerNFilasTabla(table)][obtenernColsTabla(table)];
@@ -69,6 +76,11 @@ public class TableManager
     public Object[] getEmptyRowData(int cols)
     {
         return new Object[cols];
+    }
+
+    public boolean existeTabla(JTable table)
+    {
+        return table.getRowCount() > 0;
     }
 
 }
