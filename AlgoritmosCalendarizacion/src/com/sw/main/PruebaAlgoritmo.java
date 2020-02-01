@@ -1,8 +1,8 @@
 package com.sw.main;
 
 import com.sw.controller.ControladorSeleccion;
-import java.awt.EventQueue;
 import com.sw.view.VistaSeleccion;
+import java.awt.EventQueue;
 
 /**
  *

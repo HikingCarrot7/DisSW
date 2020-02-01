@@ -31,6 +31,7 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
     private final VistaPrincipal VISTA_PRINCIPAL;
     private DibujadorEsquema DIBUJADOR_ESQUEMA;
     private final TableManager TABLE_MANAGER;
+    private Despachador despachador;
     private long QUANTUMS;
 
     private final int CLAVE_ALGORITMO_ACTUAL;
@@ -89,6 +90,9 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
                     else
                         controladorRecogeDatos.establecerDatosDefecto(VISTA_PRINCIPAL.getTablaResumen(), QUANTUMS);
 
+                    if (despachador != null)
+                        despachador.detenerDespachador();
+
                     DIBUJADOR_ESQUEMA.destroyRenderer();
                     VISTA_PRINCIPAL.dispose();
                 });
@@ -106,7 +110,7 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
     private void crearSimulacion()
     {
         final CPU CPU = new CPU();
-        Despachador despachador = null;
+        despachador = null;
         ArrayList<Proceso> procesos = null;
 
         switch (CLAVE_ALGORITMO_ACTUAL)
@@ -160,6 +164,14 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
         return procesos;
     }
 
+    private void anadirProcesoTabla(Proceso proceso, long tiempoTranscurrido)
+    {
+        TABLE_MANAGER.addRow(VISTA_PRINCIPAL.getTablaTiempos(), new Object[]
+        {
+            proceso.getIdentificador(), tiempoTranscurrido
+        });
+    }
+
     @Override
     public void update(Observable o, Object arg)
     {
@@ -168,6 +180,10 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
         switch (notificacion.getIdentificador())
         {
             case Notificacion.PROCESO_HA_FINALIZADO:
+
+                anadirProcesoTabla(notificacion.getProceso(),
+                        notificacion.getTiempoTranscurrido());
+
                 DIBUJADOR_ESQUEMA.mostrarEnProcesadorProcesoActual(
                         notificacion.getProceso().obtenerCopiaProceso(),
                         notificacion.getTiempoUsoCpu());
@@ -184,6 +200,10 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
                 break;
 
             case Notificacion.PROCESO_DEJO_CPU:
+
+                anadirProcesoTabla(notificacion.getProceso(),
+                        notificacion.getTiempoTranscurrido());
+
                 DIBUJADOR_ESQUEMA.actualizarDiagramaGantt(
                         notificacion.getProceso().obtenerCopiaProceso(),
                         notificacion.getTiempoTranscurrido());

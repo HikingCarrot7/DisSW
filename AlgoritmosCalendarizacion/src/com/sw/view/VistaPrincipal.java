@@ -130,7 +130,7 @@ public class VistaPrincipal extends javax.swing.JFrame
         getContentPane().add(panelLlegada, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 35, -1, -1));
 
         simulacion.setFont(new java.awt.Font("Consolas", 0, 11)); // NOI18N
-        simulacion.setText("Iniciar simulación.");
+        simulacion.setText("Iniciar simulación");
         simulacion.setActionCommand("iniciarSimulacion");
         simulacion.setMaximumSize(new java.awt.Dimension(155, 25));
         simulacion.setMinimumSize(new java.awt.Dimension(155, 25));
@@ -165,7 +165,7 @@ public class VistaPrincipal extends javax.swing.JFrame
         return simulacion;
     }
 
-    public JTable getTablaLlegada()
+    public JTable getTablaTiempos()
     {
         return tablaLlegada;
     }

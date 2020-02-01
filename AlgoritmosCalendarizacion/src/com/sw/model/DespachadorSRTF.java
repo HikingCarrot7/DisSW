@@ -28,7 +28,7 @@ public class DespachadorSRTF extends Despachador
     @Override
     public void run()
     {
-        while (true)
+        while (running)
             if (!CPU.isOcupado() && hayProcesosEsperando())
             {
                 Proceso procesoActual = procesos.remove();
@@ -43,7 +43,7 @@ public class DespachadorSRTF extends Despachador
                 notificar(new Notificacion(Notificacion.PROCESO_HA_FINALIZADO,
                         procesoActual,
                         procesoActual.PCB.getTiempoRafaga(),
-                        tiempoTranscurrido - procesoActual.getTiempoLlegada()));
+                        Math.abs(tiempoTranscurrido - procesoActual.getTiempoLlegada())));
 
                 tiempoTranscurrido += procesoActual.PCB.getTiempoRafaga();
             }

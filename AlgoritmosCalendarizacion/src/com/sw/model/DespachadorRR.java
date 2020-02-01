@@ -18,7 +18,7 @@ public class DespachadorRR extends Despachador
     @Override
     public void run()
     {
-        while (true)
+        while (running)
             if (hayProcesosEsperando())
             {
                 Proceso proceso = procesos.remove();

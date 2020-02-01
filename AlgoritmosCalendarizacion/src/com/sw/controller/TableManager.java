@@ -84,7 +84,6 @@ public class TableManager
 
             for (int j = 0; j < data[i].length; j++)
                 table.setValueAt(data[i][j], i, j);
-
         }
 
     }

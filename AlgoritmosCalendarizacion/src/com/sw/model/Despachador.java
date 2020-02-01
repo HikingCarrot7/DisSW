@@ -13,6 +13,7 @@ public abstract class Despachador extends Observable implements Runnable
     protected final CPU CPU;
     protected volatile ArrayDeque<Proceso> procesos;
     protected long tiempoTranscurrido;
+    protected volatile boolean running;
 
     public Despachador(final CPU CPU)
     {
@@ -22,6 +23,7 @@ public abstract class Despachador extends Observable implements Runnable
 
     protected void despacharProcesos()
     {
+        running = true;
         new Thread(this).start();
     }
 
@@ -64,6 +66,11 @@ public abstract class Despachador extends Observable implements Runnable
     public boolean hayProcesosEsperando()
     {
         return !procesos.isEmpty();
+    }
+
+    public void detenerDespachador()
+    {
+        running = false;
     }
 
 }

@@ -2,6 +2,7 @@ package com.sw.controller;
 
 import com.sw.exceptions.NombreNoValidoException;
 import com.sw.exceptions.ValorNoValidoException;
+import com.sw.view.TableCellRenderer;
 import com.sw.view.VistaPrincipal;
 import com.sw.view.VistaRecogeDatos;
 import com.sw.view.VistaSeleccion;
@@ -19,26 +20,27 @@ import javax.swing.JTable;
 public class ControladorRecogeDatos implements ActionListener
 {
 
-    private final int CLAVE_ALGORITMO_ACTUAL;
-
     private final VistaRecogeDatos VISTA_RECOGE_DATOS;
     private final TableManager TABLE_MANAGER;
     private final String REGEX_ENTERO_POSITIVO_VALIDO = "^[0-9]+$";
 
     private final int COLS_ALGORITMO_RR = 3;
     private final int COLS_ALGORITMO_SRTF = 4;
+    private int CLAVE_ALGORITMO_ACTUAL;
 
     public static final int COL_NOMBRE_PROCESO = 1;
     public static final int COL_TIEMPO_RAFAGA = 2;
     public static final int COL_TIEMPO_LLEGADA = 3;
 
     private Object[][] itemsSalvadosTabla;
+    private final TableCellRenderer TABLE_CELL_RENDERER;
 
     public ControladorRecogeDatos(VistaRecogeDatos vistaRecogeDatos, final int CLAVE_ALGORITMO_ACTUAL)
     {
         this.VISTA_RECOGE_DATOS = vistaRecogeDatos;
         this.CLAVE_ALGORITMO_ACTUAL = CLAVE_ALGORITMO_ACTUAL;
-        this.TABLE_MANAGER = new TableManager();
+        TABLE_MANAGER = new TableManager();
+        TABLE_CELL_RENDERER = new TableCellRenderer();
         initMyComponents();
     }
 
@@ -48,6 +50,7 @@ public class ControladorRecogeDatos implements ActionListener
         VISTA_RECOGE_DATOS.getContinuar().addActionListener(this);
         VISTA_RECOGE_DATOS.getAleatorio().addActionListener(this);
         VISTA_RECOGE_DATOS.getRegresar().addActionListener(this);
+        //VISTA_RECOGE_DATOS.getTablaRecogeDatos().setDefaultRenderer(Object.class, TABLE_CELL_RENDERER);
         VISTA_RECOGE_DATOS.getTablaRecogeDatos().setValueAt("P1", 0, 0);
 
         if (CLAVE_ALGORITMO_ACTUAL == ControladorSeleccion.CLAVE_ALGORITMO_RR)
@@ -56,13 +59,20 @@ public class ControladorRecogeDatos implements ActionListener
 
     public void establecerDatosDefecto(JTable table)
     {
+        CLAVE_ALGORITMO_ACTUAL = ControladorSeleccion.CLAVE_ALGORITMO_SRTF;
         TABLE_MANAGER.copiarTablas(table, VISTA_RECOGE_DATOS.getTablaRecogeDatos());
+        VISTA_RECOGE_DATOS.setTitle("Preparando datos para simular el algoritmo SRTF");
+        VISTA_RECOGE_DATOS.getLabelQuantum().setVisible(false);
+        VISTA_RECOGE_DATOS.getEntradaNQuantum().setVisible(false);
+        VISTA_RECOGE_DATOS.getEntradaValidaLabel().setVisible(false);
         VISTA_RECOGE_DATOS.getEntradaNProcesos().setValue(table.getRowCount());
     }
 
     public void establecerDatosDefecto(JTable table, final long QUANTUMS)
     {
+        CLAVE_ALGORITMO_ACTUAL = ControladorSeleccion.CLAVE_ALGORITMO_RR;
         TABLE_MANAGER.copiarTablas(table, VISTA_RECOGE_DATOS.getTablaRecogeDatos());
+        VISTA_RECOGE_DATOS.setTitle("Preparando datos para simular el algoritmo Round Robin");
         VISTA_RECOGE_DATOS.getEntradaNProcesos().setValue(table.getRowCount());
         VISTA_RECOGE_DATOS.getEntradaNQuantum().setValue(QUANTUMS);
     }
@@ -147,6 +157,7 @@ public class ControladorRecogeDatos implements ActionListener
 
         } catch (NombreNoValidoException ex)
         {
+            TABLE_CELL_RENDERER.anadirPunto(ex.getRow(), ex.getCol());
             if (confirmar(
                     String.format("Error en la fila %s y columna %s", ex.getRow() + 1, ex.getCol() + 1),
                     ex.getMessage()))
@@ -155,9 +166,13 @@ public class ControladorRecogeDatos implements ActionListener
                 return todosDatosValidos();
             }
 
+            TABLE_CELL_RENDERER.eliminarTodosLosPuntos();
+
         } catch (ValorNoValidoException ex)
         {
+            TABLE_CELL_RENDERER.anadirPunto(ex.getRow(), ex.getCol());
             mostrarError("Error en la entrada de los datos", ex.getMessage(), JOptionPane.ERROR_MESSAGE);
+            TABLE_CELL_RENDERER.eliminarTodosLosPuntos();
         }
 
         return false;

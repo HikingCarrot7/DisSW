@@ -1,10 +1,10 @@
 package com.sw.view;
 
+import com.sw.model.Proceso;
 import static com.sw.view.DibujadorEsquema.WIDTH;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
-import com.sw.model.Proceso;
 
 /**
  *
@@ -16,10 +16,12 @@ public class DiagramaGantt
     public static final int PROCESO_RECT_WIDTH = 40;
     public static final int PROCESO_RECT_HEIGHT = 20;
     public static final int OFFSET_X = 20;
-    public static final int OFFSET_Y = 240;
+    public static final int OFFSET_Y = 230;
     public static final int SEPARACION_POR_LINEA = 30;
     public static final int TINY_TRIANGLE = 5;
-    public static final int MAX_PROCESOS_LINEA = (WIDTH - OFFSET_X * 2) / PROCESO_RECT_WIDTH;
+    public static final int MAX_PROCESOS_COL = (WIDTH - OFFSET_X * 2) / PROCESO_RECT_WIDTH;
+    public static final int MAX_PROCESOS_ROW = 6;
+    public static final int MAX_PROCESOS = MAX_PROCESOS_COL * MAX_PROCESOS_ROW;
 
     private final DibujadorEsquema DIBUJADOR_ESQUEMA;
     private final ArrayList<Proceso> PROCESOS_FINALIZADOS;
@@ -39,6 +41,7 @@ public class DiagramaGantt
     public void dibujarTiemposEsperaProcesos(Graphics2D g)
     {
         int y = OFFSET_Y;
+        boolean SUBIR_DIAGRAMA = PROCESOS_FINALIZADOS.size() >= MAX_PROCESOS;
 
         g.drawString("Diagrama de Gantt", OFFSET_X, OFFSET_Y - 5);
 
@@ -49,9 +52,9 @@ public class DiagramaGantt
             dibujarRectanguloProceso(g, proceso, x, y);
             dibujarInfoProceso(g, proceso, x, y);
 
-            if ((i + 1) % MAX_PROCESOS_LINEA == 0 && PROCESOS_FINALIZADOS.size() - (i + 1) > 0)
+            if ((i + 1) % MAX_PROCESOS_COL == 0 && PROCESOS_FINALIZADOS.size() - (i + 1) > 0)
             {
-                drawLargeLine(g, OFFSET_X + MAX_PROCESOS_LINEA * PROCESO_RECT_WIDTH, y + PROCESO_RECT_HEIGHT / 2);
+                drawLargeLine(g, OFFSET_X + MAX_PROCESOS_COL * PROCESO_RECT_WIDTH, y + PROCESO_RECT_HEIGHT / 2);
                 x = OFFSET_X - PROCESO_RECT_WIDTH;
                 y += PROCESO_RECT_HEIGHT + SEPARACION_POR_LINEA;
             }
