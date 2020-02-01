@@ -38,6 +38,13 @@ public class TableManager
         tabla.getParent().revalidate();
     }
 
+    public void addEmptyRow(JTable tabla)
+    {
+        DefaultTableModel tableModel = (DefaultTableModel) tabla.getModel();
+        tableModel.addRow(getEmptyRowData(tabla.getColumnCount()));
+        tabla.getParent().revalidate();
+    }
+
     public void eliminarUltimaColumna(JTable tabla)
     {
         TableColumnModel tableColumnModel = tabla.getColumnModel();
@@ -50,6 +57,11 @@ public class TableManager
         DefaultTableModel tableModel = (DefaultTableModel) tabla.getModel();
         tableModel.removeRow(tableModel.getRowCount() - 1);
         tabla.getParent().revalidate();
+    }
+
+    public void copiarTablas(JTable src, JTable dest)
+    {
+        rellenarTabla(dest, obtenerDatosTabla(src));
     }
 
     public Object[][] obtenerDatosTabla(JTable table)
@@ -66,8 +78,15 @@ public class TableManager
     public void rellenarTabla(JTable table, Object[][] data)
     {
         for (int i = 0; i < data.length; i++)
+        {
+            if (table.getRowCount() < data.length)
+                addEmptyRow(table);
+
             for (int j = 0; j < data[i].length; j++)
                 table.setValueAt(data[i][j], i, j);
+
+        }
+
     }
 
     public int obtenerNFilasTabla(JTable table)

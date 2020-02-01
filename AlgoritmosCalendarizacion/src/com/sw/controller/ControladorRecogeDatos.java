@@ -28,9 +28,9 @@ public class ControladorRecogeDatos implements ActionListener
     private final int COLS_ALGORITMO_RR = 3;
     private final int COLS_ALGORITMO_SRTF = 4;
 
-    private final int COL_NOMBRE_PROCESO = 1;
-    private final int COL_TIEMPO_RAFAGA = 2;
-    private final int COL_TIEMPO_LLEGADA = 3;
+    public static final int COL_NOMBRE_PROCESO = 1;
+    public static final int COL_TIEMPO_RAFAGA = 2;
+    public static final int COL_TIEMPO_LLEGADA = 3;
 
     private Object[][] itemsSalvadosTabla;
 
@@ -52,6 +52,19 @@ public class ControladorRecogeDatos implements ActionListener
 
         if (CLAVE_ALGORITMO_ACTUAL == ControladorSeleccion.CLAVE_ALGORITMO_RR)
             TABLE_MANAGER.eliminarUltimaColumna(VISTA_RECOGE_DATOS.getTablaRecogeDatos());
+    }
+
+    public void establecerDatosDefecto(JTable table)
+    {
+        TABLE_MANAGER.copiarTablas(table, VISTA_RECOGE_DATOS.getTablaRecogeDatos());
+        VISTA_RECOGE_DATOS.getEntradaNProcesos().setValue(table.getRowCount());
+    }
+
+    public void establecerDatosDefecto(JTable table, final long QUANTUMS)
+    {
+        TABLE_MANAGER.copiarTablas(table, VISTA_RECOGE_DATOS.getTablaRecogeDatos());
+        VISTA_RECOGE_DATOS.getEntradaNProcesos().setValue(table.getRowCount());
+        VISTA_RECOGE_DATOS.getEntradaNQuantum().setValue(QUANTUMS);
     }
 
     @Override
@@ -78,7 +91,7 @@ public class ControladorRecogeDatos implements ActionListener
                         else
                             cvp.establecerDatosDefecto(
                                     VISTA_RECOGE_DATOS.getTablaRecogeDatos(),
-                                    (int) VISTA_RECOGE_DATOS.getEntradaNQuantum().getValue());
+                                    Long.parseLong(VISTA_RECOGE_DATOS.getEntradaNQuantum().getValue().toString()));
 
                         VISTA_RECOGE_DATOS.dispose();
                     });

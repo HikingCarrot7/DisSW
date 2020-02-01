@@ -16,29 +16,32 @@ import java.awt.image.BufferStrategy;
 public class DibujadorEsquema
 {
 
-    private final Canvas ESQUEMA;
-    private final DibujadorProcesador DIBUJADOR_PROCESADOR;
-    private final DiagramaGantt DIBUJADOR_PROCESOS;
-
     public static final int HEIGHT = 525;
     public static final int WIDTH = 580;
     public static final int MIDDLE = WIDTH / 2;
+
+    private final Canvas ESQUEMA;
+    private final DibujadorProcesador DIBUJADOR_PROCESADOR;
+    private final DiagramaGantt DIAGRAMA_GANTT;
+    private volatile boolean running;
 
     public DibujadorEsquema(Canvas esquema)
     {
         this.ESQUEMA = esquema;
         DIBUJADOR_PROCESADOR = new DibujadorProcesador(this);
-        DIBUJADOR_PROCESOS = new DiagramaGantt(this);
+        DIAGRAMA_GANTT = new DiagramaGantt(this);
     }
 
     public void crearRenderer()
     {
+        running = true;
         new Renderer(this);
+        ESQUEMA.createBufferStrategy(2);
     }
 
-    public void init()
+    public void destroyRenderer()
     {
-        ESQUEMA.createBufferStrategy(3);
+        setRunning(false);
     }
 
     public void render()
@@ -51,7 +54,7 @@ public class DibujadorEsquema
         g.setColor(Color.BLACK);
 
         DIBUJADOR_PROCESADOR.dibujarProcesador(g);
-        DIBUJADOR_PROCESOS.dibujarTiemposEsperaProcesos(g);
+        DIAGRAMA_GANTT.dibujarTiemposEsperaProcesos(g);
         DIBUJADOR_PROCESADOR.dibujarProcesoActual(g);
 
         bs.show();
@@ -66,7 +69,7 @@ public class DibujadorEsquema
 
     public void actualizarDiagramaGantt(Proceso proceso, long tiempoTranscurrido)
     {
-        DIBUJADOR_PROCESOS.anadirProcesoFinalizadoAlDiagramaGantt(proceso, tiempoTranscurrido);
+        DIAGRAMA_GANTT.anadirProcesoFinalizadoAlDiagramaGantt(proceso, tiempoTranscurrido);
     }
 
     public void dibujarRectanguloCentrado(Graphics2D g, int y, int width, int height)
@@ -142,30 +145,38 @@ public class DibujadorEsquema
         g.fill(triangle);
     }
 
+    public boolean isRunning()
+    {
+        return running;
+    }
+
+    public void setRunning(boolean running)
+    {
+        this.running = running;
+    }
+
     private class Renderer implements Runnable
     {
 
-        private final DibujadorEsquema ESQUEMA;
+        private final DibujadorEsquema DIBUJADOR_ESQUEMA;
 
-        public Renderer(final DibujadorEsquema ESQUEMA)
+        public Renderer(final DibujadorEsquema DIBUJADOR_ESQUEMA)
         {
-            this.ESQUEMA = ESQUEMA;
+            this.DIBUJADOR_ESQUEMA = DIBUJADOR_ESQUEMA;
             new Thread(this).start();
         }
 
         @Override
         public void run()
         {
-            ESQUEMA.init();
-
             long lastTime = System.nanoTime();
             final double amountOfThicks = 60.0;
-            double ns = 1000000000 / amountOfThicks;
+            double ns = 1_000_000_000 / amountOfThicks;
             double delta = 0;
 
             Long timer = System.currentTimeMillis();
 
-            while (true)
+            while (DIBUJADOR_ESQUEMA.isRunning())
             {
                 long now = System.nanoTime();
                 delta += (now - lastTime) / ns;
@@ -173,7 +184,7 @@ public class DibujadorEsquema
 
                 if (delta >= 1)
                 {
-                    ESQUEMA.render();
+                    DIBUJADOR_ESQUEMA.render();
                     delta--;
                 }
 

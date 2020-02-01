@@ -31,6 +31,7 @@ public class VistaPrincipal extends javax.swing.JFrame
         tablaLlegada = new javax.swing.JTable();
         simulacion = new javax.swing.JButton();
         esquema = new java.awt.Canvas();
+        regresar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1000, 600));
@@ -44,10 +45,7 @@ public class VistaPrincipal extends javax.swing.JFrame
         tablaResumen.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][]
             {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String []
             {
@@ -94,10 +92,7 @@ public class VistaPrincipal extends javax.swing.JFrame
         tablaLlegada.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][]
             {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+
             },
             new String []
             {
@@ -134,7 +129,9 @@ public class VistaPrincipal extends javax.swing.JFrame
 
         getContentPane().add(panelLlegada, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 35, -1, -1));
 
+        simulacion.setFont(new java.awt.Font("Consolas", 0, 11)); // NOI18N
         simulacion.setText("Iniciar simulación.");
+        simulacion.setActionCommand("iniciarSimulacion");
         simulacion.setMaximumSize(new java.awt.Dimension(155, 25));
         simulacion.setMinimumSize(new java.awt.Dimension(155, 25));
         simulacion.setPreferredSize(new java.awt.Dimension(155, 25));
@@ -143,8 +140,12 @@ public class VistaPrincipal extends javax.swing.JFrame
         esquema.setMaximumSize(new java.awt.Dimension(580, 525));
         esquema.setMinimumSize(new java.awt.Dimension(580, 525));
         esquema.setName(""); // NOI18N
-        esquema.setPreferredSize(new java.awt.Dimension(580, 525));
         getContentPane().add(esquema, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 35, 580, 525));
+
+        regresar.setFont(new java.awt.Font("Consolas", 0, 11)); // NOI18N
+        regresar.setText("<- Regresar");
+        regresar.setActionCommand("regresar");
+        getContentPane().add(regresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 5, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -179,10 +180,16 @@ public class VistaPrincipal extends javax.swing.JFrame
         return esquema;
     }
 
+    public JButton getRegresar()
+    {
+        return regresar;
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private java.awt.Canvas esquema;
     private javax.swing.JScrollPane panelLlegada;
     private javax.swing.JScrollPane panelResumen;
+    private javax.swing.JButton regresar;
     private javax.swing.JButton simulacion;
     private javax.swing.JTable tablaLlegada;
     private javax.swing.JTable tablaResumen;
