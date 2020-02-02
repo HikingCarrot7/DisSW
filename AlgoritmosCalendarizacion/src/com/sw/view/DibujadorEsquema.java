@@ -77,7 +77,8 @@ public class DibujadorEsquema
         DIAGRAMA_GANTT.getProcesosDibujados().clear();
         DIBUJADOR_PROCESADOR.setProcesoActual(null);
         DIBUJADOR_PROCESADOR.setTiempoUsoCPUActual(-1);
-        //reiniciar el promedio
+        DIAGRAMA_GANTT.setPromedioTiempoEspera(0);
+        DIAGRAMA_GANTT.setnProcesos(0);
     }
 
     public void dibujarRectanguloCentrado(Graphics2D g, int y, int width, int height)

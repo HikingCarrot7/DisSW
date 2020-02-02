@@ -1,8 +1,8 @@
 package com.sw.view;
 
+import com.sw.model.Proceso;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import com.sw.model.Proceso;
 
 /**
  *
@@ -61,8 +61,8 @@ public class DibujadorProcesador
         {
             DIBUJADOR_ESQUEMA.dibujarTextoCentradoRect(g, "Proceso actual", 80, CPU);
             DIBUJADOR_ESQUEMA.dibujarTextoCentradoRect(g, procesoActual.getIdentificador(), 95, CPU);
-            g.drawRect(CPU.x + CPU.width / 2 - BOX_WIDTH / 2, 175, BOX_WIDTH, BOX_HEIGHT);
-            g.fillRect(CPU.x + CPU.width / 2 - BOX_WIDTH / 2, 175, clamp(charge_box_length += pixels_per_tick), BOX_HEIGHT);
+            g.drawRect(CPU.x + CPU.width / 2 - BOX_WIDTH / 2, 120, BOX_WIDTH, BOX_HEIGHT);
+            g.fillRect(CPU.x + CPU.width / 2 - BOX_WIDTH / 2, 120, clamp(charge_box_length += pixels_per_tick), BOX_HEIGHT);
 
         } else
             DIBUJADOR_ESQUEMA.dibujarTextoCentradoRect(g, "No hay procesos esperando", 80, CPU);

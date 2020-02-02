@@ -3,6 +3,7 @@ package com.sw.view;
 import com.sw.model.Proceso;
 import static com.sw.view.DibujadorEsquema.WIDTH;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 
@@ -26,16 +27,21 @@ public class DiagramaGantt
     private final DibujadorEsquema DIBUJADOR_ESQUEMA;
     private final ArrayList<Proceso> TIEMPO_ESPERA_PROCESOS;
 
+    private double promedioTiempoEspera;
+    private int nProcesos;
+
     public DiagramaGantt(DibujadorEsquema dibujadorEsquema)
     {
         this.DIBUJADOR_ESQUEMA = dibujadorEsquema;
         TIEMPO_ESPERA_PROCESOS = new ArrayList<>();
     }
 
-    public void anadirProcesoFinalizadoAlDiagramaGantt(Proceso proceso, long tiempoTranscurrido)
+    public void anadirProcesoFinalizadoAlDiagramaGantt(Proceso proceso, long tiempoEsperaProceso)
     {
-        proceso.PCB.setTiempoEjecutado(tiempoTranscurrido);
+        proceso.PCB.setTiempoEjecutado(tiempoEsperaProceso);
         TIEMPO_ESPERA_PROCESOS.add(proceso);
+        promedioTiempoEspera += tiempoEsperaProceso;
+        nProcesos++;
     }
 
     public void dibujarTiemposEsperaProcesos(Graphics2D g)
@@ -50,6 +56,7 @@ public class DiagramaGantt
 
             dibujarRectanguloProceso(g, proceso, x, y);
             dibujarInfoProceso(g, proceso, x, y);
+            dibujarTiempoEsperaPromedio(g, DibujadorProcesador.CPU_HEIGHT - 10);
 
             if ((i + 1) % MAX_PROCESOS_COL == 0 && TIEMPO_ESPERA_PROCESOS.size() - (i + 1) > 0)
             {
@@ -63,7 +70,14 @@ public class DiagramaGantt
         if (TIEMPO_ESPERA_PROCESOS.size() >= MAX_PROCESOS)
             for (int i = 0; i < MAX_PROCESOS_COL; i++)
                 TIEMPO_ESPERA_PROCESOS.remove(0);
+    }
 
+    private void dibujarTiempoEsperaPromedio(Graphics2D g, int y)
+    {
+        DIBUJADOR_ESQUEMA.dibujarTextoCentradoRect(g,
+                "Espera promedio: " + String.format("%,.2f", ((double) (promedioTiempoEspera / nProcesos))),
+                y,
+                DibujadorProcesador.CPU);
     }
 
     private void dibujarRectanguloProceso(Graphics2D g, Proceso proceso, int x, int y)
@@ -81,10 +95,16 @@ public class DiagramaGantt
     private void dibujarInfoProceso(Graphics2D g, Proceso proceso, int x, int y)
     {
         final int LINE_LENGTH = 5;
+        final Font CURRENT_FONT = g.getFont();
+        final Font EXECUTED_TIME_FONT = new Font(CURRENT_FONT.getFontName(), CURRENT_FONT.getStyle(), CURRENT_FONT.getSize() - 2);
 
         g.drawLine(x, y + PROCESO_RECT_HEIGHT, x, y + PROCESO_RECT_HEIGHT + LINE_LENGTH);
         DIBUJADOR_ESQUEMA.drawInvertedTriangle(g, x, y + PROCESO_RECT_HEIGHT, TINY_TRIANGLE);
+
+        g.setFont(EXECUTED_TIME_FONT);
         DIBUJADOR_ESQUEMA.dibujarStringPunto(g, String.valueOf(proceso.PCB.getTiempoEjecutado()), x, y + PROCESO_RECT_HEIGHT + LINE_LENGTH);
+        g.setFont(CURRENT_FONT);
+
         DIBUJADOR_ESQUEMA.dibujarStringPunto(g, proceso.getIdentificador(), x + PROCESO_RECT_WIDTH / 2, y + 3);
     }
 
@@ -100,6 +120,16 @@ public class DiagramaGantt
     public ArrayList<Proceso> getProcesosDibujados()
     {
         return TIEMPO_ESPERA_PROCESOS;
+    }
+
+    public void setPromedioTiempoEspera(double promedioTiempoEspera)
+    {
+        this.promedioTiempoEspera = promedioTiempoEspera;
+    }
+
+    public void setnProcesos(int nProcesos)
+    {
+        this.nProcesos = nProcesos;
     }
 
 }
