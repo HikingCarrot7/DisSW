@@ -36,6 +36,9 @@ public class DespachadorSRTF extends Despachador
 
                 esperar();
 
+                if (!running)
+                    break;
+
                 procesoActual.PCB.setEstadoProceso(Estado.TERMINADO);
 
                 notificar(new Notificacion(Notificacion.PROCESO_HA_FINALIZADO,

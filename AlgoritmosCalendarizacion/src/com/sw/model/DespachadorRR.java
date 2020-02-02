@@ -27,6 +27,9 @@ public class DespachadorRR extends Despachador
 
                 esperar(); // Esperamos al proceso.
 
+                if (!running)
+                    break;
+
                 revisarEstadoProceso(proceso);
 
                 if (proceso.esProcesoTerminado())

@@ -46,8 +46,10 @@ public class Calendarizador implements Runnable, Observer
     {
         despachador.despacharProcesos();
 
-        procesosAEntregar.forEach((proceso) ->
+        for (int i = 0; i < procesosAEntregar.size(); i++)
         {
+            Proceso proceso = procesosAEntregar.get(i);
+
             try
             {
                 Thread.sleep(proceso.getTiempoLlegada());
@@ -57,7 +59,9 @@ public class Calendarizador implements Runnable, Observer
             {
                 System.out.println(ex.getMessage());
             }
-        });
+
+        }
+
     }
 
     @Override
