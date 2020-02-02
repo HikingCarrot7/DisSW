@@ -14,40 +14,27 @@ public class Notificacion
 
     private int identificador;
     private Proceso proceso;
-    private long tiempoUsoCpu;
-    private long tiempoTranscurrido;
+    private long tiempoEnQueFinalizoProceso;
+    private long tiempoEsperaProceso;
+    private long tiempoUsoCPU;
 
-    public Notificacion(int identificador, Proceso proceso, long tiempoUsoCpu)
+    public Notificacion(int identificador, Proceso proceso, long tiempoUsoCPU, long tiempoEsperaProceso)
     {
         this.identificador = identificador;
         this.proceso = proceso;
-        this.tiempoUsoCpu = tiempoUsoCpu;
+        this.tiempoEsperaProceso = tiempoEsperaProceso;
+        this.tiempoUsoCPU = tiempoUsoCPU;
     }
 
-    public Notificacion(int identificador, Proceso proceso, long tiempoUsoCpu, long tiempoTranscurrido)
+    public Notificacion(int identificador, Proceso proceso, long tiempoUsoCPU, long tiempoEsperaProceso, long tiempoEnQueFinalizoProceso)
     {
-        this(identificador, proceso, tiempoUsoCpu);
-        this.tiempoTranscurrido = tiempoTranscurrido;
+        this(identificador, proceso, tiempoUsoCPU, tiempoEsperaProceso);
+        this.tiempoEnQueFinalizoProceso = tiempoEnQueFinalizoProceso;
     }
 
-    public long getTiempoUsoCpu()
+    public Notificacion(int identificador, Proceso proceso, long tiempoUsoCPU)
     {
-        return tiempoUsoCpu;
-    }
-
-    public void setTiempoUsoCpu(long tiempoUsoCpu)
-    {
-        this.tiempoUsoCpu = tiempoUsoCpu;
-    }
-
-    public Proceso getProceso()
-    {
-        return proceso;
-    }
-
-    public void setProceso(Proceso proceso)
-    {
-        this.proceso = proceso;
+        this(identificador, proceso, tiempoUsoCPU, 0);
     }
 
     public int getIdentificador()
@@ -60,14 +47,44 @@ public class Notificacion
         this.identificador = identificador;
     }
 
-    public long getTiempoTranscurrido()
+    public Proceso getProceso()
     {
-        return tiempoTranscurrido;
+        return proceso;
     }
 
-    public void setTiempoTranscurrido(long tiempoTranscurrido)
+    public void setProceso(Proceso proceso)
     {
-        this.tiempoTranscurrido = tiempoTranscurrido;
+        this.proceso = proceso;
+    }
+
+    public long getTiempoEnQueFinalizoProceso()
+    {
+        return tiempoEnQueFinalizoProceso;
+    }
+
+    public void setTiempoEnQueFinalizoProceso(long tiempoEnQueFinalizoProceso)
+    {
+        this.tiempoEnQueFinalizoProceso = tiempoEnQueFinalizoProceso;
+    }
+
+    public long getTiempoEsperaProceso()
+    {
+        return tiempoEsperaProceso;
+    }
+
+    public void setTiempoEsperaProceso(long tiempoEsperaProceso)
+    {
+        this.tiempoEsperaProceso = tiempoEsperaProceso;
+    }
+
+    public long getTiempoUsoCPU()
+    {
+        return tiempoUsoCPU;
+    }
+
+    public void setTiempoUsoCPU(long tiempoUsoCPU)
+    {
+        this.tiempoUsoCPU = tiempoUsoCPU;
     }
 
 }

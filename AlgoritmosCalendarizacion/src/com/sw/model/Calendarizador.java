@@ -29,6 +29,9 @@ public class Calendarizador implements Runnable
         procesosAEntregar = procesosAEntregar.stream()
                 .sorted(Comparator.comparing(Proceso::getTiempoLlegada))
                 .collect(Collectors.toCollection(ArrayList::new));
+
+        if (!procesosAEntregar.isEmpty())
+            procesosAEntregar.get(0).setTiempoLlegada(0);
     }
 
     private void entregarProcesosADespachador()

@@ -25,7 +25,9 @@ public class VistaSeleccion extends javax.swing.JFrame
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Seleccione un algoritmo");
-        setMinimumSize(new java.awt.Dimension(320, 270));
+        setMaximumSize(new java.awt.Dimension(305, 225));
+        setMinimumSize(new java.awt.Dimension(305, 225));
+        setPreferredSize(new java.awt.Dimension(305, 225));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 

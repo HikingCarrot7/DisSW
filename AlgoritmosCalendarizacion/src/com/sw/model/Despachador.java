@@ -12,7 +12,7 @@ public abstract class Despachador extends Observable implements Runnable
 
     protected final CPU CPU;
     protected volatile ArrayDeque<Proceso> procesos;
-    protected long tiempoTranscurrido;
+    protected long tiempoTotalUsoCPU; // Es el tiempo (en ms) que ha pasado desde que se ejecutó el primer proceso en el cpu.
     protected volatile boolean running;
 
     public Despachador(final CPU CPU)
@@ -56,6 +56,11 @@ public abstract class Despachador extends Observable implements Runnable
         notifyObservers(notificacion);
     }
 
+    public void detenerDespachador()
+    {
+        running = false;
+    }
+
     protected void esperar()
     {
         while (CPU.isOcupado())
@@ -63,14 +68,14 @@ public abstract class Despachador extends Observable implements Runnable
         }
     }
 
-    public boolean hayProcesosEsperando()
+    protected boolean hayProcesosEsperando()
     {
         return !procesos.isEmpty();
     }
 
-    public void detenerDespachador()
+    protected long tiempoEsperaProceso(Proceso proceso)
     {
-        running = false;
+        return tiempoTotalUsoCPU - proceso.getTiempoLlegada() <= 0 ? 0 : tiempoTotalUsoCPU - proceso.getTiempoLlegada();
     }
 
 }

@@ -42,10 +42,11 @@ public class DespachadorSRTF extends Despachador
 
                 notificar(new Notificacion(Notificacion.PROCESO_HA_FINALIZADO,
                         procesoActual,
-                        procesoActual.PCB.getTiempoRafaga(),
-                        Math.abs(tiempoTranscurrido - procesoActual.getTiempoLlegada())));
+                        0,
+                        tiempoEsperaProceso(procesoActual),
+                        tiempoTotalUsoCPU + procesoActual.PCB.getTiempoRafaga()));
 
-                tiempoTranscurrido += procesoActual.PCB.getTiempoRafaga();
+                tiempoTotalUsoCPU += procesoActual.PCB.getTiempoRafaga();
             }
 
     }

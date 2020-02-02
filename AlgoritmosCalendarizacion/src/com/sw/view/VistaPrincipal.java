@@ -28,8 +28,10 @@ public class VistaPrincipal extends javax.swing.JFrame
         panelResumen = new javax.swing.JScrollPane();
         tablaResumen = new javax.swing.JTable();
         panelLlegada = new javax.swing.JScrollPane();
-        tablaLlegada = new javax.swing.JTable();
+        tablaEspera = new javax.swing.JTable();
         simulacion = new javax.swing.JButton();
+        soporteTablaFinalizados = new javax.swing.JScrollPane();
+        tablaProcesosFinalizados = new javax.swing.JTable();
         esquema = new java.awt.Canvas();
         regresar = new javax.swing.JButton();
 
@@ -40,7 +42,7 @@ public class VistaPrincipal extends javax.swing.JFrame
 
         panelResumen.setMaximumSize(new java.awt.Dimension(220, 525));
         panelResumen.setMinimumSize(new java.awt.Dimension(220, 525));
-        panelResumen.setPreferredSize(new java.awt.Dimension(220, 525));
+        panelResumen.setPreferredSize(new java.awt.Dimension(220, 250));
 
         tablaResumen.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][]
@@ -49,7 +51,7 @@ public class VistaPrincipal extends javax.swing.JFrame
             },
             new String []
             {
-                "ID", "Nombre", "Tiem. ráf.", "Tiem. lleg."
+                "ID", "Proceso", "Tiem. ráf.", "Tiem. lleg."
             }
         )
         {
@@ -89,14 +91,14 @@ public class VistaPrincipal extends javax.swing.JFrame
         panelLlegada.setMinimumSize(new java.awt.Dimension(155, 525));
         panelLlegada.setPreferredSize(new java.awt.Dimension(155, 525));
 
-        tablaLlegada.setModel(new javax.swing.table.DefaultTableModel(
+        tablaEspera.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][]
             {
 
             },
             new String []
             {
-                "Proceso", "Ejec. a los.."
+                "Proceso", "Tiem. Esp."
             }
         )
         {
@@ -119,12 +121,12 @@ public class VistaPrincipal extends javax.swing.JFrame
                 return canEdit [columnIndex];
             }
         });
-        tablaLlegada.getTableHeader().setReorderingAllowed(false);
-        panelLlegada.setViewportView(tablaLlegada);
-        if (tablaLlegada.getColumnModel().getColumnCount() > 0)
+        tablaEspera.getTableHeader().setReorderingAllowed(false);
+        panelLlegada.setViewportView(tablaEspera);
+        if (tablaEspera.getColumnModel().getColumnCount() > 0)
         {
-            tablaLlegada.getColumnModel().getColumn(0).setResizable(false);
-            tablaLlegada.getColumnModel().getColumn(1).setResizable(false);
+            tablaEspera.getColumnModel().getColumn(0).setResizable(false);
+            tablaEspera.getColumnModel().getColumn(1).setResizable(false);
         }
 
         getContentPane().add(panelLlegada, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 35, -1, -1));
@@ -136,6 +138,40 @@ public class VistaPrincipal extends javax.swing.JFrame
         simulacion.setMinimumSize(new java.awt.Dimension(155, 25));
         simulacion.setPreferredSize(new java.awt.Dimension(155, 25));
         getContentPane().add(simulacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 5, -1, -1));
+
+        soporteTablaFinalizados.setMaximumSize(new java.awt.Dimension(175, 210));
+        soporteTablaFinalizados.setMinimumSize(new java.awt.Dimension(175, 210));
+        soporteTablaFinalizados.setPreferredSize(new java.awt.Dimension(175, 210));
+
+        tablaProcesosFinalizados.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][]
+            {
+
+            },
+            new String []
+            {
+                "Proceso", "Tiem. fin."
+            }
+        )
+        {
+            boolean[] canEdit = new boolean []
+            {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex)
+            {
+                return canEdit [columnIndex];
+            }
+        });
+        soporteTablaFinalizados.setViewportView(tablaProcesosFinalizados);
+        if (tablaProcesosFinalizados.getColumnModel().getColumnCount() > 0)
+        {
+            tablaProcesosFinalizados.getColumnModel().getColumn(0).setResizable(false);
+            tablaProcesosFinalizados.getColumnModel().getColumn(1).setResizable(false);
+        }
+
+        getContentPane().add(soporteTablaFinalizados, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 290, 220, 270));
 
         esquema.setMaximumSize(new java.awt.Dimension(580, 525));
         esquema.setMinimumSize(new java.awt.Dimension(580, 525));
@@ -165,9 +201,9 @@ public class VistaPrincipal extends javax.swing.JFrame
         return simulacion;
     }
 
-    public JTable getTablaTiempos()
+    public JTable getTablaEspera()
     {
-        return tablaLlegada;
+        return tablaEspera;
     }
 
     public JTable getTablaResumen()
@@ -185,13 +221,20 @@ public class VistaPrincipal extends javax.swing.JFrame
         return regresar;
     }
 
+    public JTable getTablaProcesosFinalizados()
+    {
+        return tablaProcesosFinalizados;
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private java.awt.Canvas esquema;
     private javax.swing.JScrollPane panelLlegada;
     private javax.swing.JScrollPane panelResumen;
     private javax.swing.JButton regresar;
     private javax.swing.JButton simulacion;
-    private javax.swing.JTable tablaLlegada;
+    private javax.swing.JScrollPane soporteTablaFinalizados;
+    private javax.swing.JTable tablaEspera;
+    private javax.swing.JTable tablaProcesosFinalizados;
     private javax.swing.JTable tablaResumen;
     // End of variables declaration//GEN-END:variables
 }

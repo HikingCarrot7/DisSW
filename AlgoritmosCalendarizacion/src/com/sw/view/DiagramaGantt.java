@@ -41,7 +41,6 @@ public class DiagramaGantt
     public void dibujarTiemposEsperaProcesos(Graphics2D g)
     {
         int y = OFFSET_Y;
-        boolean SUBIR_DIAGRAMA = PROCESOS_FINALIZADOS.size() >= MAX_PROCESOS;
 
         g.drawString("Diagrama de Gantt", OFFSET_X, OFFSET_Y - 5);
 
@@ -60,6 +59,10 @@ public class DiagramaGantt
             }
 
         }
+
+        if (PROCESOS_FINALIZADOS.size() >= MAX_PROCESOS)
+            for (int i = 0; i < MAX_PROCESOS_COL; i++)
+                PROCESOS_FINALIZADOS.remove(0);
 
     }
 
