@@ -31,16 +31,24 @@ public class DespachadorRR extends Despachador
 
                 if (proceso.esProcesoTerminado())
                 {
-                    notificar(new Notificacion(Notificacion.PROCESO_HA_FINALIZADO, proceso, 0, tiempoEsperaProceso(proceso), tiempoTotalUsoCPU + tiempoUsoCPU));
+                    notificar(new Notificacion(Notificacion.PROCESO_HA_FINALIZADO,
+                            proceso,
+                            0, // Tiempo de uso del cpu en su última ejecución. (El proceso ha finalizado, ya no necesita usar el cpu)
+                            tiempoEsperaProceso(proceso), // Tiempo que esperó el cpu para su última ejecución.
+                            tiempoTotalUsoCPU + tiempoUsoCPU)); // Tiempo en el que el cpu ha terminado de ejecutarse.
+
                     System.out.println("El CPU ha terminado de ejecutar el proceso: " + proceso.getIdentificador());
 
                 } else
                 {
-                    notificar(new Notificacion(Notificacion.PROCESO_DEJO_CPU, proceso, 0, tiempoEsperaProceso(proceso)));
-                    procesos.addLast(proceso);
+                    notificar(new Notificacion(Notificacion.PROCESO_DEJO_CPU, proceso,
+                            0, // Tiempo de uso del cpu en su última ejecución. (El proceso ha finalizado, ya no necesita usar el cpu)
+                            tiempoEsperaProceso(proceso)));// Tiempo que esperó el cpu para su última ejecución.
+
+                    procesos.addLast(proceso);//El proceso no ha terminado, regresa a la cola.
                 }
-                // procesosTerminados.add(proceso); -> calendarizador
-                tiempoTotalUsoCPU += tiempoUsoCPU;
+
+                tiempoTotalUsoCPU += tiempoUsoCPU; // Tiempo total que se ha usado el cpu.
             }
 
     }

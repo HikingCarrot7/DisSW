@@ -2,7 +2,6 @@ package com.sw.controller;
 
 import com.sw.exceptions.NombreNoValidoException;
 import com.sw.exceptions.ValorNoValidoException;
-import com.sw.view.TableCellRenderer;
 import com.sw.view.VistaPrincipal;
 import com.sw.view.VistaRecogeDatos;
 import com.sw.view.VistaSeleccion;
@@ -33,14 +32,12 @@ public class ControladorRecogeDatos implements ActionListener
     public static final int COL_TIEMPO_LLEGADA = 3;
 
     private Object[][] itemsSalvadosTabla;
-    private final TableCellRenderer TABLE_CELL_RENDERER;
 
     public ControladorRecogeDatos(VistaRecogeDatos vistaRecogeDatos, final int CLAVE_ALGORITMO_ACTUAL)
     {
         this.VISTA_RECOGE_DATOS = vistaRecogeDatos;
         this.CLAVE_ALGORITMO_ACTUAL = CLAVE_ALGORITMO_ACTUAL;
         TABLE_MANAGER = new TableManager();
-        TABLE_CELL_RENDERER = new TableCellRenderer();
         initMyComponents();
     }
 
@@ -50,7 +47,7 @@ public class ControladorRecogeDatos implements ActionListener
         VISTA_RECOGE_DATOS.getContinuar().addActionListener(this);
         VISTA_RECOGE_DATOS.getAleatorio().addActionListener(this);
         VISTA_RECOGE_DATOS.getRegresar().addActionListener(this);
-        //VISTA_RECOGE_DATOS.getTablaRecogeDatos().setDefaultRenderer(Object.class, TABLE_CELL_RENDERER);
+        VISTA_RECOGE_DATOS.getBorrarTodo().addActionListener(this);
         VISTA_RECOGE_DATOS.getTablaRecogeDatos().setValueAt("P1", 0, 0);
 
         if (CLAVE_ALGORITMO_ACTUAL == ControladorSeleccion.CLAVE_ALGORITMO_RR)
@@ -105,7 +102,6 @@ public class ControladorRecogeDatos implements ActionListener
 
                         VISTA_RECOGE_DATOS.dispose();
                     });
-
                 break;
 
             case "regresar":
@@ -118,7 +114,6 @@ public class ControladorRecogeDatos implements ActionListener
                         new ControladorSeleccion(vistaSeleccion);
                         VISTA_RECOGE_DATOS.dispose();
                     });
-
                 break;
 
             case "aleatorios":
@@ -127,6 +122,11 @@ public class ControladorRecogeDatos implements ActionListener
                     arreglarNombresProcesos();
                     generarValoresTiempoAleatorios();
                 }
+                break;
+
+            case "borrarTodo":
+                if (confirmar("¿Seguro?", "Se eliminarán todos los datos. ¿Seguro?"))
+                    borrarInfoTabla();
                 break;
 
             default:
@@ -157,7 +157,6 @@ public class ControladorRecogeDatos implements ActionListener
 
         } catch (NombreNoValidoException ex)
         {
-            TABLE_CELL_RENDERER.anadirPunto(ex.getRow(), ex.getCol());
             if (confirmar(
                     String.format("Error en la fila %s y columna %s", ex.getRow() + 1, ex.getCol() + 1),
                     ex.getMessage()))
@@ -166,31 +165,12 @@ public class ControladorRecogeDatos implements ActionListener
                 return todosDatosValidos();
             }
 
-            TABLE_CELL_RENDERER.eliminarTodosLosPuntos();
-
         } catch (ValorNoValidoException ex)
         {
-            TABLE_CELL_RENDERER.anadirPunto(ex.getRow(), ex.getCol());
             mostrarError("Error en la entrada de los datos", ex.getMessage(), JOptionPane.ERROR_MESSAGE);
-            TABLE_CELL_RENDERER.eliminarTodosLosPuntos();
         }
 
         return false;
-    }
-
-    private boolean nombresProcesosValidos()
-    {
-        Object[][] data = recogerDatos();
-
-        for (int i = 0; i < data.length; i++)
-        {
-            String nombre = data[i][COL_NOMBRE_PROCESO].toString().trim();
-
-            if (nombre.equals("") || nombre.equals(" "))
-                throw new NombreNoValidoException(i, COL_NOMBRE_PROCESO);
-        }
-
-        return true;
     }
 
     private void arreglarNombresProcesos()
@@ -206,6 +186,21 @@ public class ControladorRecogeDatos implements ActionListener
         }
 
         TABLE_MANAGER.rellenarTabla(VISTA_RECOGE_DATOS.getTablaRecogeDatos(), data);
+    }
+
+    private boolean nombresProcesosValidos()
+    {
+        Object[][] data = recogerDatos();
+
+        for (int i = 0; i < data.length; i++)
+        {
+            String nombre = data[i][COL_NOMBRE_PROCESO].toString().trim();
+
+            if (nombre.equals("") || nombre.equals(" "))
+                throw new NombreNoValidoException(i, COL_NOMBRE_PROCESO);
+        }
+
+        return true;
     }
 
     private boolean tiemposProcesosValidos()
@@ -266,6 +261,15 @@ public class ControladorRecogeDatos implements ActionListener
         itemsSalvadosTabla = null;
     }
 
+    private void borrarInfoTabla()
+    {
+        JTable tabla = VISTA_RECOGE_DATOS.getTablaRecogeDatos();
+
+        for (int i = 0; i < tabla.getRowCount(); i++)
+            for (int j = 1; j < tabla.getColumnCount(); j++)
+                tabla.setValueAt("", i, j);
+    }
+
     private void generarValoresTiempoAleatorios()
     {
         final int MIN_VALUE_RAFAGA = 10;
@@ -291,28 +295,6 @@ public class ControladorRecogeDatos implements ActionListener
         }
 
         TABLE_MANAGER.rellenarTabla(table, data);
-    }
-
-    private void anadirFila()
-    {
-        JTable tabla = VISTA_RECOGE_DATOS.getTablaRecogeDatos();
-        Object[] newRow = TABLE_MANAGER.getEmptyRowData(obtenerColsTablaActual());
-
-        newRow[0] = "P" + (tabla.getRowCount() + 1);
-        VISTA_RECOGE_DATOS.getEntradaNProcesos().setValue(String.valueOf(tabla.getRowCount() + 1));
-        TABLE_MANAGER.addRow(tabla, newRow);
-    }
-
-    private void eliminarFila()
-    {
-        JTable tabla = VISTA_RECOGE_DATOS.getTablaRecogeDatos();
-
-        if (TABLE_MANAGER.existeTabla(tabla))
-        {
-            TABLE_MANAGER.eliminarUltimaFila(tabla);
-            VISTA_RECOGE_DATOS.getEntradaNProcesos().setValue(
-                    String.valueOf(tabla.getRowCount()));
-        }
     }
 
     private void salvarTabla()

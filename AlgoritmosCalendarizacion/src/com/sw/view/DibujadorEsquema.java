@@ -72,6 +72,14 @@ public class DibujadorEsquema
         DIAGRAMA_GANTT.anadirProcesoFinalizadoAlDiagramaGantt(proceso, tiempoTranscurrido);
     }
 
+    public void reiniciarEsquema()
+    {
+        DIAGRAMA_GANTT.getProcesosDibujados().clear();
+        DIBUJADOR_PROCESADOR.setProcesoActual(null);
+        DIBUJADOR_PROCESADOR.setTiempoUsoCPUActual(-1);
+        //reiniciar el promedio
+    }
+
     public void dibujarRectanguloCentrado(Graphics2D g, int y, int width, int height)
     {
         g.drawRect(MIDDLE - width / 2, y, width, height);

@@ -10,14 +10,14 @@ import java.util.Observable;
 public abstract class Despachador extends Observable implements Runnable
 {
 
-    protected final CPU CPU;
+    protected CPU cpu;
     protected volatile ArrayDeque<Proceso> procesos;
     protected long tiempoTotalUsoCPU; // Es el tiempo (en ms) que ha pasado desde que se ejecutó el primer proceso en el cpu.
     protected volatile boolean running;
 
     public Despachador(final CPU CPU)
     {
-        this.CPU = CPU;
+        this.cpu = CPU;
         this.procesos = new ArrayDeque<>();
     }
 
@@ -35,7 +35,7 @@ public abstract class Despachador extends Observable implements Runnable
     public void cambiarContexto(Proceso proceso, long tiempoUsoCPU)
     {
         notificar(new Notificacion(Notificacion.PROCESO_ENTRO_CPU, proceso, tiempoUsoCPU));
-        CPU.ejecutarProceso(proceso, tiempoUsoCPU);
+        cpu.ejecutarProceso(proceso, tiempoUsoCPU);
         proceso.PCB.setEstadoProceso(Estado.EJECUCION);
         System.out.println("El CPU ha recibido el proceso: " + proceso.getIdentificador());
     }
@@ -56,14 +56,9 @@ public abstract class Despachador extends Observable implements Runnable
         notifyObservers(notificacion);
     }
 
-    public void detenerDespachador()
-    {
-        running = false;
-    }
-
     protected void esperar()
     {
-        while (CPU.isOcupado())
+        while (cpu != null && cpu.isOcupado())
         {
         }
     }
@@ -76,6 +71,20 @@ public abstract class Despachador extends Observable implements Runnable
     protected long tiempoEsperaProceso(Proceso proceso)
     {
         return tiempoTotalUsoCPU - proceso.getTiempoLlegada() <= 0 ? 0 : tiempoTotalUsoCPU - proceso.getTiempoLlegada();
+    }
+
+    public void detenerDespachador()
+    {
+        running = false;
+    }
+
+    public void reiniciarDespachador()
+    {
+        running = false;
+        cpu.interrumpirProceso();
+        cpu = null;
+        tiempoTotalUsoCPU = 0;
+        procesos.clear();
     }
 
 }

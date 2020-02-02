@@ -29,7 +29,7 @@ public class DespachadorSRTF extends Despachador
     public void run()
     {
         while (running)
-            if (!CPU.isOcupado() && hayProcesosEsperando())
+            if (!cpu.isOcupado() && hayProcesosEsperando())
             {
                 Proceso procesoActual = procesos.remove();
                 cambiarContexto(procesoActual);
@@ -42,9 +42,9 @@ public class DespachadorSRTF extends Despachador
 
                 notificar(new Notificacion(Notificacion.PROCESO_HA_FINALIZADO,
                         procesoActual,
-                        0,
-                        tiempoEsperaProceso(procesoActual),
-                        tiempoTotalUsoCPU + procesoActual.PCB.getTiempoRafaga()));
+                        0, // Tiempo de uso del CPU (no aplica para procesos finalizados)
+                        tiempoEsperaProceso(procesoActual), // Tiempo que ha esperado el proceso para hacer su última ejecución
+                        tiempoTotalUsoCPU + procesoActual.PCB.getTiempoRafaga())); // El tiempo en el que ha finalizado
 
                 tiempoTotalUsoCPU += procesoActual.PCB.getTiempoRafaga();
             }

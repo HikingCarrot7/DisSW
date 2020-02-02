@@ -37,10 +37,12 @@ public class VistaSeleccion extends javax.swing.JFrame
         getContentPane().add(titile, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 280, 50));
 
         rr.setText("Round Robin");
+        rr.setToolTipText("Simular el algoritmo RR.");
         rr.setActionCommand("rr");
         getContentPane().add(rr, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, 280, 50));
 
         srtf.setText("Short Remainig Time First");
+        srtf.setToolTipText("Simular el algoritmo SRTF.");
         srtf.setActionCommand("srtf");
         getContentPane().add(srtf, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 280, 50));
 

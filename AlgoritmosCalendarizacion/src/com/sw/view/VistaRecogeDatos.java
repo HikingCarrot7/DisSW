@@ -39,6 +39,7 @@ public class VistaRecogeDatos extends javax.swing.JFrame
         entradaNProcesos = new javax.swing.JSpinner();
         entradaNQuantum = new javax.swing.JSpinner();
         aleatorio = new javax.swing.JButton();
+        borrarTodo = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(790, 595));
@@ -65,6 +66,7 @@ public class VistaRecogeDatos extends javax.swing.JFrame
 
         aceptarNProcesos.setFont(new java.awt.Font("Consolas", 0, 11)); // NOI18N
         aceptarNProcesos.setText("Aceptar");
+        aceptarNProcesos.setToolTipText("Establecer el número de procesos.");
         aceptarNProcesos.setActionCommand("aceptar");
         aceptarNProcesos.setMaximumSize(new java.awt.Dimension(80, 30));
         aceptarNProcesos.setMinimumSize(new java.awt.Dimension(80, 30));
@@ -137,12 +139,13 @@ public class VistaRecogeDatos extends javax.swing.JFrame
             tablaRecogeDatos.getColumnModel().getColumn(3).setPreferredWidth(40);
         }
 
-        soporteTabla.addTab("Datos", soporteScrollTabla);
+        soporteTabla.addTab("Datos para la simulación.", soporteScrollTabla);
 
         getContentPane().add(soporteTabla, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, -1, -1));
 
         continuar.setFont(new java.awt.Font("Consolas", 0, 11)); // NOI18N
         continuar.setText("Continuar");
+        continuar.setToolTipText("Continuar con la simulación.");
         continuar.setActionCommand("continuar");
         continuar.setMaximumSize(new java.awt.Dimension(100, 30));
         continuar.setMinimumSize(new java.awt.Dimension(100, 30));
@@ -158,6 +161,7 @@ public class VistaRecogeDatos extends javax.swing.JFrame
 
         regresar.setFont(new java.awt.Font("Consolas", 0, 11)); // NOI18N
         regresar.setText("<- Regresar");
+        regresar.setToolTipText("Regresar a la ventana anterior.");
         regresar.setActionCommand("regresar");
         regresar.setMaximumSize(new java.awt.Dimension(100, 30));
         regresar.setMinimumSize(new java.awt.Dimension(100, 30));
@@ -166,13 +170,14 @@ public class VistaRecogeDatos extends javax.swing.JFrame
 
         entradaNProcesos.setFont(new java.awt.Font("Consolas", 0, 11)); // NOI18N
         entradaNProcesos.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
-        entradaNProcesos.setToolTipText("");
+        entradaNProcesos.setToolTipText("Insertar el número de procesos para esta simulación.");
         entradaNProcesos.setMaximumSize(new java.awt.Dimension(100, 30));
         entradaNProcesos.setMinimumSize(new java.awt.Dimension(100, 30));
         entradaNProcesos.setPreferredSize(new java.awt.Dimension(100, 30));
         getContentPane().add(entradaNProcesos, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 70, -1, -1));
 
         entradaNQuantum.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
+        entradaNQuantum.setToolTipText("Insertar el valor del Quantum para esta simulación.");
         entradaNQuantum.setMaximumSize(new java.awt.Dimension(100, 30));
         entradaNQuantum.setMinimumSize(new java.awt.Dimension(100, 30));
         entradaNQuantum.setPreferredSize(new java.awt.Dimension(100, 30));
@@ -180,12 +185,21 @@ public class VistaRecogeDatos extends javax.swing.JFrame
 
         aleatorio.setFont(new java.awt.Font("Consolas", 0, 11)); // NOI18N
         aleatorio.setText("Datos aleatorios");
-        aleatorio.setToolTipText("Generar datos aleatorios");
+        aleatorio.setToolTipText("Generar datos aleatorios.");
         aleatorio.setActionCommand("aleatorios");
-        aleatorio.setMaximumSize(new java.awt.Dimension(100, 30));
-        aleatorio.setMinimumSize(new java.awt.Dimension(100, 30));
-        aleatorio.setPreferredSize(new java.awt.Dimension(100, 30));
-        getContentPane().add(aleatorio, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 520, 130, -1));
+        aleatorio.setMaximumSize(new java.awt.Dimension(130, 30));
+        aleatorio.setMinimumSize(new java.awt.Dimension(130, 30));
+        aleatorio.setPreferredSize(new java.awt.Dimension(130, 30));
+        getContentPane().add(aleatorio, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 520, -1, -1));
+
+        borrarTodo.setFont(new java.awt.Font("Consolas", 0, 11)); // NOI18N
+        borrarTodo.setText("Borrar todo");
+        borrarTodo.setToolTipText("Borra todo el contenido de la tabla.");
+        borrarTodo.setActionCommand("borrarTodo");
+        borrarTodo.setMaximumSize(new java.awt.Dimension(90, 30));
+        borrarTodo.setMinimumSize(new java.awt.Dimension(90, 30));
+        borrarTodo.setPreferredSize(new java.awt.Dimension(90, 30));
+        getContentPane().add(borrarTodo, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 520, 100, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -235,9 +249,15 @@ public class VistaRecogeDatos extends javax.swing.JFrame
         return entradaNProcesos;
     }
 
+    public JButton getBorrarTodo()
+    {
+        return borrarTodo;
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton aceptarNProcesos;
     private javax.swing.JButton aleatorio;
+    private javax.swing.JButton borrarTodo;
     private javax.swing.JButton continuar;
     private javax.swing.JSpinner entradaNProcesos;
     private javax.swing.JSpinner entradaNQuantum;

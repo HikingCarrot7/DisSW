@@ -24,18 +24,18 @@ public class DiagramaGantt
     public static final int MAX_PROCESOS = MAX_PROCESOS_COL * MAX_PROCESOS_ROW;
 
     private final DibujadorEsquema DIBUJADOR_ESQUEMA;
-    private final ArrayList<Proceso> PROCESOS_FINALIZADOS;
+    private final ArrayList<Proceso> TIEMPO_ESPERA_PROCESOS;
 
     public DiagramaGantt(DibujadorEsquema dibujadorEsquema)
     {
         this.DIBUJADOR_ESQUEMA = dibujadorEsquema;
-        PROCESOS_FINALIZADOS = new ArrayList<>();
+        TIEMPO_ESPERA_PROCESOS = new ArrayList<>();
     }
 
     public void anadirProcesoFinalizadoAlDiagramaGantt(Proceso proceso, long tiempoTranscurrido)
     {
         proceso.PCB.setTiempoEjecutado(tiempoTranscurrido);
-        PROCESOS_FINALIZADOS.add(proceso);
+        TIEMPO_ESPERA_PROCESOS.add(proceso);
     }
 
     public void dibujarTiemposEsperaProcesos(Graphics2D g)
@@ -44,14 +44,14 @@ public class DiagramaGantt
 
         g.drawString("Diagrama de Gantt", OFFSET_X, OFFSET_Y - 5);
 
-        for (int i = 0, x = OFFSET_X; i < PROCESOS_FINALIZADOS.size(); i++, x += PROCESO_RECT_WIDTH)
+        for (int i = 0, x = OFFSET_X; i < TIEMPO_ESPERA_PROCESOS.size(); i++, x += PROCESO_RECT_WIDTH)
         {
-            Proceso proceso = PROCESOS_FINALIZADOS.get(i);
+            Proceso proceso = TIEMPO_ESPERA_PROCESOS.get(i);
 
             dibujarRectanguloProceso(g, proceso, x, y);
             dibujarInfoProceso(g, proceso, x, y);
 
-            if ((i + 1) % MAX_PROCESOS_COL == 0 && PROCESOS_FINALIZADOS.size() - (i + 1) > 0)
+            if ((i + 1) % MAX_PROCESOS_COL == 0 && TIEMPO_ESPERA_PROCESOS.size() - (i + 1) > 0)
             {
                 drawLargeLine(g, OFFSET_X + MAX_PROCESOS_COL * PROCESO_RECT_WIDTH, y + PROCESO_RECT_HEIGHT / 2);
                 x = OFFSET_X - PROCESO_RECT_WIDTH;
@@ -60,9 +60,9 @@ public class DiagramaGantt
 
         }
 
-        if (PROCESOS_FINALIZADOS.size() >= MAX_PROCESOS)
+        if (TIEMPO_ESPERA_PROCESOS.size() >= MAX_PROCESOS)
             for (int i = 0; i < MAX_PROCESOS_COL; i++)
-                PROCESOS_FINALIZADOS.remove(0);
+                TIEMPO_ESPERA_PROCESOS.remove(0);
 
     }
 
@@ -73,7 +73,6 @@ public class DiagramaGantt
             g.setColor(Color.RED);
             g.fillRect(x, y, PROCESO_RECT_WIDTH, PROCESO_RECT_HEIGHT);
             g.setColor(Color.BLACK);
-
         }
 
         g.drawRect(x, y, PROCESO_RECT_WIDTH, PROCESO_RECT_HEIGHT);
@@ -96,6 +95,11 @@ public class DiagramaGantt
         g.drawLine(WIDTH - OFFSET_X, y + PROCESO_RECT_HEIGHT + 10, OFFSET_X - OFFSET_X / 2, y + PROCESO_RECT_HEIGHT + 10);
         g.drawLine(OFFSET_X - OFFSET_X / 2, y + PROCESO_RECT_HEIGHT + 10, OFFSET_X - OFFSET_X / 2, y + SEPARACION_POR_LINEA + PROCESO_RECT_HEIGHT);
         g.drawLine(OFFSET_X - OFFSET_X / 2, y + SEPARACION_POR_LINEA + PROCESO_RECT_HEIGHT, OFFSET_X, y + SEPARACION_POR_LINEA + PROCESO_RECT_HEIGHT);
+    }
+
+    public ArrayList<Proceso> getProcesosDibujados()
+    {
+        return TIEMPO_ESPERA_PROCESOS;
     }
 
 }

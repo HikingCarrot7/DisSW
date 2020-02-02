@@ -2,13 +2,14 @@ package com.sw.model;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Observer;
 import java.util.stream.Collectors;
 
 /**
  *
  * @author HikingCarrot7
  */
-public class Calendarizador implements Runnable
+public class Calendarizador implements Runnable, Observer
 {
 
     private ArrayList<Proceso> procesosAEntregar;
@@ -20,6 +21,7 @@ public class Calendarizador implements Runnable
         this.procesosAEntregar = procesosAEntregar;
         this.despachador = despachador;
         procesosTerminados = new ArrayList<>();
+        despachador.addObserver(this);
         ordenarProcesosTiempoLlegada();
         entregarProcesosADespachador();
     }
@@ -57,6 +59,26 @@ public class Calendarizador implements Runnable
                 System.out.println(ex.getMessage());
             }
         });
+    }
+
+    @Override
+    public void update(java.util.Observable o, Object notif)
+    {
+        Notificacion notificacion = (Notificacion) notif;
+
+        if (notificacion.getIdentificador() == Notificacion.PROCESO_HA_FINALIZADO)
+            procesosTerminados.add(notificacion.getProceso());
+    }
+
+    public boolean todosProcesosTerminados()
+    {
+        return procesosAEntregar.size() == procesosTerminados.size();
+    }
+
+    public void reiniciarCalendarizador()
+    {
+        procesosAEntregar.clear();
+        procesosTerminados.clear();
     }
 
 }

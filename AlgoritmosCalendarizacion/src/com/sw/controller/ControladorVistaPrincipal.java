@@ -19,6 +19,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
 /**
@@ -29,10 +30,12 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
 {
 
     private final VistaPrincipal VISTA_PRINCIPAL;
-    private DibujadorEsquema DIBUJADOR_ESQUEMA;
+    private final DibujadorEsquema DIBUJADOR_ESQUEMA;
     private final TableManager TABLE_MANAGER;
     private Despachador despachador;
+    private Calendarizador calendarizador;
     private long QUANTUMS;
+    private boolean simulacionInterrumpida;
 
     private final int CLAVE_ALGORITMO_ACTUAL;
 
@@ -99,7 +102,21 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
                 break;
 
             case "iniciarSimulacion":
-                crearSimulacion();
+
+                if (calendarizador != null && !calendarizador.todosProcesosTerminados())
+                {
+                    if (confirmar("Confirmar", "¿Seguro que desea reiniciar la simulación?"))
+                    {
+                        simulacionInterrumpida = true;
+                        reiniciarSimulacion();
+                    }
+
+                } else
+                {
+                    VISTA_PRINCIPAL.getSimulacion().setText("Reiniciar simulación");
+                    crearSimulacion();
+                }
+
                 break;
 
             default:
@@ -110,8 +127,9 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
     private void crearSimulacion()
     {
         final CPU CPU = new CPU();
-        despachador = null;
         ArrayList<Proceso> procesos = null;
+        DIBUJADOR_ESQUEMA.reiniciarEsquema();
+        limpiarTablas();
 
         switch (CLAVE_ALGORITMO_ACTUAL)
         {
@@ -127,8 +145,27 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
                 throw new AssertionError();
         }
 
-        despachador.addObserver(this); // Nunca será null.
-        new Calendarizador(procesos, despachador);
+        despachador.addObserver(this);
+        calendarizador = new Calendarizador(procesos, despachador);
+        simulacionInterrumpida = false;
+    }
+
+    private void reiniciarSimulacion()
+    {
+        despachador.reiniciarDespachador();
+        calendarizador.reiniciarCalendarizador();
+        DIBUJADOR_ESQUEMA.reiniciarEsquema();
+        calendarizador = null;
+        despachador = null;
+
+        limpiarTablas();
+        VISTA_PRINCIPAL.getSimulacion().setText("Iniciar simulación");
+    }
+
+    private void limpiarTablas()
+    {
+        TABLE_MANAGER.limpiarTabla(VISTA_PRINCIPAL.getTablaEspera());
+        TABLE_MANAGER.limpiarTabla(VISTA_PRINCIPAL.getTablaProcesosFinalizados());
     }
 
     private ArrayList<Proceso> obtenerProcesosSRTF()
@@ -185,45 +222,58 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
     {
         Notificacion notificacion = (Notificacion) arg;
 
-        switch (notificacion.getIdentificador())
-        {
-            case Notificacion.PROCESO_HA_FINALIZADO:
+        if (!simulacionInterrumpida)
+            switch (notificacion.getIdentificador())
+            {
+                case Notificacion.PROCESO_HA_FINALIZADO:
 
-                anadirProcesoTablaFinalizados(notificacion.getProceso(),
-                        notificacion.getTiempoEnQueFinalizoProceso());
+                    anadirProcesoTablaFinalizados(notificacion.getProceso(),
+                            notificacion.getTiempoEnQueFinalizoProceso());
 
-                anadirProcesoTablaTiempoEspera(notificacion.getProceso(),
-                        notificacion.getTiempoEsperaProceso());
+                    anadirProcesoTablaTiempoEspera(notificacion.getProceso(),
+                            notificacion.getTiempoEsperaProceso());
 
-                DIBUJADOR_ESQUEMA.mostrarEnProcesadorProcesoActual(
-                        notificacion.getProceso().obtenerCopiaProceso(),
-                        notificacion.getTiempoUsoCPU());
+                    DIBUJADOR_ESQUEMA.mostrarEnProcesadorProcesoActual(
+                            notificacion.getProceso().obtenerCopiaProceso(),
+                            notificacion.getTiempoUsoCPU());
 
-                DIBUJADOR_ESQUEMA.actualizarDiagramaGantt(
-                        notificacion.getProceso().obtenerCopiaProceso(),
-                        notificacion.getTiempoEsperaProceso());
-                break;
+                    DIBUJADOR_ESQUEMA.actualizarDiagramaGantt(
+                            notificacion.getProceso().obtenerCopiaProceso(),
+                            notificacion.getTiempoEsperaProceso());
 
-            case Notificacion.PROCESO_ENTRO_CPU:
-                DIBUJADOR_ESQUEMA.mostrarEnProcesadorProcesoActual(
-                        notificacion.getProceso().obtenerCopiaProceso(),
-                        notificacion.getTiempoUsoCPU());
-                break;
+                    if (calendarizador.todosProcesosTerminados())
+                    {
+                        VISTA_PRINCIPAL.getSimulacion().setText("Iniciar simulación");
+                        despachador.detenerDespachador();
+                    }
 
-            case Notificacion.PROCESO_DEJO_CPU:
+                    break;
 
-                anadirProcesoTablaTiempoEspera(notificacion.getProceso(),
-                        notificacion.getTiempoEsperaProceso());
+                case Notificacion.PROCESO_ENTRO_CPU:
+                    DIBUJADOR_ESQUEMA.mostrarEnProcesadorProcesoActual(
+                            notificacion.getProceso().obtenerCopiaProceso(),
+                            notificacion.getTiempoUsoCPU());
+                    break;
 
-                DIBUJADOR_ESQUEMA.actualizarDiagramaGantt(
-                        notificacion.getProceso().obtenerCopiaProceso(),
-                        notificacion.getTiempoEsperaProceso());
-                break;
+                case Notificacion.PROCESO_DEJO_CPU:
 
-            default:
-                break;
-        }
+                    anadirProcesoTablaTiempoEspera(notificacion.getProceso(),
+                            notificacion.getTiempoEsperaProceso());
 
+                    DIBUJADOR_ESQUEMA.actualizarDiagramaGantt(
+                            notificacion.getProceso().obtenerCopiaProceso(),
+                            notificacion.getTiempoEsperaProceso());
+                    break;
+
+                default:
+                    break;
+            }
+
+    }
+
+    private boolean confirmar(String titulo, String text)
+    {
+        return JOptionPane.showConfirmDialog(VISTA_PRINCIPAL, text, titulo, JOptionPane.YES_NO_OPTION) == 0;
     }
 
 }

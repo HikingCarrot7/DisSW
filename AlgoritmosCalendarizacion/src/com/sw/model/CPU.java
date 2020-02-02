@@ -40,7 +40,7 @@ public class CPU implements Runnable
         {
             System.out.printf("El proceso %s tiene un tiempo ejecutado de: %s\n", procesoActual.getIdentificador(), procesoActual.PCB.getTiempoEjecutado());
 
-            for (int i = 0; i < tiempoUsoCPU; i++)
+            for (int i = 0; i < tiempoUsoCPU && !procesoInterrumpido; i++)
             {
                 Thread.sleep(1);
                 procesoActual.PCB.aumentarTiempoEjecutado(1);

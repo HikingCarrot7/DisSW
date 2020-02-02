@@ -53,6 +53,7 @@
     <Component class="javax.swing.JButton" name="rr">
       <Properties>
         <Property name="text" type="java.lang.String" value="Round Robin"/>
+        <Property name="toolTipText" type="java.lang.String" value="Simular el algoritmo RR."/>
         <Property name="actionCommand" type="java.lang.String" value="rr"/>
       </Properties>
       <Constraints>
@@ -64,6 +65,7 @@
     <Component class="javax.swing.JButton" name="srtf">
       <Properties>
         <Property name="text" type="java.lang.String" value="Short Remainig Time First"/>
+        <Property name="toolTipText" type="java.lang.String" value="Simular el algoritmo SRTF."/>
         <Property name="actionCommand" type="java.lang.String" value="srtf"/>
       </Properties>
       <Constraints>
