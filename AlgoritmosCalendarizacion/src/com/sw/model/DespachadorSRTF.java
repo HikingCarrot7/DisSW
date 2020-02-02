@@ -38,8 +38,6 @@ public class DespachadorSRTF extends Despachador
 
                 procesoActual.PCB.setEstadoProceso(Estado.TERMINADO);
 
-                System.out.println("El CPU ha terminado de ejecutar el proceso: " + procesoActual.getIdentificador());
-
                 notificar(new Notificacion(Notificacion.PROCESO_HA_FINALIZADO,
                         procesoActual,
                         0, // Tiempo de uso del CPU (no aplica para procesos finalizados)

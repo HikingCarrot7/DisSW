@@ -52,7 +52,6 @@ public class Calendarizador implements Runnable, Observer
             {
                 Thread.sleep(proceso.getTiempoLlegada());
                 despachador.aceptarProceso(proceso);
-                System.out.println("Se ha entregado al despachador el proceso " + proceso.getIdentificador());
 
             } catch (InterruptedException ex)
             {

@@ -42,7 +42,7 @@ public class VistaPrincipal extends javax.swing.JFrame
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1000, 600));
         setResizable(false);
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        getContentPane().setLayout(null);
 
         panelResumen.setMaximumSize(new java.awt.Dimension(220, 225));
         panelResumen.setMinimumSize(new java.awt.Dimension(220, 225));
@@ -90,7 +90,8 @@ public class VistaPrincipal extends javax.swing.JFrame
             tablaResumen.getColumnModel().getColumn(3).setResizable(false);
         }
 
-        getContentPane().add(panelResumen, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 65, -1, -1));
+        getContentPane().add(panelResumen);
+        panelResumen.setBounds(10, 65, 220, 225);
 
         panelEspera.setMaximumSize(new java.awt.Dimension(155, 495));
         panelEspera.setMinimumSize(new java.awt.Dimension(155, 495));
@@ -135,7 +136,8 @@ public class VistaPrincipal extends javax.swing.JFrame
             tablaEspera.getColumnModel().getColumn(1).setResizable(false);
         }
 
-        getContentPane().add(panelEspera, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 65, -1, -1));
+        getContentPane().add(panelEspera);
+        panelEspera.setBounds(830, 65, 155, 495);
 
         simulacion.setFont(new java.awt.Font("Consolas", 0, 11)); // NOI18N
         simulacion.setText("Iniciar simulación");
@@ -144,7 +146,8 @@ public class VistaPrincipal extends javax.swing.JFrame
         simulacion.setMaximumSize(new java.awt.Dimension(155, 25));
         simulacion.setMinimumSize(new java.awt.Dimension(155, 25));
         simulacion.setPreferredSize(new java.awt.Dimension(155, 25));
-        getContentPane().add(simulacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 5, -1, -1));
+        getContentPane().add(simulacion);
+        simulacion.setBounds(830, 5, 155, 25);
 
         soporteTablaFinalizados.setMaximumSize(new java.awt.Dimension(220, 225));
         soporteTablaFinalizados.setMinimumSize(new java.awt.Dimension(220, 225));
@@ -179,46 +182,56 @@ public class VistaPrincipal extends javax.swing.JFrame
             tablaProcesosFinalizados.getColumnModel().getColumn(1).setResizable(false);
         }
 
-        getContentPane().add(soporteTablaFinalizados, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 335, -1, -1));
+        getContentPane().add(soporteTablaFinalizados);
+        soporteTablaFinalizados.setBounds(10, 335, 220, 225);
 
         esquema.setMaximumSize(new java.awt.Dimension(580, 525));
         esquema.setMinimumSize(new java.awt.Dimension(580, 525));
         esquema.setName(""); // NOI18N
-        getContentPane().add(esquema, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 35, 580, 525));
+        getContentPane().add(esquema);
+        esquema.setBounds(240, 35, 580, 525);
 
         regresar.setFont(new java.awt.Font("Consolas", 0, 11)); // NOI18N
         regresar.setText("<- Regresar");
         regresar.setToolTipText("Regresar a la ventana anterior.");
         regresar.setActionCommand("regresar");
-        getContentPane().add(regresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 5, -1, -1));
+        regresar.setMaximumSize(new java.awt.Dimension(100, 25));
+        regresar.setMinimumSize(new java.awt.Dimension(100, 25));
+        regresar.setPreferredSize(new java.awt.Dimension(100, 25));
+        getContentPane().add(regresar);
+        regresar.setBounds(10, 5, 100, 25);
 
         datosRecuperadosLabel.setFont(new java.awt.Font("Consolas", 0, 18)); // NOI18N
         datosRecuperadosLabel.setText("Datos recuperados");
         datosRecuperadosLabel.setMaximumSize(new java.awt.Dimension(205, 25));
         datosRecuperadosLabel.setMinimumSize(new java.awt.Dimension(205, 25));
         datosRecuperadosLabel.setPreferredSize(new java.awt.Dimension(205, 25));
-        getContentPane().add(datosRecuperadosLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 35, -1, -1));
+        getContentPane().add(datosRecuperadosLabel);
+        datosRecuperadosLabel.setBounds(10, 35, 205, 25);
 
         procesosFinalizadosLabel.setFont(new java.awt.Font("Consolas", 0, 18)); // NOI18N
         procesosFinalizadosLabel.setText("Procesos finalizados");
         procesosFinalizadosLabel.setMaximumSize(new java.awt.Dimension(205, 25));
         procesosFinalizadosLabel.setMinimumSize(new java.awt.Dimension(205, 25));
         procesosFinalizadosLabel.setPreferredSize(new java.awt.Dimension(205, 25));
-        getContentPane().add(procesosFinalizadosLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 305, -1, -1));
+        getContentPane().add(procesosFinalizadosLabel);
+        procesosFinalizadosLabel.setBounds(10, 305, 205, 25);
 
         tiemposEsperaLabel.setFont(new java.awt.Font("Consolas", 0, 16)); // NOI18N
         tiemposEsperaLabel.setText("Tiempos de espera");
         tiemposEsperaLabel.setMaximumSize(new java.awt.Dimension(155, 25));
         tiemposEsperaLabel.setMinimumSize(new java.awt.Dimension(155, 25));
         tiemposEsperaLabel.setPreferredSize(new java.awt.Dimension(155, 25));
-        getContentPane().add(tiemposEsperaLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 35, -1, -1));
+        getContentPane().add(tiemposEsperaLabel);
+        tiemposEsperaLabel.setBounds(830, 35, 155, 25);
 
         title.setFont(new java.awt.Font("Consolas", 0, 18)); // NOI18N
         title.setText("Representación gráfica de la simulación");
         title.setMaximumSize(new java.awt.Dimension(390, 25));
         title.setMinimumSize(new java.awt.Dimension(390, 25));
         title.setPreferredSize(new java.awt.Dimension(390, 25));
-        getContentPane().add(title, new org.netbeans.lib.awtextra.AbsoluteConstraints(335, 5, -1, -1));
+        getContentPane().add(title);
+        title.setBounds(335, 5, 390, 25);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
