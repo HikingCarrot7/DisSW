@@ -37,12 +37,12 @@ public class DespachadorRR extends Despachador
                             proceso,
                             0, // Tiempo de uso del cpu en su última ejecución. (El proceso ha finalizado, ya no necesita usar el cpu)
                             tiempoEsperaProceso(proceso), // Tiempo que esperó el cpu para su última ejecución.
-                            tiempoTotalUsoCPU + tiempoUsoCPU)); // Tiempo en el que el cpu ha terminado de ejecutarse.
+                            tiempoTotalUsoCPU + tiempoUsoCPU)); // Tiempo en el que el proceso ha terminado de ejecutarse.
                 else
                 {
                     notificar(new Notificacion(Notificacion.PROCESO_DEJO_CPU, proceso,
-                            0, // Tiempo de uso del cpu en su última ejecución. (El proceso ha finalizado, ya no necesita usar el cpu)
-                            tiempoEsperaProceso(proceso)));// Tiempo que esperó el cpu para su última ejecución.
+                            0, // Tiempo de uso del cpu en su última ejecución. (El proceso ha dejado el cpu)
+                            tiempoEsperaProceso(proceso)));// Tiempo que esperó el proceso para su última ejecución.
 
                     procesos.addLast(proceso);//El proceso no ha terminado, regresa a la cola.
                 }

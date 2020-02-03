@@ -96,12 +96,12 @@ public class DiagramaGantt
     {
         final int LINE_LENGTH = 5;
         final Font CURRENT_FONT = g.getFont();
-        final Font EXECUTED_TIME_FONT = new Font(CURRENT_FONT.getFontName(), CURRENT_FONT.getStyle(), CURRENT_FONT.getSize() - 2);
+        final Font TIME_FONT = new Font(CURRENT_FONT.getFontName(), CURRENT_FONT.getStyle(), CURRENT_FONT.getSize() - 2);
 
         g.drawLine(x, y + PROCESO_RECT_HEIGHT, x, y + PROCESO_RECT_HEIGHT + LINE_LENGTH);
         DIBUJADOR_ESQUEMA.drawInvertedTriangle(g, x, y + PROCESO_RECT_HEIGHT, TINY_TRIANGLE);
 
-        g.setFont(EXECUTED_TIME_FONT);
+        g.setFont(TIME_FONT);
         DIBUJADOR_ESQUEMA.dibujarStringPunto(g, String.valueOf(proceso.PCB.getTiempoEjecutado()), x, y + PROCESO_RECT_HEIGHT + LINE_LENGTH);
         g.setFont(CURRENT_FONT);
 

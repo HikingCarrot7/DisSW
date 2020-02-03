@@ -183,8 +183,6 @@ public class DibujadorEsquema
             double ns = 1_000_000_000 / amountOfThicks;
             double delta = 0;
 
-            Long timer = System.currentTimeMillis();
-
             while (DIBUJADOR_ESQUEMA.isRunning())
             {
                 long now = System.nanoTime();
@@ -197,8 +195,6 @@ public class DibujadorEsquema
                     delta--;
                 }
 
-                if (System.currentTimeMillis() - timer > 1000)
-                    timer += 1000;
             }
 
         }

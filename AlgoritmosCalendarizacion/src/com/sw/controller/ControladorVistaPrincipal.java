@@ -52,7 +52,7 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
     {
         VISTA_PRINCIPAL.getRegresar().addActionListener(this);
         VISTA_PRINCIPAL.getSimulacion().addActionListener(this);
-        initEsquema();
+        DIBUJADOR_ESQUEMA.crearRenderer();
     }
 
     public void establecerDatosDefecto(JTable table)
@@ -67,11 +67,6 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
         TABLE_MANAGER.copiarTablas(table, VISTA_PRINCIPAL.getTablaResumen());
         VISTA_PRINCIPAL.setTitle("Simulando el algoritmo Round Robin");
         this.QUANTUMS = QUANTUMS;
-    }
-
-    private void initEsquema()
-    {
-        DIBUJADOR_ESQUEMA.crearRenderer();
     }
 
     @Override
