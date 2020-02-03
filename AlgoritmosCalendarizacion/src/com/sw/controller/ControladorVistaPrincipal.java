@@ -11,8 +11,11 @@ import com.sw.model.Proceso;
 import com.sw.model.ProcesoRR;
 import com.sw.model.ProcesoSRTF;
 import com.sw.view.DibujadorEsquema;
+import com.sw.view.MyTableCellRenderer;
 import com.sw.view.VistaPrincipal;
 import com.sw.view.VistaRecogeDatos;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,6 +41,7 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
     private boolean simulacionInterrumpida;
 
     private final int CLAVE_ALGORITMO_ACTUAL;
+    private final TableCellRenderer RENDERER;
 
     public ControladorVistaPrincipal(final VistaPrincipal VISTA_PRINCIPAL, final int CLAVE_ALGORITMO_ACTUAL)
     {
@@ -45,6 +49,7 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
         this.CLAVE_ALGORITMO_ACTUAL = CLAVE_ALGORITMO_ACTUAL;
         DIBUJADOR_ESQUEMA = new DibujadorEsquema(VISTA_PRINCIPAL.getEsquema());
         TABLE_MANAGER = new TableManager();
+        RENDERER = new TableCellRenderer();
         initMyComponents();
     }
 
@@ -52,6 +57,7 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
     {
         VISTA_PRINCIPAL.getRegresar().addActionListener(this);
         VISTA_PRINCIPAL.getSimulacion().addActionListener(this);
+        VISTA_PRINCIPAL.getTablaEspera().setDefaultRenderer(Object.class, RENDERER);
         DIBUJADOR_ESQUEMA.crearRenderer();
     }
 
@@ -150,6 +156,7 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
         despachador.reiniciarDespachador();
         calendarizador.reiniciarCalendarizador();
         DIBUJADOR_ESQUEMA.reiniciarEsquema();
+        RENDERER.borrarTodosPuntos();
         calendarizador = null;
         despachador = null;
 
@@ -236,6 +243,8 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
                             notificacion.getProceso().obtenerCopiaProceso(),
                             notificacion.getTiempoEsperaProceso());
 
+                    RENDERER.anadirFila(VISTA_PRINCIPAL.getTablaEspera().getRowCount() - 1);
+
                     if (calendarizador.todosProcesosTerminados())
                     {
                         VISTA_PRINCIPAL.getSimulacion().setText("Iniciar simulación");
@@ -269,6 +278,20 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
     private boolean confirmar(String titulo, String text)
     {
         return JOptionPane.showConfirmDialog(VISTA_PRINCIPAL, text, titulo, JOptionPane.YES_NO_OPTION) == 0;
+    }
+
+    private class TableCellRenderer extends MyTableCellRenderer
+    {
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
+        {
+            boolean existeFila = existeFila(row);
+            setBackground(existeFila ? Color.red : Color.white);
+            setForeground(existeFila ? Color.white : Color.black);
+            return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+        }
+
     }
 
 }

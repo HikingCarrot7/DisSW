@@ -2,9 +2,12 @@ package com.sw.controller;
 
 import com.sw.exceptions.NombreNoValidoException;
 import com.sw.exceptions.ValorNoValidoException;
+import com.sw.view.MyTableCellRenderer;
 import com.sw.view.VistaPrincipal;
 import com.sw.view.VistaRecogeDatos;
 import com.sw.view.VistaSeleccion;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,12 +35,14 @@ public class ControladorRecogeDatos implements ActionListener
     public static final int COL_TIEMPO_LLEGADA = 3;
 
     private Object[][] itemsSalvadosTabla;
+    private final TableCellRenderer RENDERER;
 
     public ControladorRecogeDatos(VistaRecogeDatos vistaRecogeDatos, final int CLAVE_ALGORITMO_ACTUAL)
     {
         this.VISTA_RECOGE_DATOS = vistaRecogeDatos;
         this.CLAVE_ALGORITMO_ACTUAL = CLAVE_ALGORITMO_ACTUAL;
         TABLE_MANAGER = new TableManager();
+        RENDERER = new TableCellRenderer();
         initMyComponents();
     }
 
@@ -48,6 +53,7 @@ public class ControladorRecogeDatos implements ActionListener
         VISTA_RECOGE_DATOS.getAleatorio().addActionListener(this);
         VISTA_RECOGE_DATOS.getRegresar().addActionListener(this);
         VISTA_RECOGE_DATOS.getBorrarTodo().addActionListener(this);
+        VISTA_RECOGE_DATOS.getTablaRecogeDatos().setDefaultRenderer(Object.class, RENDERER);
         VISTA_RECOGE_DATOS.getTablaRecogeDatos().setValueAt("P1", 0, 0);
 
         if (CLAVE_ALGORITMO_ACTUAL == ControladorSeleccion.CLAVE_ALGORITMO_RR)
@@ -139,9 +145,6 @@ public class ControladorRecogeDatos implements ActionListener
     {
         JTable tabla = VISTA_RECOGE_DATOS.getTablaRecogeDatos();
 
-        if (tabla.isEditing())
-            return false;
-
         tabla.clearSelection();
 
         try
@@ -157,19 +160,25 @@ public class ControladorRecogeDatos implements ActionListener
 
         } catch (NombreNoValidoException ex)
         {
+            RENDERER.anadirPunto(ex.getRow(), ex.getCol());
+            repintarTabla();
             if (confirmar(
                     String.format("Error en la fila %s y columna %s", ex.getRow() + 1, ex.getCol() + 1),
                     ex.getMessage()))
             {
                 arreglarNombresProcesos();
+                limpiarTabla();
                 return todosDatosValidos();
             }
 
         } catch (ValorNoValidoException ex)
         {
+            RENDERER.anadirPunto(ex.getRow(), ex.getCol());
+            repintarTabla();
             mostrarError("Error en la entrada de los datos", ex.getMessage(), JOptionPane.ERROR_MESSAGE);
         }
 
+        limpiarTabla();
         return false;
     }
 
@@ -329,7 +338,33 @@ public class ControladorRecogeDatos implements ActionListener
 
     private boolean esEntradaValida(String text, String regex)
     {
-        return text.matches(regex);
+        if (text.matches(regex))
+            return Integer.parseInt(text) > 0;
+
+        return false;
+    }
+
+    private void limpiarTabla()
+    {
+        RENDERER.borrarTodosPuntos();
+        repintarTabla();
+    }
+
+    private void repintarTabla()
+    {
+        VISTA_RECOGE_DATOS.getTablaRecogeDatos().updateUI();
+    }
+
+    private class TableCellRenderer extends MyTableCellRenderer
+    {
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
+        {
+            setBackground(existePunto(row, column) ? Color.red : Color.white);
+            return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+        }
+
     }
 
 }
