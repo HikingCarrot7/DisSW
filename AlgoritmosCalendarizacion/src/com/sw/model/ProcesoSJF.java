@@ -4,10 +4,10 @@ package com.sw.model;
  *
  * @author HikingCarrot7
  */
-public class ProcesoSRTF extends Proceso
+public class ProcesoSJF extends Proceso
 {
 
-    public ProcesoSRTF(Estado estadoProceso, String identificador, int numProceso, long tiempoRafaga, long tiempoLlegada)
+    public ProcesoSJF(Estado estadoProceso, String identificador, int numProceso, long tiempoRafaga, long tiempoLlegada)
     {
         super(estadoProceso, identificador, tiempoLlegada, numProceso, tiempoRafaga);
     }
@@ -15,7 +15,7 @@ public class ProcesoSRTF extends Proceso
     @Override
     public Proceso obtenerCopiaProceso()
     {
-        return new ProcesoSRTF(
+        return new ProcesoSJF(
                 PCB.getEstadoProceso(),
                 getIdentificador(),
                 PCB.getNumProceso(),

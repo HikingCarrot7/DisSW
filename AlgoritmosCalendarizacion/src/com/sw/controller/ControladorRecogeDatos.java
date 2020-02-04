@@ -27,7 +27,7 @@ public class ControladorRecogeDatos implements ActionListener
     private final String REGEX_ENTERO_POSITIVO_VALIDO = "^[0-9]+$";
 
     private final int COLS_ALGORITMO_RR = 3;
-    private final int COLS_ALGORITMO_SRTF = 4;
+    private final int COLS_ALGORITMO_SJF = 4;
     private int CLAVE_ALGORITMO_ACTUAL;
 
     public static final int COL_NOMBRE_PROCESO = 1;
@@ -62,9 +62,9 @@ public class ControladorRecogeDatos implements ActionListener
 
     public void establecerDatosDefecto(JTable table)
     {
-        CLAVE_ALGORITMO_ACTUAL = ControladorSeleccion.CLAVE_ALGORITMO_SRTF;
+        CLAVE_ALGORITMO_ACTUAL = ControladorSeleccion.CLAVE_ALGORITMO_SJF;
         TABLE_MANAGER.copiarTablas(table, VISTA_RECOGE_DATOS.getTablaRecogeDatos());
-        VISTA_RECOGE_DATOS.setTitle("Preparando datos para simular el algoritmo SRTF");
+        VISTA_RECOGE_DATOS.setTitle("Preparando datos para simular el algoritmo SJF");
         VISTA_RECOGE_DATOS.getLabelQuantum().setVisible(false);
         VISTA_RECOGE_DATOS.getEntradaNQuantum().setVisible(false);
         VISTA_RECOGE_DATOS.getEntradaValidaLabel().setVisible(false);
@@ -98,7 +98,7 @@ public class ControladorRecogeDatos implements ActionListener
                         vistaPrincipal.setLocationRelativeTo(null);
                         ControladorVistaPrincipal cvp = new ControladorVistaPrincipal(vistaPrincipal, CLAVE_ALGORITMO_ACTUAL);
 
-                        if (CLAVE_ALGORITMO_ACTUAL == ControladorSeleccion.CLAVE_ALGORITMO_SRTF)
+                        if (CLAVE_ALGORITMO_ACTUAL == ControladorSeleccion.CLAVE_ALGORITMO_SJF)
                             cvp.establecerDatosDefecto(VISTA_RECOGE_DATOS.getTablaRecogeDatos());
 
                         else
@@ -296,7 +296,7 @@ public class ControladorRecogeDatos implements ActionListener
             int number = rand.nextInt(MAX_VALUE_RAFAGA - MIN_VALUE_RAFAGA) + MIN_VALUE_RAFAGA;
             row[COL_TIEMPO_RAFAGA] = number;
 
-            if (CLAVE_ALGORITMO_ACTUAL == ControladorSeleccion.CLAVE_ALGORITMO_SRTF)
+            if (CLAVE_ALGORITMO_ACTUAL == ControladorSeleccion.CLAVE_ALGORITMO_SJF)
             {
                 number = rand.nextInt(MAX_VALUE_LLEGADA - MIN_VALUE_LLEGADA) + MIN_VALUE_LLEGADA;
                 row[COL_TIEMPO_LLEGADA] = number;
@@ -313,7 +313,7 @@ public class ControladorRecogeDatos implements ActionListener
 
     private int obtenerColsTablaActual()
     {
-        return CLAVE_ALGORITMO_ACTUAL == ControladorSeleccion.CLAVE_ALGORITMO_SRTF ? COLS_ALGORITMO_SRTF : COLS_ALGORITMO_RR;
+        return CLAVE_ALGORITMO_ACTUAL == ControladorSeleccion.CLAVE_ALGORITMO_SJF ? COLS_ALGORITMO_SJF : COLS_ALGORITMO_RR;
     }
 
     private Object[][] recogerDatos()

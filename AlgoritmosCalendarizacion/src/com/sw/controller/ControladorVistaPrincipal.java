@@ -4,12 +4,12 @@ import com.sw.model.CPU;
 import com.sw.model.Calendarizador;
 import com.sw.model.Despachador;
 import com.sw.model.DespachadorRR;
-import com.sw.model.DespachadorSRTF;
+import com.sw.model.DespachadorSJF;
 import com.sw.model.Estado;
 import com.sw.model.Notificacion;
 import com.sw.model.Proceso;
 import com.sw.model.ProcesoRR;
-import com.sw.model.ProcesoSRTF;
+import com.sw.model.ProcesoSJF;
 import com.sw.view.DibujadorEsquema;
 import com.sw.view.MyTableCellRenderer;
 import com.sw.view.VistaPrincipal;
@@ -64,7 +64,7 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
     public void establecerDatosDefecto(JTable table)
     {
         TABLE_MANAGER.copiarTablas(table, VISTA_PRINCIPAL.getTablaResumen());
-        VISTA_PRINCIPAL.setTitle("Simulando el algoritmo SRTF");
+        VISTA_PRINCIPAL.setTitle("Simulando el algoritmo SJF");
     }
 
     public void establecerDatosDefecto(JTable table, final long QUANTUMS)
@@ -88,7 +88,7 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
                     vistaRecogeDatos.setLocationRelativeTo(null);
                     ControladorRecogeDatos controladorRecogeDatos = new ControladorRecogeDatos(vistaRecogeDatos, CLAVE_ALGORITMO_ACTUAL);
 
-                    if (CLAVE_ALGORITMO_ACTUAL == ControladorSeleccion.CLAVE_ALGORITMO_SRTF)
+                    if (CLAVE_ALGORITMO_ACTUAL == ControladorSeleccion.CLAVE_ALGORITMO_SJF)
                         controladorRecogeDatos.establecerDatosDefecto(VISTA_PRINCIPAL.getTablaResumen());
 
                     else
@@ -134,9 +134,9 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
 
         switch (CLAVE_ALGORITMO_ACTUAL)
         {
-            case ControladorSeleccion.CLAVE_ALGORITMO_SRTF:
-                procesos = obtenerProcesosSRTF();
-                despachador = new DespachadorSRTF(CPU);
+            case ControladorSeleccion.CLAVE_ALGORITMO_SJF:
+                procesos = obtenerProcesosSJF();
+                despachador = new DespachadorSJF(CPU);
                 break;
             case ControladorSeleccion.CLAVE_ALGORITMO_RR:
                 procesos = obtenerProcesosRR();
@@ -170,14 +170,14 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
         TABLE_MANAGER.limpiarTabla(VISTA_PRINCIPAL.getTablaProcesosFinalizados());
     }
 
-    private ArrayList<Proceso> obtenerProcesosSRTF()
+    private ArrayList<Proceso> obtenerProcesosSJF()
     {
         ArrayList<Proceso> procesos = new ArrayList<>();
         JTable table = VISTA_PRINCIPAL.getTablaResumen();
         Object[][] data = TABLE_MANAGER.obtenerDatosTabla(table);
 
         for (int i = 0; i < table.getRowCount(); i++)
-            procesos.add(new ProcesoSRTF(
+            procesos.add(new ProcesoSJF(
                     Estado.NUEVO,
                     data[i][ControladorRecogeDatos.COL_NOMBRE_PROCESO].toString(),
                     (i + 1),

@@ -7,10 +7,10 @@ import java.util.stream.Collectors;
  *
  * @author HikingCarrot7
  */
-public class DespachadorSRTF extends Despachador
+public class DespachadorSJF extends Despachador
 {
 
-    public DespachadorSRTF(final CPU CPU)
+    public DespachadorSJF(final CPU CPU)
     {
         super(CPU);
     }

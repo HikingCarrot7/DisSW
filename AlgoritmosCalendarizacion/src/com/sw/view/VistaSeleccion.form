@@ -64,9 +64,9 @@
     </Component>
     <Component class="javax.swing.JButton" name="srtf">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Short Remainig Time First"/>
+        <Property name="text" type="java.lang.String" value="SJF"/>
         <Property name="toolTipText" type="java.lang.String" value="Simular el algoritmo SRTF."/>
-        <Property name="actionCommand" type="java.lang.String" value="srtf"/>
+        <Property name="actionCommand" type="java.lang.String" value="sjf"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">

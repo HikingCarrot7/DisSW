@@ -43,9 +43,9 @@ public class VistaSeleccion extends javax.swing.JFrame
         getContentPane().add(rr);
         rr.setBounds(10, 140, 280, 50);
 
-        srtf.setText("Short Remainig Time First");
+        srtf.setText("SJF");
         srtf.setToolTipText("Simular el algoritmo SRTF.");
-        srtf.setActionCommand("srtf");
+        srtf.setActionCommand("sjf");
         getContentPane().add(srtf);
         srtf.setBounds(10, 70, 280, 50);
 
@@ -57,7 +57,7 @@ public class VistaSeleccion extends javax.swing.JFrame
         return rr;
     }
 
-    public JButton getSrtf()
+    public JButton getSjf()
     {
         return srtf;
     }
