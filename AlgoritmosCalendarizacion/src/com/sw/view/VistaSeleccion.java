@@ -44,7 +44,7 @@ public class VistaSeleccion extends javax.swing.JFrame
         rr.setBounds(10, 140, 280, 50);
 
         srtf.setText("SJF");
-        srtf.setToolTipText("Simular el algoritmo SRTF.");
+        srtf.setToolTipText("Simular el algoritmo SJF.");
         srtf.setActionCommand("sjf");
         getContentPane().add(srtf);
         srtf.setBounds(10, 70, 280, 50);

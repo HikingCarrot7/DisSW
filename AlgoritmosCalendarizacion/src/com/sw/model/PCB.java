@@ -64,6 +64,11 @@ public class PCB implements Comparable<PCB>
         tiempoEjecutado += tiempo;
     }
 
+    public long tiempoRestanteParaFinalizarProceso()
+    {
+        return tiempoRafaga - tiempoEjecutado;
+    }
+
     @Override
     public int compareTo(PCB o)
     {

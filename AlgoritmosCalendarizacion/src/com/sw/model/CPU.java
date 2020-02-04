@@ -78,4 +78,9 @@ public class CPU implements Runnable
         procesoInterrumpido = true;
     }
 
+    public boolean isProcesoInterrumpido()
+    {
+        return procesoInterrumpido;
+    }
+
 }

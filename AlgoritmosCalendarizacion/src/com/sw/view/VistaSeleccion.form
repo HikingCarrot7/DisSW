@@ -65,7 +65,7 @@
     <Component class="javax.swing.JButton" name="srtf">
       <Properties>
         <Property name="text" type="java.lang.String" value="SJF"/>
-        <Property name="toolTipText" type="java.lang.String" value="Simular el algoritmo SRTF."/>
+        <Property name="toolTipText" type="java.lang.String" value="Simular el algoritmo SJF."/>
         <Property name="actionCommand" type="java.lang.String" value="sjf"/>
       </Properties>
       <Constraints>
