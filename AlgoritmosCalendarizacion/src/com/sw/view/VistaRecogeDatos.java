@@ -115,7 +115,7 @@ public class VistaRecogeDatos extends javax.swing.JFrame
         {
             Class[] types = new Class []
             {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean []
             {
@@ -135,14 +135,6 @@ public class VistaRecogeDatos extends javax.swing.JFrame
         tablaRecogeDatos.setToolTipText("");
         tablaRecogeDatos.getTableHeader().setReorderingAllowed(false);
         soporteScrollTabla.setViewportView(tablaRecogeDatos);
-        if (tablaRecogeDatos.getColumnModel().getColumnCount() > 0)
-        {
-            tablaRecogeDatos.getColumnModel().getColumn(0).setResizable(false);
-            tablaRecogeDatos.getColumnModel().getColumn(0).setPreferredWidth(0);
-            tablaRecogeDatos.getColumnModel().getColumn(1).setPreferredWidth(300);
-            tablaRecogeDatos.getColumnModel().getColumn(2).setPreferredWidth(40);
-            tablaRecogeDatos.getColumnModel().getColumn(3).setPreferredWidth(40);
-        }
 
         soporteTabla.addTab("Datos para la simulación.", soporteScrollTabla);
 
