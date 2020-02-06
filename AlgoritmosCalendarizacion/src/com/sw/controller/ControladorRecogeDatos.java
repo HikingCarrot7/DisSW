@@ -26,9 +26,10 @@ public class ControladorRecogeDatos implements ActionListener
     private final TableManager TABLE_MANAGER;
     private final String REGEX_ENTERO_POSITIVO_VALIDO = "^[0-9]+$";
 
-    private final int COLS_ALGORITMO_RR = 3;
     private final int COLS_ALGORITMO_SJF = 4;
-    private int CLAVE_ALGORITMO_ACTUAL;
+    private final int COLS_ALGORITMO_SRTF = 4;
+    private final int COLS_ALGORITMO_RR = 3;
+    private String CLAVE_ALGORITMO_ACTUAL;
 
     public static final int COL_NOMBRE_PROCESO = 1;
     public static final int COL_TIEMPO_RAFAGA = 2;
@@ -37,7 +38,7 @@ public class ControladorRecogeDatos implements ActionListener
     private Object[][] itemsSalvadosTabla;
     private final TableCellRenderer RENDERER;
 
-    public ControladorRecogeDatos(VistaRecogeDatos vistaRecogeDatos, final int CLAVE_ALGORITMO_ACTUAL)
+    public ControladorRecogeDatos(VistaRecogeDatos vistaRecogeDatos, final String CLAVE_ALGORITMO_ACTUAL)
     {
         this.VISTA_RECOGE_DATOS = vistaRecogeDatos;
         this.CLAVE_ALGORITMO_ACTUAL = CLAVE_ALGORITMO_ACTUAL;
@@ -56,19 +57,19 @@ public class ControladorRecogeDatos implements ActionListener
         VISTA_RECOGE_DATOS.getTablaRecogeDatos().setDefaultRenderer(Object.class, RENDERER);
         VISTA_RECOGE_DATOS.getTablaRecogeDatos().setValueAt("P1", 0, 0);
 
-        if (CLAVE_ALGORITMO_ACTUAL == ControladorSeleccion.CLAVE_ALGORITMO_RR)
+        if (CLAVE_ALGORITMO_ACTUAL.equals(ControladorSeleccion.CLAVE_ALGORITMO_RR))
             TABLE_MANAGER.eliminarUltimaColumna(VISTA_RECOGE_DATOS.getTablaRecogeDatos());
     }
 
-    public void establecerDatosDefecto(JTable table)
+    public void establecerDatosDefecto(JTable tabla, final String CLAVE_ALGORITMO_ACTUAL)
     {
-        CLAVE_ALGORITMO_ACTUAL = ControladorSeleccion.CLAVE_ALGORITMO_SJF;
-        TABLE_MANAGER.copiarTablas(table, VISTA_RECOGE_DATOS.getTablaRecogeDatos());
-        VISTA_RECOGE_DATOS.setTitle("Preparando datos para simular el algoritmo SJF");
+        this.CLAVE_ALGORITMO_ACTUAL = CLAVE_ALGORITMO_ACTUAL;
+        TABLE_MANAGER.copiarTablas(tabla, VISTA_RECOGE_DATOS.getTablaRecogeDatos());
+        VISTA_RECOGE_DATOS.setTitle("Preparando datos para simular el algoritmo " + CLAVE_ALGORITMO_ACTUAL);
         VISTA_RECOGE_DATOS.getLabelQuantum().setVisible(false);
         VISTA_RECOGE_DATOS.getEntradaNQuantum().setVisible(false);
         VISTA_RECOGE_DATOS.getEntradaValidaLabel().setVisible(false);
-        VISTA_RECOGE_DATOS.getEntradaNProcesos().setValue(table.getRowCount());
+        VISTA_RECOGE_DATOS.getEntradaNProcesos().setValue(tabla.getRowCount());
     }
 
     public void establecerDatosDefecto(JTable table, final long QUANTUMS)
@@ -96,15 +97,24 @@ public class ControladorRecogeDatos implements ActionListener
                         VistaPrincipal vistaPrincipal = new VistaPrincipal();
                         vistaPrincipal.setVisible(true);
                         vistaPrincipal.setLocationRelativeTo(null);
-                        ControladorVistaPrincipal cvp = new ControladorVistaPrincipal(vistaPrincipal, CLAVE_ALGORITMO_ACTUAL);
+                        ControladorVistaPrincipal controladorVistaPrincipal = new ControladorVistaPrincipal(vistaPrincipal, CLAVE_ALGORITMO_ACTUAL);
 
-                        if (CLAVE_ALGORITMO_ACTUAL == ControladorSeleccion.CLAVE_ALGORITMO_SJF)
-                            cvp.establecerDatosDefecto(VISTA_RECOGE_DATOS.getTablaRecogeDatos());
+                        switch (CLAVE_ALGORITMO_ACTUAL)
+                        {
+                            case ControladorSeleccion.CLAVE_ALGORITMO_SJF:
+                            case ControladorSeleccion.CLAVE_ALGORITMO_SRTF:
+                                controladorVistaPrincipal.establecerDatosDefecto(VISTA_RECOGE_DATOS.getTablaRecogeDatos());
+                                break;
 
-                        else
-                            cvp.establecerDatosDefecto(
-                                    VISTA_RECOGE_DATOS.getTablaRecogeDatos(),
-                                    Long.parseLong(VISTA_RECOGE_DATOS.getEntradaNQuantum().getValue().toString()));
+                            case ControladorSeleccion.CLAVE_ALGORITMO_RR:
+                                controladorVistaPrincipal.establecerDatosDefecto(
+                                        VISTA_RECOGE_DATOS.getTablaRecogeDatos(),
+                                        Long.parseLong(VISTA_RECOGE_DATOS.getEntradaNQuantum().getValue().toString()));
+                                break;
+
+                            default:
+                                throw new AssertionError();
+                        }
 
                         VISTA_RECOGE_DATOS.dispose();
                     });
@@ -296,7 +306,7 @@ public class ControladorRecogeDatos implements ActionListener
             int number = rand.nextInt(MAX_VALUE_RAFAGA - MIN_VALUE_RAFAGA) + MIN_VALUE_RAFAGA;
             row[COL_TIEMPO_RAFAGA] = number;
 
-            if (CLAVE_ALGORITMO_ACTUAL == ControladorSeleccion.CLAVE_ALGORITMO_SJF)
+            if (!CLAVE_ALGORITMO_ACTUAL.equals(ControladorSeleccion.CLAVE_ALGORITMO_RR))
             {
                 number = rand.nextInt(MAX_VALUE_LLEGADA - MIN_VALUE_LLEGADA) + MIN_VALUE_LLEGADA;
                 row[COL_TIEMPO_LLEGADA] = number;
@@ -313,7 +323,17 @@ public class ControladorRecogeDatos implements ActionListener
 
     private int obtenerColsTablaActual()
     {
-        return CLAVE_ALGORITMO_ACTUAL == ControladorSeleccion.CLAVE_ALGORITMO_SJF ? COLS_ALGORITMO_SJF : COLS_ALGORITMO_RR;
+        switch (CLAVE_ALGORITMO_ACTUAL)
+        {
+            case ControladorSeleccion.CLAVE_ALGORITMO_SJF:
+                return COLS_ALGORITMO_SJF;
+            case ControladorSeleccion.CLAVE_ALGORITMO_SRTF:
+                return COLS_ALGORITMO_SRTF;
+            case ControladorSeleccion.CLAVE_ALGORITMO_RR:
+                return COLS_ALGORITMO_RR;
+            default:
+                throw new AssertionError();
+        }
     }
 
     private Object[][] recogerDatos()

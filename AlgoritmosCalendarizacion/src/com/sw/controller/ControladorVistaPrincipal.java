@@ -1,19 +1,7 @@
 package com.sw.controller;
 
-import com.sw.model.CPU;
-import com.sw.model.Calendarizador;
-import com.sw.model.Despachador;
-import com.sw.model.DespachadorRR;
-import com.sw.model.DespachadorSJF;
-import com.sw.model.Estado;
-import com.sw.model.Notificacion;
-import com.sw.model.Proceso;
-import com.sw.model.ProcesoRR;
-import com.sw.model.ProcesoSJF;
-import com.sw.view.DibujadorEsquema;
-import com.sw.view.MyTableCellRenderer;
-import com.sw.view.VistaPrincipal;
-import com.sw.view.VistaRecogeDatos;
+import com.sw.model.*;
+import com.sw.view.*;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.EventQueue;
@@ -40,10 +28,10 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
     private long QUANTUMS;
     private boolean simulacionInterrumpida;
 
-    private final int CLAVE_ALGORITMO_ACTUAL;
+    private final String CLAVE_ALGORITMO_ACTUAL;
     private final TableCellRenderer RENDERER;
 
-    public ControladorVistaPrincipal(final VistaPrincipal VISTA_PRINCIPAL, final int CLAVE_ALGORITMO_ACTUAL)
+    public ControladorVistaPrincipal(final VistaPrincipal VISTA_PRINCIPAL, final String CLAVE_ALGORITMO_ACTUAL)
     {
         this.VISTA_PRINCIPAL = VISTA_PRINCIPAL;
         this.CLAVE_ALGORITMO_ACTUAL = CLAVE_ALGORITMO_ACTUAL;
@@ -64,7 +52,7 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
     public void establecerDatosDefecto(JTable table)
     {
         TABLE_MANAGER.copiarTablas(table, VISTA_PRINCIPAL.getTablaResumen());
-        VISTA_PRINCIPAL.setTitle("Simulando el algoritmo SJF");
+        VISTA_PRINCIPAL.setTitle("Simulando el algoritmo " + CLAVE_ALGORITMO_ACTUAL);
     }
 
     public void establecerDatosDefecto(JTable table, final long QUANTUMS)
@@ -88,11 +76,20 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
                     vistaRecogeDatos.setLocationRelativeTo(null);
                     ControladorRecogeDatos controladorRecogeDatos = new ControladorRecogeDatos(vistaRecogeDatos, CLAVE_ALGORITMO_ACTUAL);
 
-                    if (CLAVE_ALGORITMO_ACTUAL == ControladorSeleccion.CLAVE_ALGORITMO_SJF)
-                        controladorRecogeDatos.establecerDatosDefecto(VISTA_PRINCIPAL.getTablaResumen());
+                    switch (CLAVE_ALGORITMO_ACTUAL)
+                    {
+                        case ControladorSeleccion.CLAVE_ALGORITMO_SJF:
+                        case ControladorSeleccion.CLAVE_ALGORITMO_SRTF:
+                            controladorRecogeDatos.establecerDatosDefecto(VISTA_PRINCIPAL.getTablaResumen(), CLAVE_ALGORITMO_ACTUAL);
+                            break;
 
-                    else
-                        controladorRecogeDatos.establecerDatosDefecto(VISTA_PRINCIPAL.getTablaResumen(), QUANTUMS);
+                        case ControladorSeleccion.CLAVE_ALGORITMO_RR:
+                            controladorRecogeDatos.establecerDatosDefecto(VISTA_PRINCIPAL.getTablaResumen(), QUANTUMS);
+                            break;
+
+                        default:
+                            throw new AssertionError();
+                    }
 
                     if (despachador != null)
                         despachador.detenerDespachador();
@@ -143,7 +140,7 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
                 despachador = new DespachadorRR(CPU, QUANTUMS);
                 break;
             default:
-                throw new AssertionError();
+                throw new UnsupportedOperationException();
         }
 
         despachador.addObserver(this);
@@ -170,6 +167,7 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
         TABLE_MANAGER.limpiarTabla(VISTA_PRINCIPAL.getTablaProcesosFinalizados());
     }
 
+    //---------------------------------------------------
     private ArrayList<Proceso> obtenerProcesosSJF()
     {
         ArrayList<Proceso> procesos = new ArrayList<>();
@@ -203,6 +201,7 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
         return procesos;
     }
 
+    //-----------------------------------------------------------------------
     private void anadirProcesoTablaTiempoEspera(Proceso proceso, long tiempoTranscurrido)
     {
         TABLE_MANAGER.addRow(VISTA_PRINCIPAL.getTablaEspera(), new Object[]

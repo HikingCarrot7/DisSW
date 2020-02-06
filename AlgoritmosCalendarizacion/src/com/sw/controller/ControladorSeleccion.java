@@ -13,8 +13,9 @@ import java.awt.event.ActionListener;
 public class ControladorSeleccion implements ActionListener
 {
 
-    public static final int CLAVE_ALGORITMO_SJF = 0;
-    public static final int CLAVE_ALGORITMO_RR = 1;
+    public static final String CLAVE_ALGORITMO_SJF = "SJF";
+    public static final String CLAVE_ALGORITMO_SRTF = "SRTF";
+    public static final String CLAVE_ALGORITMO_RR = "RR";
 
     private final VistaSeleccion VISTA_SELECCION;
 
@@ -26,15 +27,19 @@ public class ControladorSeleccion implements ActionListener
 
     private void initMyComponents()
     {
-        VISTA_SELECCION.getRr().addActionListener(this);
         VISTA_SELECCION.getSjf().addActionListener(this);
+        VISTA_SELECCION.getSrtf().addActionListener(this);
+        VISTA_SELECCION.getRr().addActionListener(this);
     }
 
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        switch (e.getActionCommand())
+        String command = e.getActionCommand();
+
+        switch (command)
         {
+            case "srtf":
             case "sjf":
 
                 EventQueue.invokeLater(() ->
@@ -42,11 +47,11 @@ public class ControladorSeleccion implements ActionListener
                     VistaRecogeDatos vistaRecogeDatos = new VistaRecogeDatos();
                     vistaRecogeDatos.setVisible(true);
                     vistaRecogeDatos.setLocationRelativeTo(null);
-                    vistaRecogeDatos.setTitle("Preparando datos para simular el algoritmo SJF");
+                    vistaRecogeDatos.setTitle("Preparando datos para simular el algoritmo " + command.toUpperCase());
                     vistaRecogeDatos.getEntradaNQuantum().setVisible(false);
                     vistaRecogeDatos.getEntradaValidaLabel().setVisible(false);
                     vistaRecogeDatos.getLabelQuantum().setVisible(false);
-                    new ControladorRecogeDatos(vistaRecogeDatos, CLAVE_ALGORITMO_SJF);
+                    new ControladorRecogeDatos(vistaRecogeDatos, obtenerClaveAlgoritmoActual(command));
                 });
                 break;
 
@@ -58,7 +63,7 @@ public class ControladorSeleccion implements ActionListener
                     vistaRecogeDatos.setVisible(true);
                     vistaRecogeDatos.setLocationRelativeTo(null);
                     vistaRecogeDatos.setTitle("Preparando datos para simular el algoritmo Round Robin");
-                    new ControladorRecogeDatos(vistaRecogeDatos, CLAVE_ALGORITMO_RR);
+                    new ControladorRecogeDatos(vistaRecogeDatos, obtenerClaveAlgoritmoActual(command));
                 });
                 break;
 
@@ -67,6 +72,21 @@ public class ControladorSeleccion implements ActionListener
         }
 
         VISTA_SELECCION.dispose();
+    }
+
+    private String obtenerClaveAlgoritmoActual(String command)
+    {
+        switch (command)
+        {
+            case "srtf":
+                return CLAVE_ALGORITMO_SRTF;
+            case "sjf":
+                return CLAVE_ALGORITMO_SJF;
+            case "rr":
+                return CLAVE_ALGORITMO_RR;
+            default:
+                throw new AssertionError();
+        }
     }
 
 }

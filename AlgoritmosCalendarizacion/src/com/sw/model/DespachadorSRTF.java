@@ -1,5 +1,9 @@
 package com.sw.model;
 
+import java.util.ArrayDeque;
+import java.util.Comparator;
+import java.util.stream.Collectors;
+
 /**
  *
  * @author HikingC7
@@ -19,20 +23,22 @@ public class DespachadorSRTF extends Despachador
     {
         super.aceptarProceso(proceso);
 
-        //Necesitamos saber quien tiene el menor tiempo cuando llega un nuevo proceso
-        //(¿Es el que se estaba ejecutando o el que acaba de llegar?)
-        //Cuando termine un proceso, necesitamos saber quien de la cola tiene el menor tiempo (será el que sigue).
-        if (procesoActualEnCPU == null)
+        if (procesoActualEnCPU == null) // Si es el primer proceso que entra.
             procesoActualEnCPU = proceso;
 
-        else if (proceso.PCB.getTiempoRafaga() < procesoActualEnCPU.PCB.tiempoRestanteParaFinalizarProceso())
+        else if (proceso.PCB.getTiempoRafaga() < procesoActualEnCPU.PCB.tiempoRestanteParaFinalizarProceso()) // Si el proceso que acaba de entrar tiene un tiempo ráfaga menor
+        //del tiempo que le falta al proceso que está actualmente ocupando el CPU.
         {
-            procesos.addLast(procesoActualEnCPU);
-            procesoActualEnCPU.PCB.setEstadoProceso(Estado.ESPERA);
-            System.out.println("");
-            procesoActualEnCPU = proceso;
-            cpu.interrumpirProceso();
-        }
+            procesos.addLast(procesoActualEnCPU); // Proceso actual se añade a la cola.
+            procesoActualEnCPU.PCB.setEstadoProceso(Estado.ESPERA); // Se pone en estado de espera.
+            System.out.println("");//Notificamos al controlador que habrá un cambio de contexto.
+            procesoActualEnCPU = proceso; // Actualizamos el proceso actual.
+            cpu.interrumpirProceso(); //Interrumpimos al CPU.
+
+        } else // En caso de que el proceso que acaba de entrar tenga un tiempo ráfaga mayor o igual al tiempo que le falta al proceso que se está ejecutando actualmente en el CPU, únicamente ordenamos la cola.
+            procesos = procesos.stream()
+                    .sorted(Comparator.comparing(p -> p.PCB.tiempoRestanteParaFinalizarProceso()))
+                    .collect(Collectors.toCollection(ArrayDeque::new));
 
     }
 
@@ -40,17 +46,16 @@ public class DespachadorSRTF extends Despachador
     public void run()
     {
         while (running)
-            if (hayProcesosEsperando())
+            if (hayProcesosEsperando()) // Mientras hayan procesos en la cola.
             {
-                cpu.ejecutarProceso(procesoActualEnCPU);
-                esperar();
+                cpu.ejecutarProceso(procesoActualEnCPU); // Ejecutamos el proceso actual.
+                esperar(); // Esperamos a que termine el CPU de ejecutarlo o el proceso sea interrumpido.
 
-                if (!cpu.isProcesoInterrumpido())
+                if (!cpu.isProcesoInterrumpido()) // Si el proceso no fue interrumpido. (el proceso ha finalizado)
                 {
-                    procesoActualEnCPU.PCB.setEstadoProceso(Estado.TERMINADO);
-                    System.out.println("");
-                    procesoActualEnCPU = procesos.remove();
-
+                    procesoActualEnCPU.PCB.setEstadoProceso(Estado.TERMINADO); // Ha terminado por completo el proceso.
+                    System.out.println(""); // Notificamos que un proceso ha terminado por complento su ejecución.
+                    procesoActualEnCPU = procesos.remove(); // Pasamos al siguiente proceso que esté en la cola.
                 }
 
             }
