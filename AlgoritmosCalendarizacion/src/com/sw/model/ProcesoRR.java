@@ -15,11 +15,15 @@ public class ProcesoRR extends Proceso
     @Override
     public Proceso obtenerCopiaProceso()
     {
-        return new ProcesoRR(
+        Proceso copiaProceso = new ProcesoRR(
                 PCB.getEstadoProceso(),
-                getIdentificador(),
+                identificador,
                 PCB.getNumProceso(),
                 PCB.getTiempoRafaga());
+
+        copiaProceso.setTiempoLlegada(tiempoLlegada);
+        copiaProceso.PCB.setTiempoEjecutado(PCB.getTiempoEjecutado());
+        return copiaProceso;
     }
 
 }

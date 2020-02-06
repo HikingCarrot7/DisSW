@@ -93,7 +93,7 @@ public class DibujadorProcesador
             charge_box_length = 0;
             double milisecondsPerTick = 1000 / 60;
             pixels_per_tick = tiempoUsoCPUActual < milisecondsPerTick
-                    ? 150 : (double) ((double) BOX_WIDTH * milisecondsPerTick / (double) tiempoUsoCPUActual);
+                    ? BOX_WIDTH : (double) ((double) BOX_WIDTH * milisecondsPerTick / (double) tiempoUsoCPUActual);
         }
     }
 

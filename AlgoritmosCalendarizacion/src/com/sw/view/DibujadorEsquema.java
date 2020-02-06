@@ -67,9 +67,19 @@ public class DibujadorEsquema
         DIBUJADOR_PROCESADOR.setTiempoUsoCPUActual(tiempoUsoCpu);
     }
 
-    public void actualizarDiagramaGantt(Proceso proceso, long tiempoTranscurrido)
+    public void mostrarNoHayProcesoActual()
     {
-        DIAGRAMA_GANTT.anadirProcesoFinalizadoAlDiagramaGantt(proceso, tiempoTranscurrido);
+        DIBUJADOR_PROCESADOR.setProcesoActual(null);
+    }
+
+    public void actualizarDiagramaGantt(Proceso proceso, long tiempoEspera)
+    {
+        DIAGRAMA_GANTT.anadirProcesoAlDiagramaGantt(proceso, tiempoEspera);
+    }
+
+    public void marcarUltimoProceso()
+    {
+        DIAGRAMA_GANTT.marcarUltimoProceso();
     }
 
     public void reiniciarEsquema()

@@ -1,5 +1,6 @@
 package com.sw.view;
 
+import com.sw.model.Estado;
 import com.sw.model.Proceso;
 import static com.sw.view.DibujadorEsquema.WIDTH;
 import java.awt.Color;
@@ -36,11 +37,11 @@ public class DiagramaGantt
         TIEMPO_ESPERA_PROCESOS = new ArrayList<>();
     }
 
-    public void anadirProcesoFinalizadoAlDiagramaGantt(Proceso proceso, long tiempoEsperaProceso)
+    public void anadirProcesoAlDiagramaGantt(Proceso proceso, long tiempoEspera)
     {
-        proceso.PCB.setTiempoEjecutado(tiempoEsperaProceso);
+        proceso.PCB.setTiempoEjecutado(tiempoEspera);
         TIEMPO_ESPERA_PROCESOS.add(proceso);
-        promedioTiempoEspera += tiempoEsperaProceso;
+        promedioTiempoEspera += tiempoEspera;
         nProcesos++;
     }
 
@@ -118,6 +119,13 @@ public class DiagramaGantt
         g.drawLine(WIDTH - OFFSET_X, y + PROCESO_RECT_HEIGHT + 10, OFFSET_X - OFFSET_X / 2, y + PROCESO_RECT_HEIGHT + 10);
         g.drawLine(OFFSET_X - OFFSET_X / 2, y + PROCESO_RECT_HEIGHT + 10, OFFSET_X - OFFSET_X / 2, y + SEPARACION_POR_LINEA + PROCESO_RECT_HEIGHT);
         g.drawLine(OFFSET_X - OFFSET_X / 2, y + SEPARACION_POR_LINEA + PROCESO_RECT_HEIGHT, OFFSET_X, y + SEPARACION_POR_LINEA + PROCESO_RECT_HEIGHT);
+    }
+
+    public void marcarUltimoProceso()
+    {
+        int x = TIEMPO_ESPERA_PROCESOS.size();
+        Proceso p = TIEMPO_ESPERA_PROCESOS.get(x - 1);
+        p.PCB.setEstadoProceso(Estado.TERMINADO);
     }
 
     public ArrayList<Proceso> getProcesosDibujados()

@@ -222,26 +222,16 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
     public void update(Observable o, Object arg)
     {
         Notificacion notificacion = (Notificacion) arg;
+        Proceso proceso = notificacion.getProceso();
 
         if (!simulacionInterrumpida)
             switch (notificacion.getIdentificador())
             {
                 case Notificacion.PROCESO_HA_FINALIZADO:
-
-                    anadirProcesoTablaFinalizados(notificacion.getProceso(),
-                            notificacion.getTiempoEnQueFinalizoProceso());
-
-                    anadirProcesoTablaTiempoEspera(notificacion.getProceso(),
-                            notificacion.getTiempoEsperaProceso());
-
-                    DIBUJADOR_ESQUEMA.mostrarEnProcesadorProcesoActual(
-                            notificacion.getProceso().obtenerCopiaProceso(),
-                            notificacion.getTiempoUsoCPU());
-
-                    DIBUJADOR_ESQUEMA.actualizarDiagramaGantt(
-                            notificacion.getProceso().obtenerCopiaProceso(),
-                            notificacion.getTiempoEsperaProceso());
-
+                    DIBUJADOR_ESQUEMA.mostrarNoHayProcesoActual();
+                    DIBUJADOR_ESQUEMA.marcarUltimoProceso();
+                    anadirProcesoTablaFinalizados(proceso, notificacion.getTiempoEnQueFinalizoProceso());
+                    anadirProcesoTablaTiempoEspera(proceso, notificacion.getTiempoEsperaProceso());
                     RENDERER.anadirFila(VISTA_PRINCIPAL.getTablaEspera().getRowCount() - 1);
 
                     if (calendarizador.todosProcesosTerminados())
@@ -249,23 +239,15 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
                         VISTA_PRINCIPAL.getSimulacion().setText("Iniciar simulación");
                         despachador.detenerDespachador();
                     }
-
                     break;
 
-                case Notificacion.PROCESO_ENTRO_CPU:
-                    DIBUJADOR_ESQUEMA.mostrarEnProcesadorProcesoActual(
-                            notificacion.getProceso().obtenerCopiaProceso(),
-                            notificacion.getTiempoUsoCPU());
+                case Notificacion.COMBIO_CONTEXTO:
+                    DIBUJADOR_ESQUEMA.mostrarEnProcesadorProcesoActual(proceso, notificacion.getTiempoUsoCPU());
+                    DIBUJADOR_ESQUEMA.actualizarDiagramaGantt(proceso, notificacion.getTiempoEsperaProceso());
                     break;
 
                 case Notificacion.PROCESO_DEJO_CPU:
-
-                    anadirProcesoTablaTiempoEspera(notificacion.getProceso(),
-                            notificacion.getTiempoEsperaProceso());
-
-                    DIBUJADOR_ESQUEMA.actualizarDiagramaGantt(
-                            notificacion.getProceso().obtenerCopiaProceso(),
-                            notificacion.getTiempoEsperaProceso());
+                    anadirProcesoTablaTiempoEspera(proceso, notificacion.getTiempoEsperaProceso());
                     break;
 
                 default:

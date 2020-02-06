@@ -23,10 +23,12 @@ public class DespachadorSRTF extends Despachador
     {
         super.aceptarProceso(proceso);
 
-        if (procesoActualEnCPU == null) // Si es el primer proceso que entra.
+        if (procesoActualEnCPU == null)// Si es el primer proceso que entra.
+        {
             procesoActualEnCPU = proceso;
+            cambiarContexto(procesoActualEnCPU, procesoActualEnCPU.PCB.tiempoRestanteParaFinalizarProceso());
 
-        else if (proceso.PCB.getTiempoRafaga() < procesoActualEnCPU.PCB.tiempoRestanteParaFinalizarProceso()) // Si el proceso que acaba de entrar tiene un tiempo ráfaga menor
+        } else if (proceso.PCB.getTiempoRafaga() < procesoActualEnCPU.PCB.tiempoRestanteParaFinalizarProceso()) // Si el proceso que acaba de entrar tiene un tiempo ráfaga menor
         //del tiempo que le falta al proceso que está actualmente ocupando el CPU.
         {
             procesos.addLast(procesoActualEnCPU); // Proceso actual se añade a la cola.
@@ -56,6 +58,7 @@ public class DespachadorSRTF extends Despachador
                     procesoActualEnCPU.PCB.setEstadoProceso(Estado.TERMINADO); // Ha terminado por completo el proceso.
                     System.out.println(""); // Notificamos que un proceso ha terminado por complento su ejecución.
                     procesoActualEnCPU = procesos.remove(); // Pasamos al siguiente proceso que esté en la cola.
+                    cambiarContexto(procesoActualEnCPU, procesoActualEnCPU.PCB.tiempoRestanteParaFinalizarProceso()); // Cambiamos de contexto.
                 }
 
             }

@@ -7,8 +7,8 @@ package com.sw.model;
 public abstract class Proceso
 {
 
-    private String identificador;
-    private long tiempoLlegada;
+    protected String identificador;
+    protected long tiempoLlegada;
     public final PCB PCB;
 
     public Proceso(Estado estadoProceso, String identificador, long tiempoLlegada, int numProceso, long tiempoRafaga)

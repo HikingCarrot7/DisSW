@@ -15,12 +15,7 @@ public class ProcesoSJF extends Proceso
     @Override
     public Proceso obtenerCopiaProceso()
     {
-        return new ProcesoSJF(
-                PCB.getEstadoProceso(),
-                getIdentificador(),
-                PCB.getNumProceso(),
-                PCB.getTiempoRafaga(),
-                getTiempoLlegada());
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
