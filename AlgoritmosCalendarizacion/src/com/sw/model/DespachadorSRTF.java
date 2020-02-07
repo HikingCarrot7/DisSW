@@ -58,8 +58,11 @@ public class DespachadorSRTF extends Despachador
                     procesoActual.PCB.setEstadoProceso(Estado.ESPERA);
                     procesoActual.PCB.aumentarTiempoEjecutado(tiempoEjecutado);
                     procesos.add(procesoActual);
-                    bloques.add(new Notificacion(Notificacion.CAMBIO_CONTEXTO, procesoActual.obtenerCopiaProceso(), tiempoEjecutado, tiempoEsperaPorProceso));
-                    procesoActual = procesos.get(obtenerIndexSiguienteProceso(tiempoTotalUsoDelCPU, procesoActual, procesos));
+
+                    bloques.add(new Notificacion(Notificacion.CAMBIO_CONTEXTO, procesoActual.obtenerCopiaProceso(), tiempoEjecutado, tiempoEjecutado));
+                    int indexSiguienteProceso = obtenerIndexSiguienteProceso(tiempoTotalUsoDelCPU, procesoActual, procesos);
+                    procesoActual = procesos.get(indexSiguienteProceso);
+                    procesos.remove(indexSiguienteProceso);
                     interrumpido = true;
                     break;
                 }
@@ -72,13 +75,16 @@ public class DespachadorSRTF extends Despachador
                 tiempoTotalUsoDelCPU += (procesoActual.PCB.getTiempoRafaga() - procesoActual.PCB.getTiempoEjecutado());
                 bloques.add(new Notificacion(Notificacion.PROCESO_HA_FINALIZADO, procesoActual.obtenerCopiaProceso(), 0, tiempoEsperaPorProceso));
                 procesos.remove(procesoActual);
-                procesos = ordenarProcesosPorTiempoRafaga(procesos);
+                procesos = ordenarProcesosPorTiempoDeLlegada(procesos);
+                procesoActual = procesos.remove(0);
+
+            } else
                 interrumpido = false;
-            }
+
+            System.out.println(procesos.size());
 
         }
 
-        //Mañana revisamos los tiempos de espera.
         return bloques;
     }
 
@@ -89,17 +95,24 @@ public class DespachadorSRTF extends Despachador
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
+    private ArrayList<Proceso> ordenarProcesosPorTiempoDeLlegada(ArrayList<Proceso> procesos)
+    {
+        return procesos.stream()
+                .sorted(Comparator.comparing(Proceso::getTiempoLlegada))
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
+
     /**
      *
-     * @param p1
-     * @param p2
+     * @param procesoLlegada
+     * @param procesoActual
      *
-     * @return Si el proceso p1 puede interrumpir al proceso p2.
+     * @return Si el proceso proceso de llegada puede interrumpir al proceso actual.
      */
-    private boolean puedeInterrumpir(long tiempoUsoDelCPU, Proceso p1, Proceso p2)
+    private boolean puedeInterrumpir(long tiempoUsoDelCPU, Proceso procesoLlegada, Proceso procesoActual)
     {
-        return p1.PCB.getTiempoRafaga() < (tiempoUsoDelCPU + p2.PCB.getTiempoRafaga() - p1.getTiempoLlegada())
-                && p1.PCB.getEstadoProceso().equals(Estado.NUEVO);
+        return procesoLlegada.PCB.getTiempoRafaga() < (tiempoUsoDelCPU + procesoActual.PCB.getTiempoRafaga() - procesoLlegada.getTiempoLlegada())
+                && procesoLlegada.PCB.getEstadoProceso().equals(Estado.NUEVO);
     }
 
     private int obtenerIndexSiguienteProceso(long tiempoUsoDelCPU, Proceso proceso, ArrayList<Proceso> procesos)
