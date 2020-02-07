@@ -87,4 +87,10 @@ public class Notificacion
         this.tiempoUsoCPU = tiempoUsoCPU;
     }
 
+    @Override
+    public String toString()
+    {
+        return "Notificacion{" + "identificador=" + identificador + ", proceso=" + proceso.getIdentificador() + ", tiempoUsoCPU=" + tiempoUsoCPU + '}';
+    }
+
 }

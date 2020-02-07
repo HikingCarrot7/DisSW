@@ -24,15 +24,20 @@ public class DespachadorSRTF extends Despachador
         while (running)
             if (todosProcesosEntregados)
             {
-                ArrayList<Notificacion> notificaciones = obtenerBloquesASimular(procesos.stream().collect(Collectors.toCollection(ArrayList::new)));
+                ArrayList<Notificacion> notificaciones = obtenerBloquesASimular(procesos.stream()
+                        .sorted(Comparator.comparing(Proceso::getTiempoLlegada))
+                        .collect(Collectors.toCollection(ArrayList::new)));
+
+                notificaciones.forEach(System.out::println);
+
+                /*System.out.println(notificaciones.size());
 
                 for (int i = 0; i < notificaciones.size(); i++)
                 {
                     cpu.ejecutarProceso(notificaciones.get(i).getProceso(), notificaciones.get(i).getTiempoUsoCPU());
                     notificar(notificaciones.get(i));
                     esperar();
-                }
-
+                }*/
                 break;
             }
 
@@ -63,6 +68,7 @@ public class DespachadorSRTF extends Despachador
                     int indexSiguienteProceso = obtenerIndexSiguienteProceso(tiempoTotalUsoDelCPU, procesoActual, procesos);
                     procesoActual = procesos.get(indexSiguienteProceso);
                     procesos.remove(indexSiguienteProceso);
+                    tiempoTotalUsoDelCPU += tiempoEjecutado;
                     interrumpido = true;
                     break;
                 }
@@ -84,6 +90,8 @@ public class DespachadorSRTF extends Despachador
             System.out.println(procesos.size());
 
         }
+
+        System.out.println("El tamaño de los bloques es: " + bloques.size());
 
         return bloques;
     }

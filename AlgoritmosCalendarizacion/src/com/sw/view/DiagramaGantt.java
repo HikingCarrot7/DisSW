@@ -1,6 +1,5 @@
 package com.sw.view;
 
-import com.sw.model.Estado;
 import com.sw.model.Proceso;
 import static com.sw.view.DibujadorEsquema.WIDTH;
 import java.awt.Color;
@@ -123,9 +122,9 @@ public class DiagramaGantt
 
     public void marcarUltimoProceso()
     {
-        int x = TIEMPO_ESPERA_PROCESOS.size();
+        /*int x = TIEMPO_ESPERA_PROCESOS.size();
         Proceso p = TIEMPO_ESPERA_PROCESOS.get(x - 1);
-        p.PCB.setEstadoProceso(Estado.TERMINADO);
+        p.PCB.setEstadoProceso(Estado.TERMINADO);*/
     }
 
     public ArrayList<Proceso> getProcesosDibujados()
