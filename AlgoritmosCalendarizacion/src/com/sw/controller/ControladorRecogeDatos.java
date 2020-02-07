@@ -59,6 +59,8 @@ public class ControladorRecogeDatos implements ActionListener
 
         if (CLAVE_ALGORITMO_ACTUAL.equals(ControladorSeleccion.CLAVE_ALGORITMO_RR))
             TABLE_MANAGER.eliminarUltimaColumna(VISTA_RECOGE_DATOS.getTablaRecogeDatos());
+
+        loadData();
     }
 
     public void establecerDatosDefecto(JTable tabla, final String CLAVE_ALGORITMO_ACTUAL)
@@ -385,6 +387,27 @@ public class ControladorRecogeDatos implements ActionListener
             return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
         }
 
+    }
+
+    private void loadData()
+    {
+        Object[][] data =
+        {
+            {
+                "", "P1", 13, 1
+            },
+            {
+                "", "P2", 6, 2
+            },
+            {
+                "", "P3", 10, 7
+            },
+            {
+                "", "P4", 2, 5
+            }
+        };
+
+        TABLE_MANAGER.rellenarTabla(VISTA_RECOGE_DATOS.getTablaRecogeDatos(), data);
     }
 
 }
