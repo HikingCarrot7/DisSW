@@ -135,6 +135,10 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
                 procesos = obtenerProcesosSJF();
                 despachador = new DespachadorSJF(CPU);
                 break;
+            case ControladorSeleccion.CLAVE_ALGORITMO_SRTF:
+                procesos = obtenerProcesosSRTF();
+                despachador = new DespachadorSRTF(CPU);
+                break;
             case ControladorSeleccion.CLAVE_ALGORITMO_RR:
                 procesos = obtenerProcesosRR();
                 despachador = new DespachadorRR(CPU, QUANTUMS);
@@ -167,7 +171,7 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
         TABLE_MANAGER.limpiarTabla(VISTA_PRINCIPAL.getTablaProcesosFinalizados());
     }
 
-    //---------------------------------------------------
+    //--------------------------------------------------- REVISAR
     private ArrayList<Proceso> obtenerProcesosSJF()
     {
         ArrayList<Proceso> procesos = new ArrayList<>();
@@ -176,6 +180,23 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
 
         for (int i = 0; i < table.getRowCount(); i++)
             procesos.add(new ProcesoSJF(
+                    Estado.NUEVO,
+                    data[i][ControladorRecogeDatos.COL_NOMBRE_PROCESO].toString(),
+                    (i + 1),
+                    Long.parseLong(data[i][ControladorRecogeDatos.COL_TIEMPO_RAFAGA].toString()),
+                    Long.parseLong(data[i][ControladorRecogeDatos.COL_TIEMPO_LLEGADA].toString())));
+
+        return procesos;
+    }
+
+    private ArrayList<Proceso> obtenerProcesosSRTF()
+    {
+        ArrayList<Proceso> procesos = new ArrayList<>();
+        JTable table = VISTA_PRINCIPAL.getTablaResumen();
+        Object[][] data = TABLE_MANAGER.obtenerDatosTabla(table);
+
+        for (int i = 0; i < table.getRowCount(); i++)
+            procesos.add(new ProcesoSRTF(
                     Estado.NUEVO,
                     data[i][ControladorRecogeDatos.COL_NOMBRE_PROCESO].toString(),
                     (i + 1),
@@ -241,7 +262,7 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
                     }
                     break;
 
-                case Notificacion.COMBIO_CONTEXTO:
+                case Notificacion.CAMBIO_CONTEXTO:
                     DIBUJADOR_ESQUEMA.mostrarEnProcesadorProcesoActual(proceso, notificacion.getTiempoUsoCPU());
                     DIBUJADOR_ESQUEMA.actualizarDiagramaGantt(proceso, notificacion.getTiempoEsperaProceso());
                     break;

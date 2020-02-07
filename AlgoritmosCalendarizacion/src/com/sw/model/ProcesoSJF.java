@@ -15,7 +15,15 @@ public class ProcesoSJF extends Proceso
     @Override
     public Proceso obtenerCopiaProceso()
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Proceso copiaProceso = new ProcesoSJF(
+                PCB.getEstadoProceso(),
+                identificador,
+                PCB.getNumProceso(),
+                PCB.getTiempoRafaga(),
+                tiempoLlegada);
+
+        copiaProceso.PCB.setTiempoEjecutado(PCB.getTiempoEjecutado());
+        return copiaProceso;
     }
 
 }

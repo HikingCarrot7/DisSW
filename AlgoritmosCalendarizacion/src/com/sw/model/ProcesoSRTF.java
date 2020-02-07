@@ -7,7 +7,7 @@ package com.sw.model;
 public class ProcesoSRTF extends Proceso
 {
 
-    public ProcesoSRTF(Estado estadoProceso, String identificador, long tiempoLlegada, int numProceso, long tiempoRafaga)
+    public ProcesoSRTF(Estado estadoProceso, String identificador, int numProceso, long tiempoRafaga, long tiempoLlegada)
     {
         super(estadoProceso, identificador, tiempoLlegada, numProceso, tiempoRafaga);
     }
@@ -15,7 +15,15 @@ public class ProcesoSRTF extends Proceso
     @Override
     public Proceso obtenerCopiaProceso()
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Proceso copiaProceso = new ProcesoSRTF(
+                PCB.getEstadoProceso(),
+                identificador,
+                PCB.getNumProceso(),
+                PCB.getTiempoRafaga(),
+                tiempoLlegada);
+
+        copiaProceso.PCB.setTiempoEjecutado(PCB.getTiempoEjecutado());
+        return copiaProceso;
     }
 
 }

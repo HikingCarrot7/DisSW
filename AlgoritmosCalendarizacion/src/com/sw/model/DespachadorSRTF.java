@@ -1,6 +1,7 @@
 package com.sw.model;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.stream.Collectors;
 
@@ -12,6 +13,8 @@ public class DespachadorSRTF extends Despachador
 {
 
     private Proceso procesoActualEnCPU;
+    private volatile boolean enEspera;
+    private boolean entroPrimerProceso;
 
     public DespachadorSRTF(final CPU CPU)
     {
@@ -23,24 +26,35 @@ public class DespachadorSRTF extends Despachador
     {
         super.aceptarProceso(proceso);
 
-        if (procesoActualEnCPU == null)// Si es el primer proceso que entra.
+        if (!entroPrimerProceso)//Si es el primer proceso entra directamente
         {
             procesoActualEnCPU = proceso;
-            cambiarContexto(procesoActualEnCPU, procesoActualEnCPU.PCB.tiempoRestanteParaFinalizarProceso());
+            notificar(new Notificacion(Notificacion.CAMBIO_CONTEXTO, proceso, 0, tiempoEsperaProceso(proceso)));
+            System.out.println("El primer proceso es : " + proceso.getIdentificador());
+            entroPrimerProceso = true;
 
-        } else if (proceso.PCB.getTiempoRafaga() < procesoActualEnCPU.PCB.tiempoRestanteParaFinalizarProceso()) // Si el proceso que acaba de entrar tiene un tiempo ráfaga menor
-        //del tiempo que le falta al proceso que está actualmente ocupando el CPU.
+        } else //En caso contrario, debemos revisar quien tiene el menor tiempo restante para terminar su proceso.
         {
-            procesos.addLast(procesoActualEnCPU); // Proceso actual se añade a la cola.
-            procesoActualEnCPU.PCB.setEstadoProceso(Estado.ESPERA); // Se pone en estado de espera.
-            System.out.println("");//Notificamos al controlador que habrá un cambio de contexto.
-            procesoActualEnCPU = proceso; // Actualizamos el proceso actual.
-            cpu.interrumpirProceso(); //Interrumpimos al CPU.
+            cpu.interrumpirProceso();
 
-        } else // En caso de que el proceso que acaba de entrar tenga un tiempo ráfaga mayor o igual al tiempo que le falta al proceso que se está ejecutando actualmente en el CPU, únicamente ordenamos la cola.
+            while (enEspera)
+            {
+            }
+
+            System.out.println("Ha llegado el proceso : " + proceso.getIdentificador() + " en el tiempo: " + tiempoTotalUsoCPU);
+
+            enEspera = true;
+            procesoActualEnCPU.PCB.setEstadoProceso(Estado.ESPERA);
+            procesos.addLast(procesoActualEnCPU);
+
             procesos = procesos.stream()
                     .sorted(Comparator.comparing(p -> p.PCB.tiempoRestanteParaFinalizarProceso()))
                     .collect(Collectors.toCollection(ArrayDeque::new));
+
+            procesoActualEnCPU = procesos.remove();
+            notificar(new Notificacion(Notificacion.CAMBIO_CONTEXTO, procesoActualEnCPU, 0, tiempoEsperaProceso(procesoActualEnCPU))); // ------------------> Hacer algo especial.
+            enEspera = false;
+        }
 
     }
 
@@ -48,21 +62,94 @@ public class DespachadorSRTF extends Despachador
     public void run()
     {
         while (running)
-            if (hayProcesosEsperando()) // Mientras hayan procesos en la cola.
+            if (procesoActualEnCPU != null && hayProcesosEsperando()) // Mientras hayan procesos en la cola.
             {
+                cambiarContexto(procesoActualEnCPU, procesoActualEnCPU.PCB.tiempoRestanteParaFinalizarProceso()); // Cambiamos de contexto.
                 cpu.ejecutarProceso(procesoActualEnCPU); // Ejecutamos el proceso actual.
+
+                enEspera = true;
                 esperar(); // Esperamos a que termine el CPU de ejecutarlo o el proceso sea interrumpido.
+                tiempoTotalUsoCPU += procesoActualEnCPU.PCB.getTiempoEjecutado(); // Aumentamos el tiempo total del uso del CPU.
+                enEspera = false;
 
                 if (!cpu.isProcesoInterrumpido()) // Si el proceso no fue interrumpido. (el proceso ha finalizado)
                 {
                     procesoActualEnCPU.PCB.setEstadoProceso(Estado.TERMINADO); // Ha terminado por completo el proceso.
-                    System.out.println(""); // Notificamos que un proceso ha terminado por complento su ejecución.
+                    notificar(new Notificacion(Notificacion.PROCESO_HA_FINALIZADO, procesoActualEnCPU, 0)); // Notificamos que un proceso ha terminado por complento su ejecución.
                     procesoActualEnCPU = procesos.remove(); // Pasamos al siguiente proceso que esté en la cola.
-                    cambiarContexto(procesoActualEnCPU, procesoActualEnCPU.PCB.tiempoRestanteParaFinalizarProceso()); // Cambiamos de contexto.
-                }
 
+                } else
+                    while (enEspera)
+                    {
+                    }
+
+                //-------------------------------- el bug del ultimo proceso
             }
 
+    }
+
+    private ArrayList<Notificacion> obtenerBloquesASimular(ArrayDeque<Proceso> procesos)
+    {
+        ArrayList<Notificacion> bloques = new ArrayList<>();
+        long tiempoEsperaPorProceso = 0;
+        long tiempoTotalUsoDelCPU = procesos.getFirst().getTiempoLlegada();
+
+        while (!procesos.isEmpty())
+        {
+            Proceso procesoActual = procesos.removeFirst();
+            ArrayDeque<Proceso> procesosEntrantes = procesosQueLleganDuranteEjecucion(tiempoTotalUsoDelCPU, procesoActual.PCB.getTiempoRafaga(), procesos);
+
+            for (int i = 0, nProcesosEntrantes = procesosEntrantes.size(); i < nProcesosEntrantes; i++)
+                if (puedeInterrumpir(tiempoTotalUsoDelCPU, procesosEntrantes.removeFirst(), procesoActual))
+                {
+
+                }
+
+        }
+
+        return bloques;
+    }
+
+    private ArrayDeque<Proceso> ordenarProcesosOrdenadosPorTiempoRafaga(ArrayDeque<Proceso> procesos)
+    {
+        return procesos.stream()
+                .sorted(Comparator.comparing(p -> p.PCB.getTiempoRafaga()))
+                .collect(Collectors.toCollection(ArrayDeque::new));
+    }
+
+    private boolean todosProcesosTerminados(ArrayDeque<Proceso> procesos)
+    {
+        return procesos.stream().anyMatch(p -> !p.PCB.getEstadoProceso().equals(Estado.TERMINADO));
+    }
+
+    private boolean esProcesoNuevo(Proceso proceso)
+    {
+        return proceso.PCB.getEstadoProceso().equals(Estado.NUEVO);
+    }
+
+    private boolean todosProcesosYaLlegaron(ArrayDeque<Proceso> procesos)
+    {
+        return procesos.stream().anyMatch(p -> !p.PCB.getEstadoProceso().equals(Estado.NUEVO));
+    }
+
+    /**
+     *
+     * @param p1
+     * @param p2
+     *
+     * @return Si el proceso p1 puede interrumpir al proceso p2.
+     */
+    private boolean puedeInterrumpir(long tiempoUsoDelCPU, Proceso p1, Proceso p2)
+    {
+        return p1.PCB.getTiempoRafaga() < (tiempoUsoDelCPU + p2.PCB.getTiempoRafaga() - p1.getTiempoLlegada());
+    }
+
+    private ArrayDeque<Proceso> procesosQueLleganDuranteEjecucion(long tiempoMinimo, long tiempoMaximo, ArrayDeque<Proceso> procesos)
+    {
+        return procesos.stream()
+                .filter(p -> p.getTiempoLlegada() > tiempoMinimo && p.getTiempoLlegada() < tiempoMaximo)
+                .sorted(Comparator.comparing(Proceso::getTiempoLlegada))
+                .collect(Collectors.toCollection(ArrayDeque::new));
     }
 
 }
