@@ -2,6 +2,7 @@ package com.sw.model;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Observable;
 import java.util.Observer;
 import java.util.stream.Collectors;
 
@@ -15,6 +16,7 @@ public class Calendarizador implements Runnable, Observer
     private ArrayList<Proceso> procesosAEntregar;
     private ArrayList<Proceso> procesosTerminados;
     private Despachador despachador;
+    private boolean entregaSinRetraso;
 
     public Calendarizador(ArrayList<Proceso> procesosAEntregar, Despachador despachador)
     {
@@ -26,14 +28,17 @@ public class Calendarizador implements Runnable, Observer
         entregarProcesosADespachador();
     }
 
+    public Calendarizador(ArrayList<Proceso> procesosAEntregar, Despachador despachador, boolean entregaSinRetraso)
+    {
+        this(procesosAEntregar, despachador);
+        this.entregaSinRetraso = entregaSinRetraso;
+    }
+
     private void ordenarProcesosTiempoLlegada()
     {
         procesosAEntregar = procesosAEntregar.stream()
                 .sorted(Comparator.comparing(Proceso::getTiempoLlegada))
                 .collect(Collectors.toCollection(ArrayList::new));
-
-        if (!procesosAEntregar.isEmpty())
-            procesosAEntregar.get(0).setTiempoLlegada(0);
     }
 
     private void entregarProcesosADespachador()
@@ -52,7 +57,9 @@ public class Calendarizador implements Runnable, Observer
 
             try
             {
-                Thread.sleep(proceso.getTiempoLlegada());
+                if (!entregaSinRetraso)
+                    Thread.sleep(proceso.getTiempoLlegada());
+
                 despachador.aceptarProceso(proceso);
 
             } catch (InterruptedException ex)
@@ -62,10 +69,13 @@ public class Calendarizador implements Runnable, Observer
 
         }
 
+        if (despachador instanceof DespachadorSRTF)
+            ((DespachadorSRTF) despachador).todosProcesosEntregados();
+
     }
 
     @Override
-    public void update(java.util.Observable o, Object notif)
+    public void update(Observable o, Object notif)
     {
         Notificacion notificacion = (Notificacion) notif;
 

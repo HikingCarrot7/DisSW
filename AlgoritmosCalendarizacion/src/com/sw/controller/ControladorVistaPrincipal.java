@@ -148,7 +148,7 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
         }
 
         despachador.addObserver(this);
-        calendarizador = new Calendarizador(procesos, despachador);
+        calendarizador = new Calendarizador(procesos, despachador, CLAVE_ALGORITMO_ACTUAL.equals(ControladorSeleccion.CLAVE_ALGORITMO_SRTF));
         simulacionInterrumpida = false;
     }
 

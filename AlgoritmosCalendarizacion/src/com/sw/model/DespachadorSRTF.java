@@ -1,6 +1,5 @@
 package com.sw.model;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.stream.Collectors;
@@ -12,9 +11,7 @@ import java.util.stream.Collectors;
 public class DespachadorSRTF extends Despachador
 {
 
-    private Proceso procesoActualEnCPU;
-    private volatile boolean enEspera;
-    private boolean entroPrimerProceso;
+    private volatile boolean todosProcesosEntregados;
 
     public DespachadorSRTF(final CPU CPU)
     {
@@ -22,114 +19,74 @@ public class DespachadorSRTF extends Despachador
     }
 
     @Override
-    public void aceptarProceso(Proceso proceso)
-    {
-        super.aceptarProceso(proceso);
-
-        if (!entroPrimerProceso)//Si es el primer proceso entra directamente
-        {
-            procesoActualEnCPU = proceso;
-            notificar(new Notificacion(Notificacion.CAMBIO_CONTEXTO, proceso, 0, tiempoEsperaProceso(proceso)));
-            System.out.println("El primer proceso es : " + proceso.getIdentificador());
-            entroPrimerProceso = true;
-
-        } else //En caso contrario, debemos revisar quien tiene el menor tiempo restante para terminar su proceso.
-        {
-            cpu.interrumpirProceso();
-
-            while (enEspera)
-            {
-            }
-
-            System.out.println("Ha llegado el proceso : " + proceso.getIdentificador() + " en el tiempo: " + tiempoTotalUsoCPU);
-
-            enEspera = true;
-            procesoActualEnCPU.PCB.setEstadoProceso(Estado.ESPERA);
-            procesos.addLast(procesoActualEnCPU);
-
-            procesos = procesos.stream()
-                    .sorted(Comparator.comparing(p -> p.PCB.tiempoRestanteParaFinalizarProceso()))
-                    .collect(Collectors.toCollection(ArrayDeque::new));
-
-            procesoActualEnCPU = procesos.remove();
-            notificar(new Notificacion(Notificacion.CAMBIO_CONTEXTO, procesoActualEnCPU, 0, tiempoEsperaProceso(procesoActualEnCPU))); // ------------------> Hacer algo especial.
-            enEspera = false;
-        }
-
-    }
-
-    @Override
     public void run()
     {
         while (running)
-            if (procesoActualEnCPU != null && hayProcesosEsperando()) // Mientras hayan procesos en la cola.
+            if (todosProcesosEntregados)
             {
-                cambiarContexto(procesoActualEnCPU, procesoActualEnCPU.PCB.tiempoRestanteParaFinalizarProceso()); // Cambiamos de contexto.
-                cpu.ejecutarProceso(procesoActualEnCPU); // Ejecutamos el proceso actual.
+                ArrayList<Notificacion> notificaciones = obtenerBloquesASimular(procesos.stream().collect(Collectors.toCollection(ArrayList::new)));
 
-                enEspera = true;
-                esperar(); // Esperamos a que termine el CPU de ejecutarlo o el proceso sea interrumpido.
-                tiempoTotalUsoCPU += procesoActualEnCPU.PCB.getTiempoEjecutado(); // Aumentamos el tiempo total del uso del CPU.
-                enEspera = false;
-
-                if (!cpu.isProcesoInterrumpido()) // Si el proceso no fue interrumpido. (el proceso ha finalizado)
+                for (int i = 0; i < notificaciones.size(); i++)
                 {
-                    procesoActualEnCPU.PCB.setEstadoProceso(Estado.TERMINADO); // Ha terminado por completo el proceso.
-                    notificar(new Notificacion(Notificacion.PROCESO_HA_FINALIZADO, procesoActualEnCPU, 0)); // Notificamos que un proceso ha terminado por complento su ejecución.
-                    procesoActualEnCPU = procesos.remove(); // Pasamos al siguiente proceso que esté en la cola.
+                    cpu.ejecutarProceso(notificaciones.get(i).getProceso(), notificaciones.get(i).getTiempoUsoCPU());
+                    notificar(notificaciones.get(i));
+                    esperar();
+                }
 
-                } else
-                    while (enEspera)
-                    {
-                    }
-
-                //-------------------------------- el bug del ultimo proceso
+                break;
             }
 
     }
 
-    private ArrayList<Notificacion> obtenerBloquesASimular(ArrayDeque<Proceso> procesos)
+    private ArrayList<Notificacion> obtenerBloquesASimular(ArrayList<Proceso> procesos)
     {
         ArrayList<Notificacion> bloques = new ArrayList<>();
         long tiempoEsperaPorProceso = 0;
-        long tiempoTotalUsoDelCPU = procesos.getFirst().getTiempoLlegada();
+        long tiempoTotalUsoDelCPU = procesos.get(0).getTiempoLlegada();
+        Proceso procesoActual = procesos.remove(0);
+        boolean interrumpido = false;
 
         while (!procesos.isEmpty())
         {
-            Proceso procesoActual = procesos.removeFirst();
-            ArrayDeque<Proceso> procesosEntrantes = procesosQueLleganDuranteEjecucion(tiempoTotalUsoDelCPU, procesoActual.PCB.getTiempoRafaga(), procesos);
+            for (int i = 0; i < procesos.size(); i++)
+            {
+                Proceso procesoSiguiente = procesos.get(i);
 
-            for (int i = 0, nProcesosEntrantes = procesosEntrantes.size(); i < nProcesosEntrantes; i++)
-                if (puedeInterrumpir(tiempoTotalUsoDelCPU, procesosEntrantes.removeFirst(), procesoActual))
+                if (puedeInterrumpir(tiempoTotalUsoDelCPU, procesoSiguiente, procesoActual))
                 {
-
+                    long tiempoEjecutado = procesoSiguiente.getTiempoLlegada() - tiempoTotalUsoDelCPU;
+                    procesoActual.PCB.setEstadoProceso(Estado.ESPERA);
+                    procesoActual.PCB.aumentarTiempoEjecutado(tiempoEjecutado);
+                    procesos.add(procesoActual);
+                    bloques.add(new Notificacion(Notificacion.CAMBIO_CONTEXTO, procesoActual.obtenerCopiaProceso(), tiempoEjecutado, tiempoEsperaPorProceso));
+                    procesoActual = procesos.get(obtenerIndexSiguienteProceso(tiempoTotalUsoDelCPU, procesoActual, procesos));
+                    interrumpido = true;
+                    break;
                 }
+
+            }
+
+            if (!interrumpido)
+            {
+                procesoActual.PCB.setEstadoProceso(Estado.TERMINADO);
+                tiempoTotalUsoDelCPU += (procesoActual.PCB.getTiempoRafaga() - procesoActual.PCB.getTiempoEjecutado());
+                bloques.add(new Notificacion(Notificacion.PROCESO_HA_FINALIZADO, procesoActual.obtenerCopiaProceso(), 0, tiempoEsperaPorProceso));
+                procesos.remove(procesoActual);
+                procesos = ordenarProcesosPorTiempoRafaga(procesos);
+                interrumpido = false;
+            }
 
         }
 
+        //Mañana revisamos los tiempos de espera.
         return bloques;
     }
 
-    private ArrayDeque<Proceso> ordenarProcesosOrdenadosPorTiempoRafaga(ArrayDeque<Proceso> procesos)
+    private ArrayList<Proceso> ordenarProcesosPorTiempoRafaga(ArrayList<Proceso> procesos)
     {
         return procesos.stream()
                 .sorted(Comparator.comparing(p -> p.PCB.getTiempoRafaga()))
-                .collect(Collectors.toCollection(ArrayDeque::new));
-    }
-
-    private boolean todosProcesosTerminados(ArrayDeque<Proceso> procesos)
-    {
-        return procesos.stream().anyMatch(p -> !p.PCB.getEstadoProceso().equals(Estado.TERMINADO));
-    }
-
-    private boolean esProcesoNuevo(Proceso proceso)
-    {
-        return proceso.PCB.getEstadoProceso().equals(Estado.NUEVO);
-    }
-
-    private boolean todosProcesosYaLlegaron(ArrayDeque<Proceso> procesos)
-    {
-        return procesos.stream().anyMatch(p -> !p.PCB.getEstadoProceso().equals(Estado.NUEVO));
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     /**
@@ -141,15 +98,30 @@ public class DespachadorSRTF extends Despachador
      */
     private boolean puedeInterrumpir(long tiempoUsoDelCPU, Proceso p1, Proceso p2)
     {
-        return p1.PCB.getTiempoRafaga() < (tiempoUsoDelCPU + p2.PCB.getTiempoRafaga() - p1.getTiempoLlegada());
+        return p1.PCB.getTiempoRafaga() < (tiempoUsoDelCPU + p2.PCB.getTiempoRafaga() - p1.getTiempoLlegada())
+                && p1.PCB.getEstadoProceso().equals(Estado.NUEVO);
     }
 
-    private ArrayDeque<Proceso> procesosQueLleganDuranteEjecucion(long tiempoMinimo, long tiempoMaximo, ArrayDeque<Proceso> procesos)
+    private int obtenerIndexSiguienteProceso(long tiempoUsoDelCPU, Proceso proceso, ArrayList<Proceso> procesos)
     {
-        return procesos.stream()
-                .filter(p -> p.getTiempoLlegada() > tiempoMinimo && p.getTiempoLlegada() < tiempoMaximo)
-                .sorted(Comparator.comparing(Proceso::getTiempoLlegada))
-                .collect(Collectors.toCollection(ArrayDeque::new));
+        ArrayList<Integer> indices = new ArrayList<>();
+
+        for (int i = 0; i < procesos.size(); i++)
+            if (puedeInterrumpir(tiempoUsoDelCPU, procesos.get(i), proceso))
+                indices.add(i);
+
+        int indexMenor = 0;
+
+        for (int i = 0; i < indices.size(); i++)
+            if (procesos.get(indices.get(i)).PCB.getTiempoRafaga() < procesos.get(indexMenor).PCB.getTiempoRafaga())
+                indexMenor = i;
+
+        return indexMenor;
+    }
+
+    public void todosProcesosEntregados()
+    {
+        todosProcesosEntregados = true;
     }
 
 }
