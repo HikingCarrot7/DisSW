@@ -36,6 +36,7 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
         this.VISTA_PRINCIPAL = VISTA_PRINCIPAL;
         this.CLAVE_ALGORITMO_ACTUAL = CLAVE_ALGORITMO_ACTUAL;
         DIBUJADOR_ESQUEMA = new DibujadorEsquema(VISTA_PRINCIPAL.getEsquema());
+        DIBUJADOR_ESQUEMA.setMostrarCambioContexto(CLAVE_ALGORITMO_ACTUAL.equals(ControladorSeleccion.CLAVE_ALGORITMO_SRTF));
         TABLE_MANAGER = new TableManager();
         RENDERER = new TableCellRenderer();
         initMyComponents();
@@ -62,6 +63,7 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
         TABLE_MANAGER.eliminarUltimaColumna(VISTA_PRINCIPAL.getTablaResumen());
         TABLE_MANAGER.copiarTablas(table, VISTA_PRINCIPAL.getTablaResumen());
         VISTA_PRINCIPAL.setTitle("Simulando el algoritmo Round Robin");
+        DIBUJADOR_ESQUEMA.setQuantums(QUANTUMS);
         this.QUANTUMS = QUANTUMS;
     }
 
@@ -184,7 +186,7 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
             procesos.add(new ProcesoSJF(
                     Estado.NUEVO,
                     data[i][ControladorRecogeDatos.COL_NOMBRE_PROCESO].toString(),
-                    (i + 1),
+                    i,
                     Long.parseLong(data[i][ControladorRecogeDatos.COL_TIEMPO_RAFAGA].toString()),
                     Long.parseLong(data[i][ControladorRecogeDatos.COL_TIEMPO_LLEGADA].toString())));
 
@@ -201,7 +203,7 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
             procesos.add(new ProcesoSRTF(
                     Estado.NUEVO,
                     data[i][ControladorRecogeDatos.COL_NOMBRE_PROCESO].toString(),
-                    (i + 1),
+                    i,
                     Long.parseLong(data[i][ControladorRecogeDatos.COL_TIEMPO_RAFAGA].toString()),
                     Long.parseLong(data[i][ControladorRecogeDatos.COL_TIEMPO_LLEGADA].toString())));
 
@@ -218,7 +220,7 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
             procesos.add(new ProcesoRR(
                     Estado.NUEVO,
                     data[i][ControladorRecogeDatos.COL_NOMBRE_PROCESO].toString(),
-                    (i + 1),
+                    i,
                     Long.parseLong(data[i][ControladorRecogeDatos.COL_TIEMPO_RAFAGA].toString())));
 
         return procesos;
@@ -273,6 +275,10 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
                     anadirProcesoTablaTiempoEspera(proceso, notificacion.getTiempoEsperaProceso());
                     break;
 
+                case Notificacion.INTERRUPCION:
+                    DIBUJADOR_ESQUEMA.mostrarInterrupcion();
+                    break;
+
                 default:
                     break;
             }
@@ -288,7 +294,7 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
     {
 
         @Override
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
+        public synchronized Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
         {
             boolean existeFila = existeFila(row);
             setBackground(existeFila ? Color.red : Color.white);

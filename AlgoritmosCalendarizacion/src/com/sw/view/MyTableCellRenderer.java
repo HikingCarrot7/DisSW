@@ -33,7 +33,15 @@ public class MyTableCellRenderer extends DefaultTableCellRenderer
 
     protected boolean existeFila(int row)
     {
-        return puntos.stream().anyMatch(p -> p.y == row);
+        for (int i = 0; i < puntos.size(); i++)
+        {
+            Point p = puntos.get(i);
+
+            if (p.y == row)
+                return true;
+        }
+
+        return false;
     }
 
     public void anadirFila(int row)

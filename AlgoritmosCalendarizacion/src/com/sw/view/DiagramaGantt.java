@@ -6,6 +6,7 @@ import static com.sw.view.DibujadorEsquema.WIDTH;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.util.ArrayList;
 
 /**
@@ -27,6 +28,7 @@ public class DiagramaGantt
 
     private final DibujadorEsquema DIBUJADOR_ESQUEMA;
     private final ArrayList<Proceso> TIEMPO_ESPERA_PROCESOS;
+    private final ArrayList<Point> INTERRUPCIONES;
 
     private double promedioTiempoEspera;
     private int nProcesos;
@@ -35,6 +37,7 @@ public class DiagramaGantt
     {
         this.DIBUJADOR_ESQUEMA = dibujadorEsquema;
         TIEMPO_ESPERA_PROCESOS = new ArrayList<>();
+        INTERRUPCIONES = new ArrayList<>();
     }
 
     public void anadirProcesoAlDiagramaGantt(Proceso proceso, long tiempoEspera)
@@ -50,6 +53,7 @@ public class DiagramaGantt
         int y = OFFSET_Y;
 
         g.drawString("Diagrama de Gantt", OFFSET_X, OFFSET_Y - 5);
+        dibujarInterrupciones(g);
 
         for (int i = 0, x = OFFSET_X; i < TIEMPO_ESPERA_PROCESOS.size(); i++, x += PROCESO_RECT_WIDTH)
         {
@@ -93,6 +97,16 @@ public class DiagramaGantt
         g.drawRect(x, y, PROCESO_RECT_WIDTH, PROCESO_RECT_HEIGHT);
     }
 
+    private void dibujarInterrupciones(Graphics2D g)
+    {
+        for (int i = 0; i < INTERRUPCIONES.size(); i++)
+        {
+            Point interrupcion = INTERRUPCIONES.get(i);
+            DIBUJADOR_ESQUEMA.drawTurnedTriangle(g, interrupcion.x, interrupcion.y, 5, Color.BLUE);
+        }
+
+    }
+
     private void dibujarInfoProceso(Graphics2D g, Proceso proceso, int x, int y)
     {
         final int LINE_LENGTH = 5;
@@ -123,9 +137,16 @@ public class DiagramaGantt
 
     public void marcarUltimoProceso()
     {
-        int x = TIEMPO_ESPERA_PROCESOS.size();
-        Proceso p = TIEMPO_ESPERA_PROCESOS.get(x - 1);
+        int size = TIEMPO_ESPERA_PROCESOS.size();
+        Proceso p = TIEMPO_ESPERA_PROCESOS.get(size - 1);
         p.PCB.setEstadoProceso(Estado.TERMINADO);
+    }
+
+    public void marcarCambioDeContexto()
+    {
+        int x = OFFSET_X + (TIEMPO_ESPERA_PROCESOS.size() % MAX_PROCESOS_COL) * PROCESO_RECT_WIDTH;
+        int y = OFFSET_Y + (TIEMPO_ESPERA_PROCESOS.size() / MAX_PROCESOS_COL) * (PROCESO_RECT_HEIGHT + SEPARACION_POR_LINEA);
+        INTERRUPCIONES.add(new Point(x, y));
     }
 
     public ArrayList<Proceso> getProcesosDibujados()

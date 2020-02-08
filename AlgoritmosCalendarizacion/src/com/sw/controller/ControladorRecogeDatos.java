@@ -97,6 +97,8 @@ public class ControladorRecogeDatos implements ActionListener
                         VistaPrincipal vistaPrincipal = new VistaPrincipal();
                         vistaPrincipal.setVisible(true);
                         vistaPrincipal.setLocationRelativeTo(null);
+                        vistaPrincipal.revalidate();
+                        vistaPrincipal.repaint();
                         ControladorVistaPrincipal controladorVistaPrincipal = new ControladorVistaPrincipal(vistaPrincipal, CLAVE_ALGORITMO_ACTUAL);
 
                         switch (CLAVE_ALGORITMO_ACTUAL)
@@ -237,7 +239,7 @@ public class ControladorRecogeDatos implements ActionListener
                         break;
 
                     case COL_TIEMPO_LLEGADA:
-                        if (!esEntradaValida(data[i][j].toString(), REGEX_ENTERO_POSITIVO_VALIDO))
+                        if (!esEntradaValida(data[i][j].toString(), REGEX_ENTERO_POSITIVO_VALIDO) && Integer.parseInt(data[i][j].toString()) < 0)
                             throw new ValorNoValidoException(
                                     String.format("El tiempo de llegada en la fila %s y columna %s no es válido", i + 1, j + 1), i, j);
                         break;
@@ -358,10 +360,7 @@ public class ControladorRecogeDatos implements ActionListener
 
     private boolean esEntradaValida(String text, String regex)
     {
-        if (text.matches(regex))
-            return Integer.parseInt(text) > 0;
-
-        return false;
+        return text.matches(regex);
     }
 
     private void limpiarTabla()

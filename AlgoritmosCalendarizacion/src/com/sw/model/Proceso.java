@@ -45,4 +45,10 @@ public abstract class Proceso
 
     public abstract Proceso obtenerCopiaProceso();
 
+    @Override
+    public String toString()
+    {
+        return identificador;
+    }
+
 }
