@@ -25,20 +25,20 @@ public class DespachadorSRTF extends Despachador
         while (running)
             if (todosProcesosEntregados)
             {
+                procesos.forEach(System.out::println);
                 ArrayList<Notificacion> notificaciones = obtenerBloquesASimular(procesos.stream()
-                        .sorted(Comparator.comparing(Proceso::getTiempoLlegada))
+                        .sorted(Comparator.comparing(Proceso::getTiempoLlegada).thenComparing(p -> p.PCB.getNumProceso()))
                         .collect(Collectors.toCollection(ArrayList::new)));
 
                 notificaciones.forEach(System.out::println);
-
-                /*System.out.println(notificaciones.size());
 
                 for (int i = 0; i < notificaciones.size(); i++)
                 {
                     cpu.ejecutarProceso(notificaciones.get(i).getProceso(), notificaciones.get(i).getTiempoUsoCPU());
                     notificar(notificaciones.get(i));
                     esperar();
-                }*/
+                }
+
                 break;
             }
 
@@ -77,21 +77,35 @@ public class DespachadorSRTF extends Despachador
                     tiempoTotalUsoDelCPU += tiempoEjecutado;
                     interrumpido = true;
                     break;
-                }
+
+                } else if (lleganAlMismoTiempo(procesoSiguienteEnCola, procesoActual)
+                        || llegaDuranteEjecucionProcesoActual(tiempoTotalUsoDelCPU, procesoSiguienteEnCola, procesoActual))
+                {
+                    System.out.println("El proceso " + procesoSiguienteEnCola + " se ha ido a estado de espera.");
+                    procesoSiguienteEnCola.PCB.setEstadoProceso(Estado.ESPERA);
+
+                } else
+                    System.out.println();
 
             }
 
             if (!interrumpido)
             {
                 procesoActual.PCB.setEstadoProceso(Estado.TERMINADO);
+                System.out.println("Ha terminado el proceso : " + procesoActual.getIdentificador());
                 tiempoTotalUsoDelCPU += procesoActual.PCB.tiempoRestanteParaFinalizarProceso();
                 bloques.add(new Notificacion(Notificacion.CAMBIO_CONTEXTO, procesoActual.obtenerCopiaProceso(), procesoActual.PCB.tiempoRestanteParaFinalizarProceso(), procesoActual.PCB.tiempoRestanteParaFinalizarProceso())); // Tiempo espera.
                 bloques.add(new Notificacion(Notificacion.PROCESO_HA_FINALIZADO, procesoActual.obtenerCopiaProceso(), 0, tiempoEsperaPorProceso));
                 procesos.remove(procesoActual);
-                procesos = ordenarProcesosPorTiempoParaFinalizar(procesos);
-                procesoActual = procesos.remove(0);
+
+                analizarProcesosEntrantesAlFinalizarUnProceso(procesos, tiempoTotalUsoDelCPU);
+                System.out.println(tiempoTotalUsoDelCPU);
+                Proceso procesoSig = procesoConMenorTiempoParaFinalizar(procesos);
+                procesoActual = procesoSig;
+                procesos.remove(procesoSig);
             }
 
+            procesos = ordenarProcesosPorTiempoLlegada(procesos);
             interrumpido = false;
         }
 
@@ -103,11 +117,42 @@ public class DespachadorSRTF extends Despachador
         return bloques;
     }
 
-    private ArrayList<Proceso> ordenarProcesosPorTiempoRafaga(ArrayList<Proceso> procesos)
+    private ArrayList<Proceso> ordenarProcesosPorTiempoLlegada(ArrayList<Proceso> procesos)
     {
         return procesos.stream()
-                .sorted(Comparator.comparing(p -> p.PCB.getTiempoRafaga()))
+                .sorted(Comparator.comparing(Proceso::getTiempoLlegada))
                 .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    private void analizarProcesosEntrantesAlFinalizarUnProceso(ArrayList<Proceso> procesos, long tiempoTotalUsoDelCPU)
+    {
+        procesos.forEach((p) ->
+        {
+            if (p.getTiempoLlegada() == tiempoTotalUsoDelCPU)
+            {
+                System.out.println("El proceso " + p.getIdentificador() + " ha entrado en estado de espera.");
+                p.PCB.setEstadoProceso(Estado.ESPERA);
+            }
+        });
+    }
+
+    private Proceso procesoConMenorTiempoParaFinalizar(ArrayList<Proceso> procesos)
+    {
+        try
+        {
+            /*return procesos.stream()
+                    .filter(p -> p.PCB.getEstadoProceso().equals(Estado.LISTO) && p.getTiempoLlegada() == tiempoTotalUsoDelCPU)
+                    .findAny()
+                    .get();*/
+            return procesos.stream()
+                    .filter(p -> p.PCB.getEstadoProceso().equals(Estado.ESPERA))
+                    .min(Comparator.comparing(p -> p.PCB.tiempoRestanteParaFinalizarProceso()))
+                    .get();
+
+        } catch (NoSuchElementException ex)
+        {
+            return null;
+        }
     }
 
     private ArrayList<Proceso> ordenarProcesosPorTiempoParaFinalizar(ArrayList<Proceso> procesos)
@@ -127,7 +172,7 @@ public class DespachadorSRTF extends Despachador
     private boolean interrumpe(long tiempoUsoDelCPU, Proceso procesoLlegada, Proceso procesoActual)
     {
         return procesoLlegada.PCB.getEstadoProceso().equals(Estado.LISTO)
-                && procesoLlegada.PCB.getTiempoRafaga() < (tiempoUsoDelCPU + procesoActual.PCB.getTiempoRafaga() - procesoLlegada.getTiempoLlegada());
+                && procesoLlegada.PCB.tiempoRestanteParaFinalizarProceso() < (tiempoUsoDelCPU + procesoActual.PCB.tiempoRestanteParaFinalizarProceso() - procesoLlegada.getTiempoLlegada());
 
     }
 
@@ -151,10 +196,16 @@ public class DespachadorSRTF extends Despachador
 
     }
 
+    private boolean lleganAlMismoTiempo(Proceso procesoLlegada, Proceso procesoActual)
+    {
+        return procesoLlegada.getTiempoLlegada() == procesoActual.getTiempoLlegada();
+    }
+
     private boolean llegaDuranteEjecucionProcesoActual(long tiempoUsoDelCPU, Proceso procesoLlegada, Proceso procesoActual)
     {
-        return procesoLlegada.PCB.getEstadoProceso().equals(Estado.NUEVO) && procesoLlegada.getTiempoLlegada() > tiempoUsoDelCPU
-                && procesoLlegada.getTiempoLlegada() < tiempoUsoDelCPU + procesoLlegada.PCB.getTiempoRafaga();
+        return procesoLlegada.PCB.getEstadoProceso().equals(Estado.LISTO)
+                && procesoLlegada.getTiempoLlegada() > tiempoUsoDelCPU
+                && procesoLlegada.getTiempoLlegada() < tiempoUsoDelCPU + procesoActual.PCB.tiempoRestanteParaFinalizarProceso();
     }
 
     public void todosProcesosEntregados()

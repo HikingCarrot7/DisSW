@@ -394,16 +394,22 @@ public class ControladorRecogeDatos implements ActionListener
         Object[][] data =
         {
             {
-                "", "P1", 13, 1
+                "", "P1", 7, 2
             },
             {
-                "", "P2", 6, 2
+                "", "P2", 8, 5
             },
             {
-                "", "P3", 10, 7
+                "", "P3", 2, 8
             },
             {
-                "", "P4", 2, 5
+                "", "P4", 1, 7
+            },
+            {
+                "", "P5", 10, 9
+            },
+            {
+                "", "P6", 13, 1
             }
         };
 
