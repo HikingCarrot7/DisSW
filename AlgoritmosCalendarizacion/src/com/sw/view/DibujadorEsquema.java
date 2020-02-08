@@ -3,6 +3,7 @@ package com.sw.view;
 import com.sw.model.Proceso;
 import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -24,12 +25,15 @@ public class DibujadorEsquema
     private final DibujadorProcesador DIBUJADOR_PROCESADOR;
     private final DiagramaGantt DIAGRAMA_GANTT;
     private volatile boolean running;
+    private boolean mostrarCambioContexto;
+    private long quantums;
 
     public DibujadorEsquema(Canvas esquema)
     {
         this.ESQUEMA = esquema;
         DIBUJADOR_PROCESADOR = new DibujadorProcesador(this);
         DIAGRAMA_GANTT = new DiagramaGantt(this);
+        quantums = -1;
     }
 
     public void crearRenderer()
@@ -56,9 +60,46 @@ public class DibujadorEsquema
         DIBUJADOR_PROCESADOR.dibujarProcesador(g);
         DIAGRAMA_GANTT.dibujarTiemposEsperaProcesos(g);
         DIBUJADOR_PROCESADOR.dibujarProcesoActual(g);
+        dibujarSimbologia(g);
+
+        if (quantums > 0)
+            dibujarQuantums(g);
 
         bs.show();
         g.dispose();
+    }
+
+    private void dibujarSimbologia(Graphics2D g)
+    {
+        final int INICIAL_Y = 15;
+        final int OFFSET_X = 5;
+        final int TRIANGLE_LENGTH = 15;
+        final int SEPARACION = 15;
+        final Font CURRENT_FONT = g.getFont();
+
+        g.drawString("Simbología", OFFSET_X, INICIAL_Y);
+
+        g.setFont(new Font(CURRENT_FONT.getName(), CURRENT_FONT.getStyle(), CURRENT_FONT.getSize() - 1));
+        g.setColor(Color.red);
+        g.fillRect(OFFSET_X, INICIAL_Y + 4, 25, 12);
+        g.setColor(Color.black);
+        g.drawString("Representa que un proceso", OFFSET_X + 30, INICIAL_Y + SEPARACION);
+        g.drawString("ha concluido su ejecución", OFFSET_X + 30, INICIAL_Y + SEPARACION * 2);
+        g.drawString("en ese intervalo de tiempo", OFFSET_X + 30, INICIAL_Y + SEPARACION * 3);
+
+        if (mostrarCambioContexto)
+        {
+            drawTurnedTriangle(g, OFFSET_X + TRIANGLE_LENGTH / 2 + 5, INICIAL_Y + SEPARACION * 5 + 3, TRIANGLE_LENGTH, Color.BLUE);
+            g.drawString("Representa un cambio de", OFFSET_X + 30, INICIAL_Y + SEPARACION * 5);
+            g.drawString("contexto en los procesos", OFFSET_X + 30, INICIAL_Y + SEPARACION * 6);
+        }
+
+        g.setFont(CURRENT_FONT);
+    }
+
+    private void dibujarQuantums(Graphics2D g)
+    {
+        dibujarTextoCentradoRect(g, "Quantums : " + quantums, DibujadorProcesador.CPU_HEIGHT - 30, DibujadorProcesador.CPU);
     }
 
     public void mostrarEnProcesadorProcesoActual(Proceso proceso, long tiempoUsoCpu)
@@ -80,6 +121,11 @@ public class DibujadorEsquema
     public void marcarUltimoProceso()
     {
         DIAGRAMA_GANTT.marcarUltimoProceso();
+    }
+
+    public void mostrarInterrupcion()
+    {
+        DIAGRAMA_GANTT.marcarCambioDeContexto();
     }
 
     public void reiniciarEsquema()
@@ -164,6 +210,36 @@ public class DibujadorEsquema
         g.fill(triangle);
     }
 
+    public void drawTurnedTriangle(Graphics2D g, int x, int y, int lenght, Color color)
+    {
+        int offset = (int) Math.sqrt(Math.pow(lenght, 2) - Math.pow((lenght / 2), 2));
+
+        int[] puntosX =
+        {
+            x - offset, x, x + offset
+        };
+
+        int[] puntosY =
+        {
+            y - offset, y, y - offset
+        };
+
+        GeneralPath triangle = new GeneralPath();
+
+        triangle.moveTo(puntosX[0], puntosY[0]);
+
+        for (int i = 0; i < puntosX.length; i++)
+            triangle.lineTo(puntosX[i], puntosY[i]);
+
+        triangle.closePath();
+
+        final Color CURRENT_COLOR = g.getColor();
+
+        g.setColor(color);
+        g.fill(triangle);
+        g.setColor(CURRENT_COLOR);
+    }
+
     public boolean isRunning()
     {
         return running;
@@ -172,6 +248,16 @@ public class DibujadorEsquema
     public void setRunning(boolean running)
     {
         this.running = running;
+    }
+
+    public void setMostrarCambioContexto(boolean mostrarCambioContexto)
+    {
+        this.mostrarCambioContexto = mostrarCambioContexto;
+    }
+
+    public void setQuantums(long quantums)
+    {
+        this.quantums = quantums;
     }
 
     private class Renderer implements Runnable

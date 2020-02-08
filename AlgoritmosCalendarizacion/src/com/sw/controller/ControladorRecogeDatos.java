@@ -97,6 +97,8 @@ public class ControladorRecogeDatos implements ActionListener
                         VistaPrincipal vistaPrincipal = new VistaPrincipal();
                         vistaPrincipal.setVisible(true);
                         vistaPrincipal.setLocationRelativeTo(null);
+                        vistaPrincipal.revalidate();
+                        vistaPrincipal.repaint();
                         ControladorVistaPrincipal controladorVistaPrincipal = new ControladorVistaPrincipal(vistaPrincipal, CLAVE_ALGORITMO_ACTUAL);
 
                         switch (CLAVE_ALGORITMO_ACTUAL)

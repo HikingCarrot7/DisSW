@@ -36,6 +36,7 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
         this.VISTA_PRINCIPAL = VISTA_PRINCIPAL;
         this.CLAVE_ALGORITMO_ACTUAL = CLAVE_ALGORITMO_ACTUAL;
         DIBUJADOR_ESQUEMA = new DibujadorEsquema(VISTA_PRINCIPAL.getEsquema());
+        DIBUJADOR_ESQUEMA.setMostrarCambioContexto(CLAVE_ALGORITMO_ACTUAL.equals(ControladorSeleccion.CLAVE_ALGORITMO_SRTF));
         TABLE_MANAGER = new TableManager();
         RENDERER = new TableCellRenderer();
         initMyComponents();
@@ -62,6 +63,7 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
         TABLE_MANAGER.eliminarUltimaColumna(VISTA_PRINCIPAL.getTablaResumen());
         TABLE_MANAGER.copiarTablas(table, VISTA_PRINCIPAL.getTablaResumen());
         VISTA_PRINCIPAL.setTitle("Simulando el algoritmo Round Robin");
+        DIBUJADOR_ESQUEMA.setQuantums(QUANTUMS);
         this.QUANTUMS = QUANTUMS;
     }
 
@@ -271,6 +273,10 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
 
                 case Notificacion.PROCESO_DEJO_CPU:
                     anadirProcesoTablaTiempoEspera(proceso, notificacion.getTiempoEsperaProceso());
+                    break;
+
+                case Notificacion.INTERRUPCION:
+                    DIBUJADOR_ESQUEMA.mostrarInterrupcion();
                     break;
 
                 default:

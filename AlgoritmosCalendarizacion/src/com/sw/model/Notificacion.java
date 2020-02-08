@@ -11,12 +11,18 @@ public class Notificacion
     public static final int PROCESO_DEJO_CPU = 1;
     public static final int PROCESO_HA_FINALIZADO = 2;
     public static final int NO_QUEDAN_PROCESOS = 3;
+    public static final int INTERRUPCION = 4;
 
     private int identificador;
     private Proceso proceso;
     private long tiempoEnQueFinalizoProceso;
     private long tiempoEsperaProceso;
     private long tiempoUsoCPU;
+
+    public Notificacion(int identificador)
+    {
+        this.identificador = identificador;
+    }
 
     public Notificacion(int identificador, Proceso proceso, long tiempoUsoCPU, long tiempoEsperaProceso)
     {
@@ -49,7 +55,7 @@ public class Notificacion
 
     public Proceso getProceso()
     {
-        return proceso.obtenerCopiaProceso();
+        return proceso == null ? null : proceso.obtenerCopiaProceso();
     }
 
     public void setProceso(Proceso proceso)
