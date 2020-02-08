@@ -123,7 +123,7 @@ public class DibujadorEsquema
         DIAGRAMA_GANTT.marcarUltimoProceso();
     }
 
-    public void mostrarInterrupcion()
+    public void dibujarInterrupcion()
     {
         DIAGRAMA_GANTT.marcarCambioDeContexto();
     }

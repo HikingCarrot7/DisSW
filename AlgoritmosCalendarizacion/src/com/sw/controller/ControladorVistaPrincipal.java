@@ -253,7 +253,6 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
             switch (notificacion.getIdentificador())
             {
                 case Notificacion.PROCESO_HA_FINALIZADO:
-                    DIBUJADOR_ESQUEMA.mostrarNoHayProcesoActual();
                     DIBUJADOR_ESQUEMA.marcarUltimoProceso();
                     anadirProcesoTablaFinalizados(proceso, notificacion.getTiempoEnQueFinalizoProceso());
                     anadirProcesoTablaTiempoEspera(proceso, notificacion.getTiempoEsperaProceso());
@@ -262,6 +261,7 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
                     if (calendarizador.todosProcesosTerminados())
                     {
                         VISTA_PRINCIPAL.getSimulacion().setText("Iniciar simulación");
+                        DIBUJADOR_ESQUEMA.mostrarNoHayProcesoActual();
                         despachador.detenerDespachador();
                     }
                     break;
@@ -276,7 +276,7 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
                     break;
 
                 case Notificacion.INTERRUPCION:
-                    DIBUJADOR_ESQUEMA.mostrarInterrupcion();
+                    DIBUJADOR_ESQUEMA.dibujarInterrupcion();
                     break;
 
                 default:

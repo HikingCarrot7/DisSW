@@ -1,5 +1,6 @@
 package com.sw.view;
 
+import com.sw.model.Estado;
 import com.sw.model.Proceso;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -76,6 +77,9 @@ public class DibujadorProcesador
 
     public void setProcesoActual(Proceso procesoActual)
     {
+        if (procesoActual != null)
+            procesoActual.PCB.setEstadoProceso(Estado.LISTO);
+
         this.procesoActual = procesoActual;
     }
 
