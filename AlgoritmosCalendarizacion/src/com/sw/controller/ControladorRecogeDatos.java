@@ -294,7 +294,7 @@ public class ControladorRecogeDatos implements ActionListener
     private void generarValoresTiempoAleatorios()
     {
         final int MIN_VALUE_RAFAGA = 2;
-        final int MAX_VALUE_RAFAGA = 10;
+        final int MAX_VALUE_RAFAGA = 10000;
 
         final int MIN_VALUE_LLEGADA = 1;
         final int MAX_VALUE_LLEGADA = 10;
