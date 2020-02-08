@@ -59,8 +59,6 @@ public class ControladorRecogeDatos implements ActionListener
 
         if (CLAVE_ALGORITMO_ACTUAL.equals(ControladorSeleccion.CLAVE_ALGORITMO_RR))
             TABLE_MANAGER.eliminarUltimaColumna(VISTA_RECOGE_DATOS.getTablaRecogeDatos());
-
-        loadData();
     }
 
     public void establecerDatosDefecto(JTable tabla, final String CLAVE_ALGORITMO_ACTUAL)
@@ -239,7 +237,7 @@ public class ControladorRecogeDatos implements ActionListener
                         break;
 
                     case COL_TIEMPO_LLEGADA:
-                        if (!esEntradaValida(data[i][j].toString(), REGEX_ENTERO_POSITIVO_VALIDO))
+                        if (!esEntradaValida(data[i][j].toString(), REGEX_ENTERO_POSITIVO_VALIDO) && Integer.parseInt(data[i][j].toString()) < 0)
                             throw new ValorNoValidoException(
                                     String.format("El tiempo de llegada en la fila %s y columna %s no es válido", i + 1, j + 1), i, j);
                         break;
@@ -360,10 +358,7 @@ public class ControladorRecogeDatos implements ActionListener
 
     private boolean esEntradaValida(String text, String regex)
     {
-        if (text.matches(regex))
-            return Integer.parseInt(text) > 0;
-
-        return false;
+        return text.matches(regex);
     }
 
     private void limpiarTabla()
@@ -387,33 +382,6 @@ public class ControladorRecogeDatos implements ActionListener
             return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
         }
 
-    }
-
-    private void loadData()
-    {
-        Object[][] data =
-        {
-            {
-                "", "P1", 7, 2
-            },
-            {
-                "", "P2", 8, 5
-            },
-            {
-                "", "P3", 2, 8
-            },
-            {
-                "", "P4", 1, 7
-            },
-            {
-                "", "P5", 10, 9
-            },
-            {
-                "", "P6", 13, 1
-            }
-        };
-
-        TABLE_MANAGER.rellenarTabla(VISTA_RECOGE_DATOS.getTablaRecogeDatos(), data);
     }
 
 }

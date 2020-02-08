@@ -184,7 +184,7 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
             procesos.add(new ProcesoSJF(
                     Estado.NUEVO,
                     data[i][ControladorRecogeDatos.COL_NOMBRE_PROCESO].toString(),
-                    (i + 1),
+                    i,
                     Long.parseLong(data[i][ControladorRecogeDatos.COL_TIEMPO_RAFAGA].toString()),
                     Long.parseLong(data[i][ControladorRecogeDatos.COL_TIEMPO_LLEGADA].toString())));
 
@@ -201,7 +201,7 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
             procesos.add(new ProcesoSRTF(
                     Estado.NUEVO,
                     data[i][ControladorRecogeDatos.COL_NOMBRE_PROCESO].toString(),
-                    (i + 1),
+                    i,
                     Long.parseLong(data[i][ControladorRecogeDatos.COL_TIEMPO_RAFAGA].toString()),
                     Long.parseLong(data[i][ControladorRecogeDatos.COL_TIEMPO_LLEGADA].toString())));
 
@@ -218,7 +218,7 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
             procesos.add(new ProcesoRR(
                     Estado.NUEVO,
                     data[i][ControladorRecogeDatos.COL_NOMBRE_PROCESO].toString(),
-                    (i + 1),
+                    i,
                     Long.parseLong(data[i][ControladorRecogeDatos.COL_TIEMPO_RAFAGA].toString())));
 
         return procesos;
