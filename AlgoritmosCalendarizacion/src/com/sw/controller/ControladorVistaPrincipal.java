@@ -47,6 +47,8 @@ public class ControladorVistaPrincipal implements ActionListener, Observer
         VISTA_PRINCIPAL.getSimulacion().addActionListener(this);
         VISTA_PRINCIPAL.getTablaEspera().setDefaultRenderer(Object.class, RENDERER);
         DIBUJADOR_ESQUEMA.crearRenderer();
+        VISTA_PRINCIPAL.revalidate();
+        VISTA_PRINCIPAL.repaint();
     }
 
     public void establecerDatosDefecto(JTable table)

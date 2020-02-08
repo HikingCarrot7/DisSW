@@ -59,10 +59,13 @@ public class DespachadorSRTF extends Despachador
                     procesoActual.PCB.aumentarTiempoEjecutado(tiempoEjecutado);
                     procesos.add(procesoActual);
 
-                    bloques.add(new Notificacion(Notificacion.CAMBIO_CONTEXTO, procesoActual.obtenerCopiaProceso(), tiempoEjecutado, tiempoEjecutado));
-                    int indexSiguienteProceso = obtenerIndexSiguienteProceso(tiempoTotalUsoDelCPU, procesoActual, procesos);
-                    procesoActual = procesos.get(indexSiguienteProceso);
-                    procesos.remove(indexSiguienteProceso);
+                    bloques.add(new Notificacion(Notificacion.CAMBIO_CONTEXTO, procesoActual.obtenerCopiaProceso(), tiempoEjecutado, tiempoTotalUsoDelCPU));
+
+                    tiempoTotalUsoDelCPU += tiempoEjecutado;
+
+                    // obtener el proceso siguiente (ordenar)
+                    procesoActual = procesos.get(procesos.indexOf(procesoSiguiente));
+                    procesos.remove(procesoSiguiente);
                     interrumpido = true;
                     break;
                 }
@@ -72,7 +75,7 @@ public class DespachadorSRTF extends Despachador
             if (!interrumpido)
             {
                 procesoActual.PCB.setEstadoProceso(Estado.TERMINADO);
-                tiempoTotalUsoDelCPU += (procesoActual.PCB.getTiempoRafaga() - procesoActual.PCB.getTiempoEjecutado());
+                tiempoTotalUsoDelCPU += procesoActual.PCB.getTiempoEjecutado();
                 bloques.add(new Notificacion(Notificacion.PROCESO_HA_FINALIZADO, procesoActual.obtenerCopiaProceso(), 0, tiempoEsperaPorProceso));
                 procesos.remove(procesoActual);
                 procesos = ordenarProcesosPorTiempoDeLlegada(procesos);
@@ -80,9 +83,6 @@ public class DespachadorSRTF extends Despachador
 
             } else
                 interrumpido = false;
-
-            System.out.println(procesos.size());
-
         }
 
         return bloques;
