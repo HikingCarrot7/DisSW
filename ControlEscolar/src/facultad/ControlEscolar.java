@@ -1,4 +1,4 @@
-package controlescolar;
+package facultad;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,6 +14,7 @@ import persistence.*;
 /**
  * @author HikingCarrot7
  */
+@Departamento(campus = "FMAT", responsable = "Esther Pineda Zapata")
 public class ControlEscolar
 {
 
@@ -22,19 +23,32 @@ public class ControlEscolar
     private ArrayList<Asignatura> asignaturas;
     private ArrayList<Alumno> alumnos;
 
+    private DAOAlumno daoAlumnos;
+    private DAOMaestro daoMaestros;
+    private DAOAsignatura daoAsignatura;
+    private DAORelaciones daoRelaciones;
+    private DAORegistros daoRegistros;
+
     public ControlEscolar()
     {
+        daoMaestros = new DAOMaestro();
+        daoAsignatura = new DAOAsignatura();
+        daoAlumnos = new DAOAlumno();
+        daoRelaciones = new DAORelaciones();
+        daoRegistros = new DAORegistros();
+
+        maestros = daoMaestros.loadData();
+        asignaturas = daoAsignatura.loadData();
+        alumnos = daoAlumnos.loadData();
+
         relaciones = new HashMap<>();
-        maestros = new DAOMaestro().obtenerItems();
-        asignaturas = new DAOAsignatura().obtenerItems();
-        alumnos = new DAOAlumno().obtenerItems();
         cargarDatos();
     }
 
     private void cargarDatos()
     {
-        ArrayList<Relacion> relacionesMaestrosConCursos = new DAORelaciones().obtenerItems();
-        ArrayList<Registro> registros = new DAORegistros().obtenerItems();
+        ArrayList<Relacion> relacionesMaestrosConCursos = daoRelaciones.loadData();
+        ArrayList<Registro> registros = daoRegistros.loadData();
 
         for (Maestro maestro : maestros)
             relaciones.put(maestro, new ArrayList<>());
@@ -134,7 +148,6 @@ public class ControlEscolar
 
         } else
             System.out.println("El alumno no existe.");
-
     }
 
     public void mostrarAsignaturasAgrupadasPorLicenciatura()
@@ -321,7 +334,7 @@ public class ControlEscolar
             if (maestroDaCurso(claveMaestro, claveAsignatura))
             {
                 Curso curso = obtenerCursoMaestro(claveMaestro, claveAsignatura);
-                new GeneradorPdf().generarPdf(curso);
+                saveData(new GeneradorPdf(), curso);
 
                 System.out.printf("\n\nReporte generado para la asignatura %S del maestro %S\n\n",
                         curso.getAsignatura().getNombreAsignatura(),
@@ -526,27 +539,32 @@ public class ControlEscolar
 
     private void guardarRelacionesDeMaestrosConCursos()
     {
-        new DAORelaciones().guardarItems(getRelaciones());
+        saveData(daoRelaciones, getRelaciones());
     }
 
     private void guardarMaestros()
     {
-        new DAOMaestro().guardarItems(getMaestros());
+        saveData(daoMaestros, getMaestros());
     }
 
     private void guardarAlumnos()
     {
-        new DAOAlumno().guardarItems(getAlumnos());
+        saveData(daoAlumnos, getAlumnos());
     }
 
     private void guardarAsignaturas()
     {
-        new DAOAsignatura().guardarItems(getAsignaturas());
+        saveData(daoAsignatura, getAsignaturas());
     }
 
     private void guardarRegistros()
     {
-        new DAORegistros().guardarItems(getRelaciones());
+        saveData(daoRegistros, getRelaciones());
+    }
+
+    private <S> void saveData(DataKeeper<S> ds, S data)
+    {
+        ds.saveData(data);
     }
 
     public ArrayList<Maestro> getMaestros()

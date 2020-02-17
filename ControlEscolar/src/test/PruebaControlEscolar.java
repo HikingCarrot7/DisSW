@@ -1,6 +1,6 @@
 package test;
 
-import controlescolar.Menu;
+import facultad.Menu;
 
 /**
  * @author HikingCarrot7

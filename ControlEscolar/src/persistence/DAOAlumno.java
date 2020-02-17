@@ -12,7 +12,7 @@ import model.Alumno;
 /**
  * @author HikingC7
  */
-public class DAOAlumno extends DAO<ArrayList<Alumno>>
+public class DAOAlumno extends DAOGeneral<ArrayList<Alumno>, ArrayList<Alumno>>
 {
 
     public static final String RUTA_ALUMNOS = "datos/Alumnos.csv";
@@ -23,7 +23,7 @@ public class DAOAlumno extends DAO<ArrayList<Alumno>>
     }
 
     @Override
-    public void guardarItems(ArrayList<Alumno> alumnos)
+    public void saveData(ArrayList<Alumno> alumnos)
     {
         String datosAlumno = "";
 
@@ -44,7 +44,7 @@ public class DAOAlumno extends DAO<ArrayList<Alumno>>
     }
 
     @Override
-    public ArrayList<Alumno> obtenerItems()
+    public ArrayList<Alumno> loadData()
     {
         try
         {
