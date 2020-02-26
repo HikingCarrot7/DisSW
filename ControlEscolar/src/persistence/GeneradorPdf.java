@@ -15,13 +15,14 @@ import model.Maestro;
 /**
  * @author HikingCarrot7
  */
-public class GeneradorPdf
+public class GeneradorPdf implements DataKeeper<Curso>
 {
 
     public static final String RUTA_REPORTES = "reportes/";
     private final String SATO_LINEA = "\r\n";
 
-    public void generarPdf(Curso curso)
+    @Override
+    public void saveData(Curso curso)
     {
         Paragraph titulo = new Paragraph();
         Paragraph alumnos = new Paragraph();

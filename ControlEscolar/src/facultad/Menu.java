@@ -1,4 +1,4 @@
-package controlescolar;
+package facultad;
 
 import java.util.Scanner;
 

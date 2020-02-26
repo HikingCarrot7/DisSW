@@ -2,19 +2,18 @@ package persistence;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * @param <E>
  * @author HikingC7
  */
-public abstract class DAO<E>
+public abstract class DAOGeneral<S, L> implements DataKeeper<S>, DataLoader<L>
 {
 
     protected final File FILE;
     protected final String SALTO_LINEA = "\r\n";
 
-    public DAO(String ruta)
+    public DAOGeneral(String ruta)
     {
         FILE = new File(ruta);
 
@@ -30,8 +29,10 @@ public abstract class DAO<E>
 
     }
 
-    public abstract void guardarItems(E items);
+    @Override
+    public abstract void saveData(S item);
 
-    public abstract ArrayList<?> obtenerItems();
+    @Override
+    public abstract L loadData();
 
 }

@@ -15,7 +15,7 @@ import model.Registro;
 /**
  * @author HikingC7
  */
-public class DAORegistros extends DAO<HashMap<Maestro, ArrayList<Curso>>>
+public class DAORegistros extends DAOGeneral<HashMap<Maestro, ArrayList<Curso>>, ArrayList<Registro>>
 {
 
     public static final String RUTA_REGISTROS = "datos/Registros.csv";
@@ -26,7 +26,7 @@ public class DAORegistros extends DAO<HashMap<Maestro, ArrayList<Curso>>>
     }
 
     @Override
-    public void guardarItems(HashMap<Maestro, ArrayList<Curso>> maestros)
+    public void saveData(HashMap<Maestro, ArrayList<Curso>> maestros)
     {
         String registros = "";
 
@@ -52,7 +52,7 @@ public class DAORegistros extends DAO<HashMap<Maestro, ArrayList<Curso>>>
     }
 
     @Override
-    public ArrayList<Registro> obtenerItems()
+    public ArrayList<Registro> loadData()
     {
         try
         {
