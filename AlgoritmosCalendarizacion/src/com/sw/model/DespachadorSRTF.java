@@ -50,7 +50,6 @@ public class DespachadorSRTF extends Despachador
                     procesoActualEnCPU.PCB.setEstadoProceso(Estado.TERMINADO);
                     System.out.println("");
                     procesoActualEnCPU = procesos.remove();
-
                 }
 
             }
