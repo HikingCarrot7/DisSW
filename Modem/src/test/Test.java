@@ -9,10 +9,10 @@ public class Test
 
     public static void main(String[] args)
     {
-        Logger logger = new Logger();
+        Registrador registrador = new Registrador();
 
-        logger.logOn(new Hayes(), "hola", "juan", "admin123");
-        logger.logOn(new Courrier(), "hola", "juan", "admin123");
-        logger.logOn(new Ernie(), "hola", "juan", "admin123");
+        registrador.iniciarSesion(new Hayes(), "hola", "juan", "admin123");
+        registrador.iniciarSesion(new Courrier(), "hola", "juan", "admin123");
+        registrador.iniciarSesion(new Ernie(), "hola", "juan", "admin123");
     }
 }

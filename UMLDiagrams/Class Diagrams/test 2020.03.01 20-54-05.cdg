@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="test">
+  <ClassDiagramComponents>
+    <Class name="Courrier" package="test" visibility="public" xPosition="20.0" yPosition="20.0">
+      <Fields/>
+      <Constructors/>
+      <Methods>
+        <Method name="dial" returnType="void" visibility="public">
+          <Argument type="String" name="pno"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Ernie" package="test" visibility="public" xPosition="224.0" yPosition="20.0">
+      <Fields/>
+      <Constructors/>
+      <Methods>
+        <Method name="dial" returnType="void" visibility="public">
+          <Argument type="String" name="pno"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Hayes" package="test" visibility="public" xPosition="436.0" yPosition="20.0">
+      <Fields/>
+      <Constructors/>
+      <Methods>
+        <Method name="dial" returnType="void" visibility="public">
+          <Argument type="String" name="pno"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Modem" package="test" visibility="public" isAbstract="true" xPosition="278.0" yPosition="244.0">
+      <Fields/>
+      <Constructors/>
+      <Methods>
+        <Method name="dial" returnType="void" visibility="public" isAbstract="true">
+          <Argument type="String" name="pno"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Registrador" package="test" visibility="public" xPosition="554.0" yPosition="252.0">
+      <Fields/>
+      <Constructors/>
+      <Methods>
+        <Method name="iniciarSesion" returnType="void" visibility="public">
+          <Argument type="Modem" name="modem"/>
+          <Argument type="String" name="pno"/>
+          <Argument type="String" name="user"/>
+          <Argument type="String" name="pw"/>
+        </Method>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations>
+    <IsRelation name="is" source="test.Courrier" target="test.Modem"/>
+    <IsRelation name="is" source="test.Hayes" target="test.Modem"/>
+    <IsRelation name="is" source="test.Ernie" target="test.Modem"/>
+    <UseRelation source="test.Registrador" target="test.Modem" sourceCardinality="1..1" targetCardinality="1..1"/>
+  </ClassDiagramRelations>
+</ClassDiagram>
