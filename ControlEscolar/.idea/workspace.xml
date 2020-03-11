@@ -43,7 +43,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../Vertedero/Java/Streams" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -87,13 +87,15 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="685" y="309" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1579986042831" />
-    <state x="500" y="130" key="SettingsEditor" timestamp="1579986033267">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="356" y="18" key="SettingsEditor" timestamp="1582027373096">
+      <screen x="0" y="0" width="1366" height="728" />
     </state>
+    <state x="356" y="18" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1582027373096" />
     <state x="500" y="130" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1579986033267" />
-    <state x="655" y="342" key="com.intellij.ide.util.TipDialog" timestamp="1579985101514">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="466" y="239" key="com.intellij.ide.util.TipDialog" timestamp="1582027325313">
+      <screen x="0" y="0" width="1366" height="728" />
     </state>
+    <state x="466" y="239" key="com.intellij.ide.util.TipDialog/0.0.1366.728@0.0.1366.728" timestamp="1582027325313" />
     <state x="655" y="342" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1579985101514" />
   </component>
 </project>
