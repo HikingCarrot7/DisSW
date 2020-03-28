@@ -8,7 +8,6 @@ package zuul;
  * @author Michael Kolling and David J. Barnes
  * @version 2008.03.30
  */
-
 public class CommandWords
 {
 
@@ -29,12 +28,13 @@ public class CommandWords
     /**
      * Check whether a given String is a valid command word.
      *
+     * @param aString
      * @return true if a given string is a valid command, false if it isn't.
      */
     public boolean isCommand(String aString)
     {
-        for (int i = 0; i < validCommands.length; i++)
-            if (validCommands[i].equals(aString))
+        for (String validCommand : validCommands)
+            if (validCommand.equals(aString))
                 return true;
         // if we get here, the string was not found in the commands
         return false;

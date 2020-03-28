@@ -1,5 +1,7 @@
 package zuul;
 
+import static java.lang.System.out;
+
 /**
  * This class is the main class of the "World of Zuul" application. "World of Zuul" is a very simple, text based adventure game. Users can walk around some scenery. That's all. It should really be extended to make it more interesting!
  *
@@ -10,7 +12,6 @@ package zuul;
  * @author Michael Kolling and David J. Barnes
  * @version 2008.03.30
  */
-
 public class Game
 {
 
@@ -60,12 +61,14 @@ public class Game
         // Enter the main command loop.  Here we repeatedly read commands and
         // execute them until the game is over.
         boolean finished = false;
+
         while (!finished)
         {
             Command command = parser.getCommand();
             finished = processCommand(command);
         }
-        System.out.println("Thank you for playing.  Good bye.");
+
+        out.println("Thank you for playing.  Good bye.");
     }
 
     /**
@@ -73,22 +76,22 @@ public class Game
      */
     private void printWelcome()
     {
-        System.out.println();
-        System.out.println("Welcome to the World of Zuul!");
-        System.out.println("World of Zuul is a new, incredibly boring adventure game.");
-        System.out.println("Type 'help' if you need help.");
-        System.out.println();
-        System.out.println("You are " + currentRoom.getDescription());
-        System.out.print("Exits: ");
+        out.println();
+        out.println("Welcome to the World of Zuul!");
+        out.println("World of Zuul is a new, incredibly boring adventure game.");
+        out.println("Type 'help' if you need help.");
+        out.println();
+        out.println("You are " + currentRoom.getDescription());
+        out.print("Exits: ");
         if (currentRoom.northExit != null)
-            System.out.print("north ");
+            out.print("north ");
         if (currentRoom.eastExit != null)
-            System.out.print("east ");
+            out.print("east ");
         if (currentRoom.southExit != null)
-            System.out.print("south ");
+            out.print("south ");
         if (currentRoom.westExit != null)
-            System.out.print("west ");
-        System.out.println();
+            out.print("west ");
+        out.println();
     }
 
     /**
@@ -103,17 +106,25 @@ public class Game
 
         if (command.isUnknown())
         {
-            System.out.println("I don't know what you mean...");
+            out.println("I don't know what you mean...");
             return false;
         }
 
         String commandWord = command.getCommandWord();
-        if (commandWord.equals("help"))
-            printHelp();
-        else if (commandWord.equals("go"))
-            goRoom(command);
-        else if (commandWord.equals("quit"))
-            wantToQuit = quit(command);
+        switch (commandWord)
+        {
+            case "help":
+                printHelp();
+                break;
+            case "go":
+                goRoom(command);
+                break;
+            case "quit":
+                wantToQuit = quit(command);
+                break;
+            default:
+                break;
+        }
 
         return wantToQuit;
     }
@@ -124,11 +135,11 @@ public class Game
      */
     private void printHelp()
     {
-        System.out.println("You are lost. You are alone. You wander");
-        System.out.println("around at the university.");
-        System.out.println();
-        System.out.println("Your command words are:");
-        System.out.println("   go quit help");
+        out.println("You are lost. You are alone. You wander");
+        out.println("around at the university.");
+        out.println();
+        out.println("Your command words are:");
+        out.println("   go quit help");
     }
 
     /**
@@ -139,7 +150,7 @@ public class Game
         if (!command.hasSecondWord())
         {
             // if there is no second word, we don't know where to go...
-            System.out.println("Go where?");
+            out.println("Go where?");
             return;
         }
 
@@ -157,21 +168,21 @@ public class Game
             nextRoom = currentRoom.westExit;
 
         if (nextRoom == null)
-            System.out.println("There is no door!");
+            out.println("There is no door!");
         else
         {
             currentRoom = nextRoom;
-            System.out.println("You are " + currentRoom.getDescription());
-            System.out.print("Exits: ");
+            out.println("You are " + currentRoom.getDescription());
+            out.print("Exits: ");
             if (currentRoom.northExit != null)
-                System.out.print("north ");
+                out.print("north ");
             if (currentRoom.eastExit != null)
-                System.out.print("east ");
+                out.print("east ");
             if (currentRoom.southExit != null)
-                System.out.print("south ");
+                out.print("south ");
             if (currentRoom.westExit != null)
-                System.out.print("west ");
-            System.out.println();
+                out.print("west ");
+            out.println();
         }
     }
 
@@ -184,7 +195,7 @@ public class Game
     {
         if (command.hasSecondWord())
         {
-            System.out.println("Quit what?");
+            out.println("Quit what?");
             return false;
         } else
             return true; // signal that we want to quit

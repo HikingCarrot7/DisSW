@@ -1,5 +1,7 @@
 package zuul;
 
+import static java.lang.System.in;
+import static java.lang.System.out;
 import java.util.Scanner;
 
 /**
@@ -24,7 +26,7 @@ public class Parser
     public Parser()
     {
         commands = new CommandWords();
-        reader = new Scanner(System.in);
+        reader = new Scanner(in);
     }
 
     /**
@@ -36,7 +38,7 @@ public class Parser
         String word1 = null;
         String word2 = null;
 
-        System.out.print("> ");     // print prompt
+        out.print("> ");     // print prompt
 
         inputLine = reader.nextLine();
 
