@@ -16,7 +16,14 @@ public class Test
         MEF mef = new MEF(new Dispositivo());
         mef.setEstadoActual(Estado.ESTADO_BLOQUEADO);
         mef.pasar();
+        mef.pasar();
+        mef.pasar();
+        mef.moneda();
         mef.listo();
+        mef.moneda();
+        mef.moneda();
+        mef.moneda();
+        mef.pasar();
     }
 
 }
