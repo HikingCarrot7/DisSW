@@ -3,8 +3,8 @@ package pattern;
 public class Cliente
 {
 
-    private Articulo art;
-    private Publicacion pub;
+    private final Articulo art;
+    private final Publicacion pub;
 
     public Cliente(String tipoArticulo, String autor, String tituloArticulo, String tituloRevista, FactoryPublicacionArticulo factory)
     {
@@ -12,10 +12,14 @@ public class Cliente
         pub = factory.createPublicacion(tituloRevista);
     }
 
-    public static void main(String args[])
+    public Articulo getArt()
     {
-        new Cliente("Cientifico", "woods", "Foreign Forever", "Journal Migration", new FactoryCientifico());
-        new Cliente("Cientifico", "woods", "Foreign Forever", "Journal Migration", new FactoryDivulgacion());
+        return art;
+    }
+
+    public Publicacion getPub()
+    {
+        return pub;
     }
 
 }

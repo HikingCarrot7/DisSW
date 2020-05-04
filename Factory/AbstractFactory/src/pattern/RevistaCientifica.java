@@ -1,6 +1,5 @@
 package pattern;
 
-
 public class RevistaCientifica extends Publicacion
 {
 

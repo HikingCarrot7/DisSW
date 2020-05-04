@@ -1,6 +1,6 @@
 package pattern;
 
-public class Publicacion
+public abstract class Publicacion
 {
 
     private String nombre;

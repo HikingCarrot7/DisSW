@@ -1,6 +1,6 @@
 package pattern;
 
-public class Articulo
+public abstract class Articulo
 {
 
     private String autor;
