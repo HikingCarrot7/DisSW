@@ -8,17 +8,17 @@
 
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sw.controller.VistaGraficoCircularController">
-   <center>
-      <PieChart fx:id="graficoCircular" title="Votos para los candidatos" BorderPane.alignment="CENTER" />
-   </center>
-   <top>
-      <Label text="Resumen de los votos" BorderPane.alignment="CENTER">
-         <font>
-            <Font size="21.0" />
-         </font>
-      </Label>
-   </top>
-   <padding>
-      <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-   </padding>
+    <center>
+        <PieChart fx:id="graficoCircular" title="Votos para los candidatos" BorderPane.alignment="CENTER" />
+    </center>
+    <top>
+        <Label text="Resumen de los votos" BorderPane.alignment="CENTER">
+            <font>
+                <Font size="21.0" />
+            </font>
+        </Label>
+    </top>
+    <padding> 
+        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+    </padding>
 </BorderPane>
