@@ -2,6 +2,7 @@ package com.sw.controller;
 
 import com.sw.main.Main;
 import java.io.IOException;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -30,6 +31,7 @@ public class WindowFactory
             stage.setScene(scene);
             stage.setX(x);
             stage.setY(y);
+            stage.setOnCloseRequest(e -> Platform.exit());
             stage.show();
 
             return loader.getController();

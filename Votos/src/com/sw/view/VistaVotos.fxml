@@ -19,11 +19,15 @@
             </columnConstraints>
             <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints vgrow="NEVER" />
             </rowConstraints>
             <children>
-                <Button fx:id="candidato1" alignment="CENTER" contentDisplay="TOP" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#accionBtnCandidato1" text="Candidato 1" />
-                <Button fx:id="candidato2" alignment="CENTER" contentDisplay="TOP" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#accionBtnCandidato2" text="Candidato 2" GridPane.columnIndex="1" />
-                <Button fx:id="candidato3" alignment="CENTER" contentDisplay="TOP" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#accionBtnCandidato3" text="Candidato 3" GridPane.columnIndex="2" />
+                <Button fx:id="btnCandidato1" alignment="CENTER" contentDisplay="TOP" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#accionBtnCandidato1" text="Candidato 1" />
+                <Button fx:id="btnCandidato2" alignment="CENTER" contentDisplay="TOP" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#accionBtnCandidato2" text="Candidato 2" GridPane.columnIndex="1" />
+                <Button fx:id="btnCandidato3" alignment="CENTER" contentDisplay="TOP" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#accionBtnCandidato3" text="Candidato 3" GridPane.columnIndex="2" />
+            <Label fx:id="votosCandidato1" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="0 votos" GridPane.rowIndex="1" />
+            <Label fx:id="votosCandidato2" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="0 votos" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label fx:id="votosCandidato3" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="0 votos" GridPane.columnIndex="2" GridPane.rowIndex="1" />
             </children>
         </GridPane>
     </center>
