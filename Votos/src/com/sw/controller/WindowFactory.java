@@ -1,6 +1,6 @@
 package com.sw.controller;
 
-import com.sw.main.PruebaVotos;
+import com.sw.main.Main;
 import java.io.IOException;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -20,7 +20,7 @@ public class WindowFactory
         try
         {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(PruebaVotos.class.getResource(ruta));
+            loader.setLocation(Main.class.getResource(ruta));
             Pane ventana = (Pane) loader.load();
             Scene scene = new Scene(ventana);
 

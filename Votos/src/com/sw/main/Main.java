@@ -1,9 +1,10 @@
 package com.sw.main;
 
 import com.sw.controller.WindowFactory;
+import com.sw.model.DAO;
+import com.sw.model.Observado;
+import com.sw.model.Observador;
 import java.io.IOException;
-import java.util.Observable;
-import java.util.Observer;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -11,7 +12,7 @@ import javafx.stage.Stage;
  *
  * @author Nicolás
  */
-public class PruebaVotos extends Application
+public class Main extends Application
 {
 
     public static void main(String[] args)
@@ -22,23 +23,26 @@ public class PruebaVotos extends Application
     @Override
     public void start(Stage primaryStage) throws IOException
     {
-        Observer graficaBarras = (Observer) WindowFactory.createWindow(
+        Observador graficaBarras = (Observador) WindowFactory.createWindow(
                 "/com/sw/view/VistaGraficoBarras.fxml",
                 null,
                 100, 100);
 
-        Observer graficaCircular = (Observer) WindowFactory.createWindow(
+        Observador graficaCircular = (Observador) WindowFactory.createWindow(
                 "/com/sw/view/VistaGraficoCircular.fxml",
                 null,
                 200, 200);
 
-        Observable votosController = (Observable) WindowFactory.createWindow(
+        Observado votosController = (Observado) WindowFactory.createWindow(
                 "/com/sw/view/VistaVotos.fxml",
                 "/com/sw/styles/Stylesheet.css",
                 300, 300);
 
-        votosController.addObserver(graficaBarras);
-        votosController.addObserver(graficaCircular);
+        votosController.addObservador(graficaBarras);
+        votosController.addObservador(graficaCircular);
+
+        DAO dao = new DAO();
+        votosController.addObservador(dao);
     }
 
 }

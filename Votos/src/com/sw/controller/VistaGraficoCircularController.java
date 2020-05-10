@@ -1,9 +1,9 @@
 package com.sw.controller;
 
 import com.sw.model.Candidato;
+import com.sw.model.Observado;
+import com.sw.model.Observador;
 import java.net.URL;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.ResourceBundle;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -18,7 +18,7 @@ import javafx.scene.chart.PieChart;
  *
  * @author Nicolás
  */
-public class VistaGraficoCircularController implements Initializable, Observer
+public class VistaGraficoCircularController implements Initializable, Observador
 {
 
     @FXML private PieChart graficoCircular;
@@ -48,7 +48,7 @@ public class VistaGraficoCircularController implements Initializable, Observer
     }
 
     @Override
-    public void update(Observable o, Object arg)
+    public void update(Observado o, Object arg)
     {
         Candidato candidato = (Candidato) arg;
         pieChartData.get(candidato.getnCandidato()).setPieValue(candidato.getnVotos());

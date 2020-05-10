@@ -1,9 +1,9 @@
 package com.sw.controller;
 
 import com.sw.model.Candidato;
+import com.sw.model.Observado;
+import com.sw.model.Observador;
 import java.net.URL;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -14,7 +14,7 @@ import javafx.scene.chart.XYChart;
  *
  * @author Nicolás
  */
-public class VistaGraficoBarrasController implements Initializable, Observer
+public class VistaGraficoBarrasController implements Initializable, Observador
 {
 
     @FXML private BarChart<String, Integer> graficoBarras;
@@ -33,7 +33,7 @@ public class VistaGraficoBarrasController implements Initializable, Observer
     }
 
     @Override
-    public void update(Observable o, Object arg)
+    public void update(Observado o, Object arg)
     {
         Candidato candidato = (Candidato) arg;
         data.getData().get(candidato.getnCandidato()).setYValue(candidato.getnVotos());

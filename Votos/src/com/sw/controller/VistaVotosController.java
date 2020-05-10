@@ -1,8 +1,8 @@
 package com.sw.controller;
 
 import com.sw.model.Candidato;
+import com.sw.model.Observado;
 import java.net.URL;
-import java.util.Observable;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,7 +15,7 @@ import javafx.scene.image.ImageView;
  *
  * @author Nicolás
  */
-public class VistaVotosController extends Observable implements Initializable
+public class VistaVotosController extends Observado implements Initializable
 {
 
     @FXML private Button btnCandidato1;
@@ -67,8 +67,7 @@ public class VistaVotosController extends Observable implements Initializable
 
     public void notificar(Candidato candidato)
     {
-        setChanged();
-        notifyObservers(candidato);
+        notificarObservadores(candidato);
     }
 
 }
