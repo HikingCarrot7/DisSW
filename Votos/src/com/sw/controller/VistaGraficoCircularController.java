@@ -1,6 +1,5 @@
 package com.sw.controller;
 
-import com.sw.model.Candidato;
 import com.sw.model.Observado;
 import com.sw.model.Observador;
 import java.net.URL;
@@ -13,20 +12,21 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Side;
 import javafx.scene.chart.PieChart;
+import javafx.stage.Stage;
 
 /**
  *
  * @author Nicolás
  */
-public class VistaGraficoCircularController implements Initializable, Observador
+public class VistaGraficoCircularController implements Initializable, Observador, Controller
 {
 
     @FXML private PieChart graficoCircular;
 
+    private Stage stage;
     private ObservableList<PieChart.Data> pieChartData;
 
-    @Override
-    public void initialize(URL url, ResourceBundle rb)
+    @Override public void initialize(URL url, ResourceBundle rb)
     {
         pieChartData = FXCollections.observableArrayList(
                 new PieChart.Data("Candidato 1", 0),
@@ -47,11 +47,17 @@ public class VistaGraficoCircularController implements Initializable, Observador
         graficoCircular.setData(pieChartData);
     }
 
-    @Override
-    public void update(Observado o, Object arg)
+    @Override public void initStage(Stage stage)
     {
-        Candidato candidato = (Candidato) arg;
-        pieChartData.get(candidato.getnCandidato()).setPieValue(candidato.getnVotos());
+        this.stage = stage;
+    }
+
+    @Override public void update(Observado o, Object arg)
+    {
+        int[] votos = (int[]) arg;
+
+        for (int i = 0; i < votos.length; i++)
+            pieChartData.get(i).setPieValue(votos[i]);
     }
 
 }

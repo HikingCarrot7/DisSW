@@ -1,7 +1,7 @@
 package com.sw.main;
 
 import com.sw.controller.WindowFactory;
-import com.sw.model.DAO;
+import com.sw.model.GeneradorExcel;
 import com.sw.model.Observado;
 import com.sw.model.Observador;
 import java.io.IOException;
@@ -20,8 +20,7 @@ public class Main extends Application
         launch(args);
     }
 
-    @Override
-    public void start(Stage primaryStage) throws IOException
+    @Override public void start(Stage primaryStage) throws IOException
     {
         Observador graficaBarras = (Observador) WindowFactory.createWindow(
                 "/com/sw/view/VistaGraficoBarras.fxml",
@@ -41,8 +40,8 @@ public class Main extends Application
         votosController.addObservador(graficaBarras);
         votosController.addObservador(graficaCircular);
 
-        DAO dao = new DAO();
-        votosController.addObservador(dao);
+        GeneradorExcel generador = new GeneradorExcel();
+        votosController.addObservador(generador);
     }
 
 }

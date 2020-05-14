@@ -7,6 +7,8 @@ package com.sw.model;
 public class Candidato
 {
 
+    public static final int NUM_CANDIDATOS = 3;
+
     private String nombre;
     private int nCandidato;
     private int nVotos;

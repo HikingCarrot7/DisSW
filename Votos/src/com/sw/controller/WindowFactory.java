@@ -28,6 +28,7 @@ public class WindowFactory
                 scene.getStylesheets().add(stylesheet);
 
             Stage stage = new Stage();
+            ((Controller) loader.getController()).initStage(stage);
             stage.setScene(scene);
             stage.setX(x);
             stage.setY(y);

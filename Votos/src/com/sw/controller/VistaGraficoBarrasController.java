@@ -1,6 +1,5 @@
 package com.sw.controller;
 
-import com.sw.model.Candidato;
 import com.sw.model.Observado;
 import com.sw.model.Observador;
 import java.net.URL;
@@ -9,20 +8,21 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
+import javafx.stage.Stage;
 
 /**
  *
  * @author Nicolás
  */
-public class VistaGraficoBarrasController implements Initializable, Observador
+public class VistaGraficoBarrasController implements Initializable, Observador, Controller
 {
 
+    private Stage stage;
     @FXML private BarChart<String, Integer> graficoBarras;
 
     private XYChart.Series<String, Integer> data;
 
-    @Override
-    public void initialize(URL url, ResourceBundle rb)
+    @Override public void initialize(URL url, ResourceBundle rb)
     {
         data = new XYChart.Series<>();
         data.getData().add(new XYChart.Data<>("Candidato 1", 0));
@@ -32,11 +32,17 @@ public class VistaGraficoBarrasController implements Initializable, Observador
         graficoBarras.getData().add(data);
     }
 
-    @Override
-    public void update(Observado o, Object arg)
+    @Override public void initStage(Stage stage)
     {
-        Candidato candidato = (Candidato) arg;
-        data.getData().get(candidato.getnCandidato()).setYValue(candidato.getnVotos());
+        this.stage = stage;
+    }
+
+    @Override public void update(Observado o, Object arg)
+    {
+        int[] votos = (int[]) arg;
+
+        for (int i = 0; i < votos.length; i++)
+            data.getData().get(i).setYValue(votos[i]);
     }
 
 }

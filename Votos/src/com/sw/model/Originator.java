@@ -1,4 +1,4 @@
-package ejemplo;
+package com.sw.model;
 
 /**
  *
@@ -7,9 +7,9 @@ package ejemplo;
 public class Originator
 {
 
-    private String actualState;
+    private int[] actualState;
 
-    public void setActualState(String actualState)
+    public void setActualState(int[] actualState)
     {
         this.actualState = actualState;
     }
@@ -19,10 +19,9 @@ public class Originator
         return new Memento(actualState);
     }
 
-    public String restoreFromMemento(Memento memento)
+    public int[] restoreFromMemento(Memento memento)
     {
         actualState = memento.getSavedState();
         return actualState;
     }
-
 }

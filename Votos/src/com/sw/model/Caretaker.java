@@ -1,4 +1,4 @@
-package ejemplo;
+package com.sw.model;
 
 import java.util.ArrayList;
 
@@ -24,6 +24,11 @@ public class Caretaker
     public Memento getMemento(int idx)
     {
         return savedStates.get(idx);
+    }
+
+    public ArrayList<Memento> getSavedStates()
+    {
+        return savedStates;
     }
 
 }
