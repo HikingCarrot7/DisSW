@@ -33,7 +33,6 @@ public class VistaVotosController extends Observado implements Initializable, Co
     @FXML private Label votosCandidato2;
     @FXML private Label votosCandidato3;
 
-    private Stage stage;
     private Candidato[] candidatos;
 
     private Command commandVotarCandidato1;
@@ -68,44 +67,32 @@ public class VistaVotosController extends Observado implements Initializable, Co
         undo.setDisable(true);
         redo.setDisable(true);
 
-        commandVotarCandidato1 = () ->
-        {
-            candidatos[0].aumentarVotos();
-            anadirNuevoEstado();
-        };
-
-        commandVotarCandidato2 = () ->
-        {
-            candidatos[1].aumentarVotos();
-            anadirNuevoEstado();
-        };
-
-        commandVotarCandidato3 = () ->
-        {
-            candidatos[2].aumentarVotos();
-            anadirNuevoEstado();
-        };
+        commandVotarCandidato1 = candidatos[0]::aumentarVotos;
+        commandVotarCandidato2 = candidatos[1]::aumentarVotos;
+        commandVotarCandidato3 = candidatos[2]::aumentarVotos;
     }
 
     @Override public void initStage(Stage stage)
     {
-        this.stage = stage;
         stage.addEventFilter(KeyEvent.KEY_PRESSED, this::manejarControlZ);
     }
 
     @FXML private void accionBtnCandidato1(ActionEvent e)
     {
         commandVotarCandidato1.execute();
+        anadirNuevoEstado();
     }
 
     @FXML private void accionBtnCandidato2(ActionEvent e)
     {
         commandVotarCandidato2.execute();
+        anadirNuevoEstado();
     }
 
     @FXML private void accionBtnCandidato3(ActionEvent e)
     {
         commandVotarCandidato3.execute();
+        anadirNuevoEstado();
     }
 
     @FXML private void accionBtnUndo(ActionEvent e)
