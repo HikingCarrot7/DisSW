@@ -3,6 +3,7 @@ package com.sw.controller;
 import com.sw.model.Candidato;
 import com.sw.model.Caretaker;
 import com.sw.model.Command;
+import com.sw.model.CommandVotar;
 import com.sw.model.Observado;
 import com.sw.model.Originator;
 import java.net.URL;
@@ -67,9 +68,9 @@ public class VistaVotosController extends Observado implements Initializable, Co
         undo.setDisable(true);
         redo.setDisable(true);
 
-        commandVotarCandidato1 = candidatos[0]::aumentarVotos;
-        commandVotarCandidato2 = candidatos[1]::aumentarVotos;
-        commandVotarCandidato3 = candidatos[2]::aumentarVotos;
+        commandVotarCandidato1 = new CommandVotar(candidatos[0]);
+        commandVotarCandidato2 = new CommandVotar(candidatos[1]);
+        commandVotarCandidato3 = new CommandVotar(candidatos[2]);
     }
 
     @Override public void initStage(Stage stage)
