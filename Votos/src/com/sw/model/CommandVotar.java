@@ -17,7 +17,7 @@ public class CommandVotar implements Command
     @Override
     public void execute()
     {
-        candidato.aumentarVotos();
+        candidato.setnVotos(candidato.getnVotos() + 1);
     }
 
 }

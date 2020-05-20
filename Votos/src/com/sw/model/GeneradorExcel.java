@@ -30,8 +30,7 @@ public class GeneradorExcel implements Observador
             }
     }
 
-    @Override
-    public void update(Observado observado, Object item)
+    @Override public void update(Observado observado, Object item)
     {
         actualizarDatos((int[]) item);
     }

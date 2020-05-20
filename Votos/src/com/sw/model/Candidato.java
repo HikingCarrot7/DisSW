@@ -45,11 +45,6 @@ public class Candidato
         return nVotos;
     }
 
-    public void aumentarVotos()
-    {
-        nVotos++;
-    }
-
     public void setnVotos(int nVotos)
     {
         this.nVotos = nVotos;
