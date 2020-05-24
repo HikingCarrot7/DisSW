@@ -8,7 +8,8 @@ public class Cliente
         Decaf decaf = new Decaf();
         CremaBatida cremaBatida = new CremaBatida(decaf);
         ChispasChocolate chispasChocolate = new ChispasChocolate(cremaBatida);
-        System.out.println(chispasChocolate.getCosto());
+
+        System.out.println("El precio es: $" + chispasChocolate.getCosto());
     }
 
 }
