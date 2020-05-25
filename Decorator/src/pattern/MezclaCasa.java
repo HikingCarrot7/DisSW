@@ -5,7 +5,7 @@ public class MezclaCasa
 
     public MezclaCasa()
     {
-        System.out.println("House Blend");
+        System.out.println(String.format("House blend ($%,.2f)", getCosto()));
     }
 
     public double getCosto()

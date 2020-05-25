@@ -15,7 +15,7 @@ public class ChispasChocolate extends DecoratorBebida
     @Override
     public double getCosto()
     {
-        System.out.println("Añadiendo chispas de chocolate");
+        System.out.println(String.format("Añadiendo chispas de chocolate ($%d)", 4));
         return bebida.getCosto() + 4;
     }
 

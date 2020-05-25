@@ -15,7 +15,7 @@ public class CremaBatida extends DecoratorBebida
     @Override
     public double getCosto()
     {
-        System.out.println("Añadiendo crema batida");
+        System.out.println(String.format("Añadiendo crema batida ($%d)", 5));
         return bebida.getCosto() + 5;
     }
 

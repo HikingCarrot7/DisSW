@@ -5,7 +5,7 @@ public class TostadoObscuro
 
     public TostadoObscuro()
     {
-        System.out.println("Dark Roast");
+        System.out.println(String.format("Dark roast ($%,.2f)", getCosto()));
     }
 
     public double getCosto()
